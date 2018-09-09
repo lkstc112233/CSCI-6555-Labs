@@ -6,6 +6,8 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
+#include "fileLoader.h"
+
 void framebuffer_size_callback(GLFWwindow* window, int width, int height)
 {
     glViewport(0, 0, width, height);
@@ -17,21 +19,9 @@ void processInput(GLFWwindow *window)
         glfwSetWindowShouldClose(window, true);
 }
 
-const char* vertexShaderSource="# version 410 core\n\
-layout (location = 0) in vec3 aPos;\n\
-\
-void main()\
-{\
-    gl_Position = vec4(aPos.x - 0.7, aPos.z - 0.5, aPos.y, 1.0);\
-}";
+void update(GLFWwindow *window) {
 
-const char* fragmentShaderSource="# version 410 core\n\
-out vec4 FragColor;\
-\
-void main()\
-{\
-    FragColor = vec4(1.0f, 0.5f, 0.2f, 1.0f);\
-}";
+}
 
 int main() {
 	if(!glfwInit()) {
@@ -62,7 +52,7 @@ int main() {
 
 	unsigned int vertexShader;
 	vertexShader = glCreateShader(GL_VERTEX_SHADER);
-	glShaderSource(vertexShader, 1, &vertexShaderSource, NULL);
+	glShaderSource(vertexShader, 1, FileLoader("simpleShader.vert"), NULL);
 	glCompileShader(vertexShader);
 
 	glGetShaderiv(vertexShader, GL_COMPILE_STATUS, &success);
@@ -74,7 +64,7 @@ int main() {
 
 	unsigned int fragmentShader;
 	fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
-	glShaderSource(fragmentShader, 1, &fragmentShaderSource, NULL);
+	glShaderSource(fragmentShader, 1, FileLoader("simpleShader.frag"), NULL);
 	glCompileShader(fragmentShader);
 
 	glGetShaderiv(fragmentShader, GL_COMPILE_STATUS, &success);
