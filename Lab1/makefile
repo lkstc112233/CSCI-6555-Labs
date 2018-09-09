@@ -9,5 +9,8 @@ glad.o: glad.c
 mainWindow.o: mainWindow.cpp
 	g++-8 mainWindow.cpp -c
 
+fileLoader.o: fileLoader.cpp fileLoader.h
+	g++-8 fileLoader.cpp -c
+
 clean:
 	rm *.o lab1
