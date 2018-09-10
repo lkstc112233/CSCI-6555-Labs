@@ -1,17 +1,24 @@
+CXX = g++-8
 LINK_FLAGS = -lglfw
+SRCS = $(wildcard *.cpp) $(wildcard **/*.cpp)
+HEDS = $(wildcard *.h) $(wildcard **/*.h)
+OBJS = $(SRCS:.cpp=.o)
+DEPS = dependencies.dep
 
-lab1: glad.o mainWindow.o fileop/fileLoader.o
-	g++-8 glad.o mainWindow.o fileop/fileLoader.o $(LINK_FLAGS) -o lab1
+all: lab1
+	echo All done!
+
+lab1: glad.o $(OBJS)
+	$(CXX) $^ $(LINK_FLAGS) -o $@
+
+$(DEPS): $(SRCS) $(HEDS)
+	@$(CXX) -MM $(SRCS) > $(DEPS)
 
 glad.o: glad.c
 	gcc glad.c -c
 
-mainWindow.o: mainWindow.cpp fileop/fileLoader.h
-	g++-8 mainWindow.cpp -c
-
-fileop/fileLoader.o: fileop/fileLoader.cpp fileop/fileLoader.h
-	g++-8 fileop/fileLoader.cpp -c -o fileop/fileLoader.o
+-include $(DEPS)
 
 clean:
 	find . -type f -name '*.o' -delete
-	rm lab1
+	rm -f lab1 dependencies.dep
