@@ -19,4 +19,4 @@ public:
 	operator char**();
 };
 
-#endif
+#endif // FILE_LOADER_H
