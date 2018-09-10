@@ -8,6 +8,7 @@
 #include "../fileop/fileLoader.h"
 
 ShaderBase::ShaderBase(const char *filename, int shaderType, const char *errorHint)
+Shader::Shader(const char *filename, int shaderType, const char *errorHint)
 {
     shaderId = glCreateShader(shaderType);
     glShaderSource(shaderId, 1, FileLoader(filename), NULL);
@@ -24,23 +25,24 @@ ShaderBase::ShaderBase(const char *filename, int shaderType, const char *errorHi
     }
 }
 
-ShaderBase::~ShaderBase()
+Shader::~Shader()
 {
+    std::cout << "Destructing Shader: " << shaderId << std::endl;
     if (shaderId)
     {
         glDeleteShader(shaderId);
     }
 }
 
-ShaderBase ShaderBase::createVertexShader(const char *filename) {
-    return ShaderBase(filename, GL_VERTEX_SHADER, "ERROR::SHADER::VERTEX::COMPILATION_FAILED\n");
+Shader Shader::createVertexShader(const char *filename) {
+    return Shader(filename, GL_VERTEX_SHADER, "ERROR::SHADER::VERTEX::COMPILATION_FAILED\n");
 }
 
-ShaderBase ShaderBase::createFragmentShader(const char *filename) {
-    return ShaderBase(filename, GL_FRAGMENT_SHADER, "ERROR::SHADER::FRAGMENT::COMPILATION_FAILED\n");
+Shader Shader::createFragmentShader(const char *filename) {
+    return Shader(filename, GL_FRAGMENT_SHADER, "ERROR::SHADER::FRAGMENT::COMPILATION_FAILED\n");
 }
 
-ShaderProgram::ShaderProgram(std::initializer_list<ShaderBase> list)
+ShaderProgram::ShaderProgram(std::initializer_list<Shader> list)
 {
     programId = glCreateProgram();
     for (auto &shader : list)

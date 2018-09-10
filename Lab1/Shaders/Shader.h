@@ -3,26 +3,26 @@
 
 #include <initializer_list>
 
-class ShaderBase
+class Shader
 {
   private:
     unsigned int shaderId = 0;
     bool valid = true;
 
   public:
-    ShaderBase(ShaderBase &&toMove)
+    Shader(Shader &&toMove)
     {
         shaderId = toMove.shaderId;
         toMove.shaderId = 0;
     }
-    virtual ~ShaderBase();
+    virtual ~Shader();
     int getShaderId() const { return shaderId; }
     bool isValid() const { return valid; }
-    static ShaderBase createVertexShader(const char *filename);
-    static ShaderBase createFragmentShader(const char *filename);
+    static Shader createVertexShader(const char *filename);
+    static Shader createFragmentShader(const char *filename);
 
   private:
-    ShaderBase(const char *filename, int shaderType, const char *errorHint);
+    Shader(const char *filename, int shaderType, const char *errorHint);
 };
 
 /**
@@ -35,7 +35,7 @@ class ShaderProgram
     bool valid = true;
 
   public:
-    ShaderProgram(std::initializer_list<ShaderBase> list);
+    ShaderProgram(std::initializer_list<Shader> list);
     int getProgramId() const { return programId; }
     bool isValid() const { return valid; }
     void use();
