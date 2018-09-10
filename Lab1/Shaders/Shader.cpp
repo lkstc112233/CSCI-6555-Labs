@@ -26,7 +26,8 @@ ShaderBase::ShaderBase(const char *filename, int shaderType, const char *errorHi
 
 ShaderBase::~ShaderBase()
 {
-    if (shaderId) {
+    if (shaderId)
+    {
         std::cout << "Shader destroied: " << shaderId << std::endl;
         glDeleteShader(shaderId);
     }
@@ -44,10 +45,11 @@ FragmentShader::FragmentShader(const char *filename)
           GL_FRAGMENT_SHADER,
           "ERROR::SHADER::FRAGMENT::COMPILATION_FAILED\n") {}
 
-
-ShaderProgram::ShaderProgram(std::initializer_list<ShaderBase> list) {
+ShaderProgram::ShaderProgram(std::initializer_list<ShaderBase> list)
+{
     programId = glCreateProgram();
-    for (auto& shader : list) {
+    for (auto &shader : list)
+    {
         glAttachShader(programId, shader.getShaderId());
     }
     glLinkProgram(programId);
@@ -55,12 +57,15 @@ ShaderProgram::ShaderProgram(std::initializer_list<ShaderBase> list) {
     int success;
     char infoLog[512];
     glGetProgramiv(programId, GL_LINK_STATUS, &success);
-    if(!success) {
+    if (!success)
+    {
         glGetProgramInfoLog(programId, 512, NULL, infoLog);
-        std::cout << "ERROR::PROGRAM::LINK::LINK_FAILED\n" << infoLog << std::endl;
+        std::cout << "ERROR::PROGRAM::LINK::LINK_FAILED\n"
+                  << infoLog << std::endl;
     }
 }
 
-void ShaderProgram::use() {
+void ShaderProgram::use()
+{
     glUseProgram(programId);
 }

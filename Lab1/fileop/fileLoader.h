@@ -5,18 +5,20 @@
 #include <fstream>
 #include <string>
 
-class FileLoader {
-private:
+class FileLoader
+{
+  private:
 	std::ifstream fileStream;
-	std::istream& file;
-	char* data = nullptr;
-public:
-	FileLoader(std::istream &ifs):file(ifs){}
-	FileLoader(const char* filename):fileStream(filename), file(fileStream){}
-	FileLoader(const std::string filename):fileStream(filename), file(fileStream){}
+	std::istream &file;
+	char *data = nullptr;
+
+  public:
+	FileLoader(std::istream &ifs) : file(ifs) {}
+	FileLoader(const char *filename) : fileStream(filename), file(fileStream) {}
+	FileLoader(const std::string filename) : fileStream(filename), file(fileStream) {}
 	~FileLoader();
 
-	operator char**();
+	operator char **();
 };
 
 #endif // FILEOP_FILE_LOADER_H
