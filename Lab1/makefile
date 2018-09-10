@@ -13,4 +13,5 @@ fileLoader.o: fileLoader.cpp fileLoader.h
 	g++-8 fileLoader.cpp -c
 
 clean:
-	rm *.o lab1
+	find . -type f -name '*.o' -delete
+	rm lab1
