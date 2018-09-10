@@ -29,6 +29,9 @@ public:
     FragmentShader(const char* filename);
 };
 
+/**
+ * Usage: ShaderProgram program{shaders...};
+ * */
 class ShaderProgram {
 private:
     int programId;
