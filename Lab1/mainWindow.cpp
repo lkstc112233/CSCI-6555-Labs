@@ -47,30 +47,9 @@ int main() {
 	glViewport(0, 0, 800 * 2, 600 * 2);
 	glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
 
-	int  success;
-	char infoLog[512];
-
-	unsigned int shaderProgram;
-	{
-		VertexShader vertexShader("simpleShader.vert");
-		if (!vertexShader.isValid()) {
-			return -4;
-		}
-		FragmentShader fragmentShader("simpleShader.frag");
-		if (!fragmentShader.isValid()) {
-			return -4;
-		}
-		shaderProgram = glCreateProgram();
-		glAttachShader(shaderProgram, vertexShader.getShaderId());
-		glAttachShader(shaderProgram, fragmentShader.getShaderId());
-		glLinkProgram(shaderProgram);
-
-		glGetProgramiv(shaderProgram, GL_LINK_STATUS, &success);
-		if(!success) {
-			glGetProgramInfoLog(shaderProgram, 512, NULL, infoLog);
-			std::cout << "ERROR::PROGRAM::LINK::LINK_FAILED\n" << infoLog << std::endl;
-			return -4;
-		}
+	ShaderProgram shaderProgram{VertexShader("simpleShader.vert"), FragmentShader ("simpleShader.frag")};
+	if(!shaderProgram.isValid()) {
+		return -4;
 	}
 
 	float vertices[] = {
@@ -105,7 +84,7 @@ int main() {
 
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
 	glEnableVertexAttribArray(0);
-	glUseProgram(shaderProgram);
+	shaderProgram.use();
 
 	glBindVertexArray(teapotVao);
 	glBindBuffer(GL_ARRAY_BUFFER, teapotVbo);  
@@ -114,7 +93,7 @@ int main() {
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(teapotIndices), teapotIndices, GL_STATIC_DRAW);
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
 	glEnableVertexAttribArray(0);
-	glUseProgram(shaderProgram);
+	shaderProgram.use();
 
 	while(!glfwWindowShouldClose(window))
 	{
@@ -126,11 +105,11 @@ int main() {
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
 
-		glUseProgram(shaderProgram);
+		shaderProgram.use();
 		
 		float timeValue = glfwGetTime();
 		float greenValue = (sin(timeValue) / 2.0f) + 0.5f;
-		int vertexColorLocation = glGetUniformLocation(shaderProgram, "ourColor");
+		int vertexColorLocation = glGetUniformLocation(shaderProgram.getProgramId(), "ourColor");
 		glUniform4f(vertexColorLocation, 0.0f, greenValue, 0.0f, 1.0f);
 
 		// // glDrawArrays(GL_TRIANGLES, 0, 3);
