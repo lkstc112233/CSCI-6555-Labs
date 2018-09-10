@@ -19,8 +19,7 @@ void processInput(GLFWwindow *window)
         glfwSetWindowShouldClose(window, true);
 }
 
-void update(GLFWwindow *window) {
-
+void update() {
 }
 
 int main() {
@@ -39,13 +38,13 @@ int main() {
 	    return -1;
 	}
 	glfwMakeContextCurrent(window);
-	glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
 
 	if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
 	{
 	    return -2;
 	}   
 	glViewport(0, 0, 800 * 2, 600 * 2);
+	glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
 
 	int  success;
 	char infoLog[512];
@@ -142,6 +141,13 @@ int main() {
         // ------
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
+
+		glUseProgram(shaderProgram);
+		
+		float timeValue = glfwGetTime();
+		float greenValue = (sin(timeValue) / 2.0f) + 0.5f;
+		int vertexColorLocation = glGetUniformLocation(shaderProgram, "ourColor");
+		glUniform4f(vertexColorLocation, 0.0f, greenValue, 0.0f, 1.0f);
 
 		// // glDrawArrays(GL_TRIANGLES, 0, 3);
 		// glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
