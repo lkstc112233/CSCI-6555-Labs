@@ -26,7 +26,6 @@ Shader::Shader(const char *filename, int shaderType, const char *errorHint)
 
 Shader::~Shader()
 {
-    std::cout << "Destructing Shader: " << shaderId << std::endl;
     if (shaderId)
     {
         glDeleteShader(shaderId);
