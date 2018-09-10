@@ -28,7 +28,6 @@ ShaderBase::~ShaderBase()
 {
     if (shaderId)
     {
-        std::cout << "Shader destroied: " << shaderId << std::endl;
         glDeleteShader(shaderId);
     }
 }
