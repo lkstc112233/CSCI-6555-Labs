@@ -1,5 +1,5 @@
-#ifndef FILE_LOADER_H
-#define FILE_LOADER_H
+#ifndef FILEOP_FILE_LOADER_H
+#define FILEOP_FILE_LOADER_H
 
 #include <iostream>
 #include <fstream>
@@ -19,4 +19,4 @@ public:
 	operator char**();
 };
 
-#endif // FILE_LOADER_H
+#endif // FILEOP_FILE_LOADER_H
