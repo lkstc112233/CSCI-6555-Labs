@@ -124,7 +124,7 @@ int main() {
 	glUseProgram(shaderProgram);
 
 	glBindVertexArray(teapotVao);
-	glBindBuffer(GL_ARRAY_BUFFER, VBO);  
+	glBindBuffer(GL_ARRAY_BUFFER, teapotVbo);  
 	glBufferData(GL_ARRAY_BUFFER, sizeof(teapotVertices), teapotVertices, GL_STATIC_DRAW);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, teapotEbo);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(teapotIndices), teapotIndices, GL_STATIC_DRAW);
@@ -151,7 +151,7 @@ int main() {
 
 		// // glDrawArrays(GL_TRIANGLES, 0, 3);
 		// glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
-		glDrawElements(GL_TRIANGLES, sizeof(teapotIndices), GL_UNSIGNED_INT, 0);
+		glDrawElements(GL_TRIANGLES, sizeof(teapotIndices) / sizeof(unsigned), GL_UNSIGNED_INT, 0);
 
 	    glfwSwapBuffers(window);
 	    glfwPollEvents();    
