@@ -5,9 +5,6 @@ HEDS = $(wildcard *.h) $(wildcard **/*.h)
 OBJS = $(SRCS:.cpp=.o)
 DEPS = dependencies.dep
 
-all: lab1
-	echo All done!
-
 lab1: glad.o $(OBJS)
 	$(CXX) $^ $(LINK_FLAGS) -o $@
 
@@ -19,6 +16,7 @@ glad.o: glad.c
 
 -include $(DEPS)
 
+.PHONY: clean
 clean:
 	find . -type f -name '*.o' -delete
 	rm -f lab1 dependencies.dep
