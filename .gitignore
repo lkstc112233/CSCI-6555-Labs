@@ -30,7 +30,7 @@
 *.exe
 *.out
 *.app
-lab*
+lab?/lab?
 
 # Vs files
 .vs/
