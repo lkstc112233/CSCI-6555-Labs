@@ -7,7 +7,6 @@
 #include "Shader.h"
 #include "../fileop/fileLoader.h"
 
-ShaderBase::ShaderBase(const char *filename, int shaderType, const char *errorHint)
 Shader::Shader(const char *filename, int shaderType, const char *errorHint)
 {
     shaderId = glCreateShader(shaderType);
