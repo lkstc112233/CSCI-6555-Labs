@@ -18,21 +18,11 @@ class ShaderBase
     virtual ~ShaderBase();
     int getShaderId() const { return shaderId; }
     bool isValid() const { return valid; }
+    static ShaderBase createVertexShader(const char *filename);
+    static ShaderBase createFragmentShader(const char *filename);
 
-  protected:
+  private:
     ShaderBase(const char *filename, int shaderType, const char *errorHint);
-};
-
-class VertexShader : public ShaderBase
-{
-  public:
-    VertexShader(const char *filename);
-};
-
-class FragmentShader : public ShaderBase
-{
-  public:
-    FragmentShader(const char *filename);
 };
 
 /**

@@ -50,7 +50,9 @@ int main()
 	glViewport(0, 0, 800 * 2, 600 * 2);
 	glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
 
-	ShaderProgram shaderProgram{VertexShader("simpleShader.vert"), FragmentShader("simpleShader.frag")};
+	ShaderProgram shaderProgram{
+		ShaderBase::createVertexShader("simpleShader.vert"),
+		ShaderBase::createFragmentShader("simpleShader.frag")};
 	if (!shaderProgram.isValid())
 	{
 		return -4;

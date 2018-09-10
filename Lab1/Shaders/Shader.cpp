@@ -32,17 +32,13 @@ ShaderBase::~ShaderBase()
     }
 }
 
-VertexShader::VertexShader(const char *filename)
-    : ShaderBase(
-          filename,
-          GL_VERTEX_SHADER,
-          "ERROR::SHADER::VERTEX::COMPILATION_FAILED\n") {}
+ShaderBase ShaderBase::createVertexShader(const char *filename) {
+    return ShaderBase(filename, GL_VERTEX_SHADER, "ERROR::SHADER::VERTEX::COMPILATION_FAILED\n");
+}
 
-FragmentShader::FragmentShader(const char *filename)
-    : ShaderBase(
-          filename,
-          GL_FRAGMENT_SHADER,
-          "ERROR::SHADER::FRAGMENT::COMPILATION_FAILED\n") {}
+ShaderBase ShaderBase::createFragmentShader(const char *filename) {
+    return ShaderBase(filename, GL_FRAGMENT_SHADER, "ERROR::SHADER::FRAGMENT::COMPILATION_FAILED\n");
+}
 
 ShaderProgram::ShaderProgram(std::initializer_list<ShaderBase> list)
 {
