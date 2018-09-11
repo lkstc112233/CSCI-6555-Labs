@@ -8,8 +8,7 @@
 
 #include "fileop/fileLoader.h"
 #include "Shaders/Shader.h"
-
-#include "stb_image.h"
+#include "Texture/Texture.h"
 
 void framebuffer_size_callback(GLFWwindow *window, int width, int height)
 {
@@ -60,35 +59,8 @@ int main()
 		return -4;
 	}
 
-	int textureWidth, textureHeight;
-	unsigned char *textureData = stbi_load(
-		"res/wall.jpg",
-		&textureWidth,
-		&textureHeight,
-		0,
-		0);
-	unsigned int texture[2];
-	glGenTextures(2, texture);
-	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, texture[0]); 
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, textureWidth, textureHeight, 0, GL_RGB, GL_UNSIGNED_BYTE, textureData);
-	glGenerateMipmap(GL_TEXTURE_2D);
-	stbi_image_free(textureData);
-	textureData = stbi_load(
-		"res/container.jpg",
-		&textureWidth,
-		&textureHeight,
-		0,
-		0);
-	glActiveTexture(GL_TEXTURE1);
-	glBindTexture(GL_TEXTURE_2D, texture[1]);  
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, textureWidth, textureHeight, 0, GL_RGB, GL_UNSIGNED_BYTE, textureData);
-	glGenerateMipmap(GL_TEXTURE_2D);
-	stbi_image_free(textureData);
+	Texture2D texture1("res/wall.jpg");
+	Texture2D texture2("res/container.jpg");
 
 	float vertices[] = {
 		// positions		// colors           // texture coords
@@ -149,10 +121,8 @@ int main()
 		glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
 
-		glActiveTexture(GL_TEXTURE0);
-		glBindTexture(GL_TEXTURE_2D, texture[0]);
-		glActiveTexture(GL_TEXTURE1);
-		glBindTexture(GL_TEXTURE_2D, texture[1]);
+		texture1.bind(0);
+		texture2.bind(1);
 		
 		float ratioValue = (sin(glfwGetTime()) / 2.0f) + 0.5f;
 		shaderProgram.setValue("ratio", ratioValue);
