@@ -1,3 +1,5 @@
+#include <iostream>
+
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
@@ -7,9 +9,9 @@
 
 Texture2D::Texture2D(const char *filename)
 {
-    int width, height;
+    int width, height, notused;
     stbi_set_flip_vertically_on_load(true);  
-    unsigned char *loadedTextureData = stbi_load(filename, &width, &height, 0, 0);
+    unsigned char *loadedTextureData = stbi_load(filename, &width, &height, &notused, 0);
     glGenTextures(1, &id);
     glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, id);
