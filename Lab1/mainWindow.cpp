@@ -5,6 +5,8 @@
 
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
 
 #include "fileop/fileLoader.h"
 #include "Shaders/Shader.h"
@@ -138,9 +140,18 @@ int main()
 		float ratioValue = (sin(glfwGetTime()) / 2.0f) + 0.5f;
 		shaderProgram.setValue("ratio", ratioValue);
 
+		glm::mat4 trans(1.0f);
+		trans = glm::rotate(trans, glm::radians(90.0f), glm::vec3(0.0, 0.0, 1.0));
+		trans = glm::scale(trans, glm::vec3(0.5f, 0.5f, 0.5f));
+		shaderProgram.setMatrix("transform", trans);
+
 		glBindVertexArray(VAO);
 		shaderProgram.use();
 		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+		
+		glm::mat4 teapotTrans(1.0f);
+		teapotTrans = glm::rotate(teapotTrans, float(glfwGetTime()), glm::vec3(0.0, 1.0, 0.0));
+		teapotShaderProgram.setMatrix("transform", teapotTrans);
 
 		// // glDrawArrays(GL_TRIANGLES, 0, 3);
 		// glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);

@@ -2,6 +2,7 @@
 #define SHADERS_SHADER_H
 
 #include <initializer_list>
+#include <glm/glm.hpp>
 
 class Shader
 {
@@ -50,6 +51,9 @@ class ShaderProgram
     void setValue(const char* key, float f0, float f1);
     void setValue(const char* key, float f0, float f1, float f2);
     void setValue(const char* key, float f0, float f1, float f2, float f3);
+    void setMatrix(const char* key, const glm::mat2& mat);
+    void setMatrix(const char* key, const glm::mat3& mat);
+    void setMatrix(const char* key, const glm::mat4& mat);
     void use();
 };
 
