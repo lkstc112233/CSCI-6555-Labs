@@ -60,16 +60,30 @@ int main()
 		return -4;
 	}
 
-	int textureWidth, textureHeight, textureChannels;
+	int textureWidth, textureHeight;
 	unsigned char *textureData = stbi_load(
 		"res/wall.jpg",
 		&textureWidth,
 		&textureHeight,
-		&textureChannels,
+		0,
 		0);
-	unsigned int texture;
-	glGenTextures(1, &texture);
-	glBindTexture(GL_TEXTURE_2D, texture);  
+	unsigned int texture[2];
+	glGenTextures(2, texture);
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D, texture[0]); 
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, textureWidth, textureHeight, 0, GL_RGB, GL_UNSIGNED_BYTE, textureData);
+	glGenerateMipmap(GL_TEXTURE_2D);
+	stbi_image_free(textureData);
+	textureData = stbi_load(
+		"res/container.jpg",
+		&textureWidth,
+		&textureHeight,
+		0,
+		0);
+	glActiveTexture(GL_TEXTURE1);
+	glBindTexture(GL_TEXTURE_2D, texture[1]);  
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, textureWidth, textureHeight, 0, GL_RGB, GL_UNSIGNED_BYTE, textureData);
@@ -122,6 +136,10 @@ int main()
 	glEnableVertexAttribArray(0);
 	shaderProgram.use();
 
+	shaderProgram.setValue("texture0", 0);
+	shaderProgram.setValue("texture1", 1);
+	shaderProgram.setValue("ratio", 0.2f);
+
 	while (!glfwWindowShouldClose(window))
 	{
 		processInput(window);
@@ -131,7 +149,11 @@ int main()
 		glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
 
-		glBindTexture(GL_TEXTURE_2D, texture);
+		glActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_2D, texture[0]);
+		glActiveTexture(GL_TEXTURE1);
+		glBindTexture(GL_TEXTURE_2D, texture[1]);
+
 		glBindVertexArray(VAO);
 		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 
