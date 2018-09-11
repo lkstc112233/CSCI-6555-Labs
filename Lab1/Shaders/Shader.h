@@ -38,6 +38,18 @@ class ShaderProgram
     ShaderProgram(std::initializer_list<Shader> list);
     int getProgramId() const { return programId; }
     bool isValid() const { return valid; }
+    void setValue(const char* key, int i0);
+    void setValue(const char* key, int i0, int i1);
+    void setValue(const char* key, int i0, int i1, int i2);
+    void setValue(const char* key, int i0, int i1, int i2, int i3);
+    void setValue(const char* key, unsigned u0);
+    void setValue(const char* key, unsigned u0, unsigned u1);
+    void setValue(const char* key, unsigned u0, unsigned u1, unsigned u2);
+    void setValue(const char* key, unsigned u0, unsigned u1, unsigned u2, unsigned u3);
+    void setValue(const char* key, float f0);
+    void setValue(const char* key, float f0, float f1);
+    void setValue(const char* key, float f0, float f1, float f2);
+    void setValue(const char* key, float f0, float f1, float f2, float f3);
     void use();
 };
 

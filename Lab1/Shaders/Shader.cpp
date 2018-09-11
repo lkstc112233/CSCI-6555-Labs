@@ -64,3 +64,35 @@ void ShaderProgram::use()
 {
     glUseProgram(programId);
 }
+
+class ShaderIdHolder {
+private:
+    GLint savedId;
+public:
+    ShaderIdHolder(unsigned newProgram) {
+        glGetIntegerv(GL_CURRENT_PROGRAM, &savedId);
+        glUseProgram(newProgram);
+    }
+    ~ShaderIdHolder() {
+        glUseProgram(savedId);
+    }
+};
+
+void ShaderProgram::setValue(const char* key, int i0) {
+    ShaderIdHolder holder(getProgramId());
+	glUniform1i(glGetUniformLocation(getProgramId(), key), i0);
+}
+// void ShaderProgram::setValue(const char* key, int i0, int i1);
+// void ShaderProgram::setValue(const char* key, int i0, int i1, int i2);
+// void ShaderProgram::setValue(const char* key, int i0, int i1, int i2, int i3);
+// void ShaderProgram::setValue(const char* key, unsigned u0);
+// void ShaderProgram::setValue(const char* key, unsigned u0, unsigned u1);
+// void ShaderProgram::setValue(const char* key, unsigned u0, unsigned u1, unsigned u2);
+// void ShaderProgram::setValue(const char* key, unsigned u0, unsigned u1, unsigned u2, unsigned u3);
+void ShaderProgram::setValue(const char* key, float f0) {
+    ShaderIdHolder holder(getProgramId());
+	glUniform1f(glGetUniformLocation(getProgramId(), key), f0);
+}
+// void ShaderProgram::setValue(const char* key, float f0, float f1);
+// void ShaderProgram::setValue(const char* key, float f0, float f1, float f2);
+// void ShaderProgram::setValue(const char* key, float f0, float f1, float f2, float f3);
