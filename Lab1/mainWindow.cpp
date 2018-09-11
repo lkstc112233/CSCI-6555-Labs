@@ -153,6 +153,9 @@ int main()
 		glBindTexture(GL_TEXTURE_2D, texture[0]);
 		glActiveTexture(GL_TEXTURE1);
 		glBindTexture(GL_TEXTURE_2D, texture[1]);
+		
+		float ratioValue = (sin(glfwGetTime()) / 2.0f) + 0.5f;
+		shaderProgram.setValue("ratio", ratioValue);
 
 		glBindVertexArray(VAO);
 		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
