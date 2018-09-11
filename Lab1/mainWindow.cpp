@@ -59,6 +59,14 @@ int main()
 		return -4;
 	}
 
+	ShaderProgram teapotShaderProgram{
+		Shader::createVertexShader("teapotShader.vert"),
+		Shader::createFragmentShader("teapotShader.frag")};
+	if (!teapotShaderProgram.isValid())
+	{
+		return -4;
+	}
+
 	Texture2D texture1("res/wall.jpg");
 	Texture2D texture2("res/container.jpg");
 
@@ -98,6 +106,10 @@ int main()
 	glEnableVertexAttribArray(2); 
 	shaderProgram.use();
 
+	shaderProgram.setValue("texture0", 0);
+	shaderProgram.setValue("texture1", 1);
+	shaderProgram.setValue("ratio", 0.2f);
+
 #include "teapot.h"
 	glBindVertexArray(teapotVao);
 	glBindBuffer(GL_ARRAY_BUFFER, teapotVbo);
@@ -106,11 +118,10 @@ int main()
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(teapotIndices), teapotIndices, GL_STATIC_DRAW);
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void *)0);
 	glEnableVertexAttribArray(0);
-	shaderProgram.use();
-
-	shaderProgram.setValue("texture0", 0);
-	shaderProgram.setValue("texture1", 1);
-	shaderProgram.setValue("ratio", 0.2f);
+	teapotShaderProgram.use();
+	teapotShaderProgram.setValue("texture0", 0);
+	teapotShaderProgram.setValue("texture1", 1);
+	teapotShaderProgram.setValue("ratio", 0.2f);
 
 	while (!glfwWindowShouldClose(window))
 	{
@@ -128,11 +139,14 @@ int main()
 		shaderProgram.setValue("ratio", ratioValue);
 
 		glBindVertexArray(VAO);
+		shaderProgram.use();
 		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 
 		// // glDrawArrays(GL_TRIANGLES, 0, 3);
 		// glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
-		// glDrawElements(GL_TRIANGLES, sizeof(teapotIndices) / sizeof(unsigned), GL_UNSIGNED_INT, 0);
+		glBindVertexArray(teapotVao);
+		teapotShaderProgram.use();
+		glDrawElements(GL_TRIANGLES, sizeof(teapotIndices) / sizeof(unsigned), GL_UNSIGNED_INT, 0);
 
 		glfwSwapBuffers(window);
 		glfwPollEvents();
