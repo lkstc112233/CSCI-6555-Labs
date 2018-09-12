@@ -147,10 +147,13 @@ int main()
 
 		glBindVertexArray(VAO);
 		shaderProgram.use();
-		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+		// glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 		
 		glm::mat4 teapotTrans(1.0f);
-		teapotTrans = glm::rotate(teapotTrans, float(glfwGetTime()), glm::vec3(0.0, 1.0, 0.0));
+		teapotTrans = glm::translate(teapotTrans, glm::vec3(0, -0.3, 0));
+		teapotTrans = glm::rotate(teapotTrans, glm::radians(-90.0f), glm::vec3(1.0, 0.0, 0.0));
+		teapotTrans = glm::rotate(teapotTrans, float(glfwGetTime()), glm::vec3(0.0, 0.0, 1.0));
+		teapotTrans = glm::translate(teapotTrans, glm::vec3(0, 0, -0.3));
 		teapotShaderProgram.setMatrix("transform", teapotTrans);
 
 		// // glDrawArrays(GL_TRIANGLES, 0, 3);
