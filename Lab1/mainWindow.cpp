@@ -63,6 +63,7 @@ int main()
 	}
 	glViewport(0, 0, 800 * 2, 600 * 2);
 	glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
+	glEnable(GL_DEPTH_TEST);
 
 	ShaderProgram shaderProgram{
 		Shader::createVertexShader("simpleShader.vert"),
@@ -145,7 +146,7 @@ int main()
 		// render
 		// ------
 		glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
-		glClear(GL_COLOR_BUFFER_BIT);
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 		texture1.bind(0);
 		texture2.bind(1);
