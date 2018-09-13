@@ -17,10 +17,22 @@ void framebuffer_size_callback(GLFWwindow *window, int width, int height)
 	glViewport(0, 0, width, height);
 }
 
+
+ShaderProgram *program;
 void processInput(GLFWwindow *window)
 {
 	if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
 		glfwSetWindowShouldClose(window, true);
+	if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS)
+	{
+		glm::mat4 teapotTrans(1.0f);
+		static float angle = 0;
+		// teapotTrans = glm::translate(teapotTrans, glm::vec3(0, -0.3, 0));
+		// teapotTrans = glm::translate(teapotTrans, glm::vec3(0, 0, 0.6));
+		// teapotTrans = glm::rotate(teapotTrans, glm::radians(-45.0f), glm::vec3(1.0, 0.0, 0.0));
+		teapotTrans = glm::rotate(teapotTrans, float(angle += M_PI / 60.), glm::normalize(glm::vec3(1.0, 1.0, 1.0)));
+		program->setMatrix("transform", teapotTrans);
+}
 }
 
 void update()
@@ -68,6 +80,8 @@ int main()
 	{
 		return -4;
 	}
+	program = &teapotShaderProgram;
+	teapotShaderProgram.setMatrix("transform", glm::mat4(1.0f));
 
 	Texture2D texture1("res/wall.jpg");
 	Texture2D texture2("res/container.jpg");
@@ -149,12 +163,6 @@ int main()
 		shaderProgram.use();
 		// glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 		
-		glm::mat4 teapotTrans(1.0f);
-		teapotTrans = glm::translate(teapotTrans, glm::vec3(0, -0.3, 0));
-		teapotTrans = glm::rotate(teapotTrans, glm::radians(-90.0f), glm::vec3(1.0, 0.0, 0.0));
-		teapotTrans = glm::rotate(teapotTrans, float(glfwGetTime()), glm::vec3(0.0, 0.0, 1.0));
-		teapotTrans = glm::translate(teapotTrans, glm::vec3(0, 0, -0.3));
-		teapotShaderProgram.setMatrix("transform", teapotTrans);
 
 		// // glDrawArrays(GL_TRIANGLES, 0, 3);
 		// glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
