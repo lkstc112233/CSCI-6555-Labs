@@ -17,7 +17,6 @@ void framebuffer_size_callback(GLFWwindow *window, int width, int height)
 	glViewport(0, 0, width, height);
 }
 
-
 ShaderProgram *program;
 void processInput(GLFWwindow *window)
 {
@@ -32,7 +31,7 @@ void processInput(GLFWwindow *window)
 		// teapotTrans = glm::rotate(teapotTrans, glm::radians(-45.0f), glm::vec3(1.0, 0.0, 0.0));
 		teapotTrans = glm::rotate(teapotTrans, float(angle += M_PI / 60.), glm::normalize(glm::vec3(1.0, 1.0, 1.0)));
 		program->setMatrix("transform", teapotTrans);
-}
+	}
 }
 
 void update()
@@ -65,7 +64,7 @@ int main()
 	glViewport(0, 0, 800 * 2, 600 * 2);
 	glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
 
-	ShaderProgram shaderProgram {
+	ShaderProgram shaderProgram{
 		Shader::createVertexShader("simpleShader.vert"),
 		Shader::createFragmentShader("simpleShader.frag")};
 	if (!shaderProgram.isValid())
@@ -117,9 +116,9 @@ int main()
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void *)0);
 	glEnableVertexAttribArray(0);
 	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void *)(3 * sizeof(float)));
-	glEnableVertexAttribArray(1); 
+	glEnableVertexAttribArray(1);
 	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void *)(6 * sizeof(float)));
-	glEnableVertexAttribArray(2); 
+	glEnableVertexAttribArray(2);
 	shaderProgram.use();
 
 	shaderProgram.setValue("texture0", 0);
@@ -150,7 +149,7 @@ int main()
 
 		texture1.bind(0);
 		texture2.bind(1);
-		
+
 		float ratioValue = (sin(glfwGetTime()) / 2.0f) + 0.5f;
 		shaderProgram.setValue("ratio", ratioValue);
 
