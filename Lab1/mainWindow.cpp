@@ -62,8 +62,8 @@ int main()
 	}
 
 	ShaderProgram teapotShaderProgram{
-		Shader::createVertexShader("teapotShader.vert"),
-		Shader::createFragmentShader("teapotShader.frag")};
+		Shader::createVertexShader("cubeShader.vert"),
+		Shader::createFragmentShader("cubeShader.frag")};
 	if (!teapotShaderProgram.isValid())
 	{
 		return -4;
@@ -112,7 +112,7 @@ int main()
 	shaderProgram.setValue("texture1", 1);
 	shaderProgram.setValue("ratio", 0.2f);
 
-#include "teapot.h"
+#include "cube.h"
 	glBindVertexArray(teapotVao);
 	glBindBuffer(GL_ARRAY_BUFFER, teapotVbo);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(teapotVertices), teapotVertices, GL_STATIC_DRAW);
