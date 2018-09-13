@@ -12,6 +12,10 @@
 #include "Shaders/Shader.h"
 #include "Texture/Texture.h"
 
+const int SCREEN_WIDTH = 800;
+const int SCREEN_HEIGHT = 600;
+const float PROJECTION_RATIO = float(SCREEN_WIDTH) / SCREEN_HEIGHT;
+
 void framebuffer_size_callback(GLFWwindow *window, int width, int height)
 {
 	glViewport(0, 0, width, height);
@@ -49,7 +53,7 @@ int main()
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 	glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 
-	GLFWwindow *window = glfwCreateWindow(800, 600, "LearnOpenGL", NULL, NULL);
+	GLFWwindow *window = glfwCreateWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "LearnOpenGL", NULL, NULL);
 	if (window == NULL)
 	{
 		glfwTerminate();
@@ -61,7 +65,7 @@ int main()
 	{
 		return -2;
 	}
-	glViewport(0, 0, 800 * 2, 600 * 2);
+	glViewport(0, 0, SCREEN_WIDTH * 2, SCREEN_HEIGHT * 2);
 	glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
 	glEnable(GL_DEPTH_TEST);
 	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);  
