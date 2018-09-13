@@ -55,6 +55,17 @@ void processInput(GLFWwindow *window)
 	{
 		activeCamera->moveRight(cameraSpeed);
 	}
+	static bool zhandled = false;
+	if (glfwGetKey(window, GLFW_KEY_Z) == GLFW_PRESS && !zhandled)
+	{
+		zhandled = true;
+		if (activeCamera->isViewLocked())
+			activeCamera->unlockView();
+		else
+			activeCamera->lockView(glm::vec3(0, 0, 0));
+	} else {
+		zhandled = false;
+	}
 }
 
 void update()

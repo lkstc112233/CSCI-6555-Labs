@@ -15,9 +15,14 @@ void Camera::lookAt(const glm::vec3& pos) {
     front = glm::normalize(pos - position);
 }
 
-// void Camera::lockView(const glm::vec3& pos) {
-//     target = pos;
-// }
+void Camera::lockView(const glm::vec3& pos) {
+    lock = true;
+    target = pos;
+}
+
+void Camera::unlockView() {
+    lock = false;
+}
 
 void Camera::moveForward(float distance) {
     position += distance * front;
@@ -38,6 +43,8 @@ void Camera::moveRight(float distance) {
 // void Camera::moveDown(float distance);
 
 glm::mat4 Camera::getViewMat() {
-    auto ret = glm::lookAt(position, position + front, glm::vec3(0, 1, 0));
-    return ret;
+    if (lock) {
+        front = glm::normalize(target - position);
+    }
+    return glm::lookAt(position, position + front, glm::vec3(0, 1, 0));
 }
