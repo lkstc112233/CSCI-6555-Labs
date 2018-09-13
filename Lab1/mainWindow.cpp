@@ -64,6 +64,7 @@ int main()
 	glViewport(0, 0, 800 * 2, 600 * 2);
 	glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
 	glEnable(GL_DEPTH_TEST);
+	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);  
 
 	ShaderProgram shaderProgram{
 		Shader::createVertexShader("simpleShader.vert"),
