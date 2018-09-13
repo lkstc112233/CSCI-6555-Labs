@@ -144,6 +144,14 @@ int main()
 	teapotShaderProgram.setValue("texture1", 1);
 	teapotShaderProgram.setValue("ratio", 0.2f);
 
+	glm::mat4 view(1.0f);
+	view = glm::translate(view, glm::vec3(0.0f, 0.0f, -3.0f));
+	glm::mat4 projection(1.0f);
+	projection = glm::perspective(glm::radians(45.0f), PROJECTION_RATIO, 0.1f, 100.0f);
+
+	teapotShaderProgram.setMatrix("view", view);
+	teapotShaderProgram.setMatrix("projection", projection);
+
 	while (!glfwWindowShouldClose(window))
 	{
 		processInput(window);
