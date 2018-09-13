@@ -11,6 +11,7 @@
 #include "fileop/fileLoader.h"
 #include "Shaders/Shader.h"
 #include "Texture/Texture.h"
+#include "Camera/Camera.h"
 
 const int SCREEN_WIDTH = 800;
 const int SCREEN_HEIGHT = 600;
@@ -22,6 +23,7 @@ void framebuffer_size_callback(GLFWwindow *window, int width, int height)
 }
 
 ShaderProgram *program;
+Camera *activeCamera;
 void processInput(GLFWwindow *window)
 {
 	if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
@@ -35,6 +37,23 @@ void processInput(GLFWwindow *window)
 		// teapotTrans = glm::rotate(teapotTrans, glm::radians(-45.0f), glm::vec3(1.0, 0.0, 0.0));
 		teapotTrans = glm::rotate(teapotTrans, float(angle += M_PI / 60.), glm::normalize(glm::vec3(1.0, 1.0, 1.0)));
 		program->setMatrix("transform", teapotTrans);
+	}
+	const float cameraSpeed = 0.05;
+	if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
+	{
+		activeCamera->moveForward(cameraSpeed);
+	}
+	if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
+	{
+		activeCamera->moveBackward(cameraSpeed);
+	}
+	if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
+	{
+		activeCamera->moveLeft(cameraSpeed);
+	}
+	if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
+	{
+		activeCamera->moveRight(cameraSpeed);
 	}
 }
 
@@ -144,13 +163,17 @@ int main()
 	teapotShaderProgram.setValue("texture1", 1);
 	teapotShaderProgram.setValue("ratio", 0.2f);
 
+	// glm::mat4 model(1.0f);
+	// model = glm::rotate(model, glm::radians(-55.0f), glm::vec3(1.0f, 0.0f, 0.0f));
 	glm::mat4 view(1.0f);
 	view = glm::translate(view, glm::vec3(0.0f, 0.0f, -3.0f));
 	glm::mat4 projection(1.0f);
 	projection = glm::perspective(glm::radians(45.0f), PROJECTION_RATIO, 0.1f, 100.0f);
 
-	teapotShaderProgram.setMatrix("view", view);
 	teapotShaderProgram.setMatrix("projection", projection);
+
+	Camera camera;
+	activeCamera = &camera;
 
 	while (!glfwWindowShouldClose(window))
 	{
@@ -168,8 +191,8 @@ int main()
 		shaderProgram.setValue("ratio", ratioValue);
 
 		glm::mat4 trans(1.0f);
-		trans = glm::rotate(trans, glm::radians(90.0f), glm::vec3(0.0, 0.0, 1.0));
-		trans = glm::scale(trans, glm::vec3(0.5f, 0.5f, 0.5f));
+		// trans = glm::rotate(trans, glm::radians(90.0f), glm::vec3(0.0, 0.0, 1.0));
+		// trans = glm::scale(trans, glm::vec3(0.5f, 0.5f, 0.5f));
 		shaderProgram.setMatrix("transform", trans);
 
 		glBindVertexArray(VAO);
@@ -180,6 +203,7 @@ int main()
 		// glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 		glBindVertexArray(teapotVao);
 		teapotShaderProgram.use();
+		teapotShaderProgram.setMatrix("view", camera.getViewMat());
 		glDrawElements(GL_TRIANGLES, sizeof(teapotIndices) / sizeof(unsigned), GL_UNSIGNED_INT, 0);
 
 		glfwSwapBuffers(window);
