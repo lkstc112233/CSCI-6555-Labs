@@ -199,6 +199,7 @@ int main()
 		glBindVertexArray(teapotVao);
 		teapotShaderProgram.use();
 		teapotShaderProgram.setMatrix("view", camera.getViewMat());
+		teapotShaderProgram.setVector("viewPos", camera.position);
 		glDrawElements(GL_TRIANGLES, sizeof(teapotIndices) / sizeof(unsigned), GL_UNSIGNED_INT, 0);
 
 		glBindVertexArray(lightVao);
