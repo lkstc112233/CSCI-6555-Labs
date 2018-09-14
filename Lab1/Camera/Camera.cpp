@@ -42,5 +42,5 @@ glm::mat4 Camera::getViewMat() {
     if (lock) {
         front = glm::normalize(target - position);
     }
-    return glm::lookAt(position, position + front, glm::vec3(0, 1, 0));
+    return glm::lookAt(position, position + front, up);
 }
