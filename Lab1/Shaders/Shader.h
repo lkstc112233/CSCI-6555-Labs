@@ -51,6 +51,10 @@ class ShaderProgram
     void setValue(const char* key, float f0, float f1);
     void setValue(const char* key, float f0, float f1, float f2);
     void setValue(const char* key, float f0, float f1, float f2, float f3);
+    void setVector(const char* key, const glm::vec1& vec);
+    void setVector(const char* key, const glm::vec2& vec);
+    void setVector(const char* key, const glm::vec3& vec);
+    void setVector(const char* key, const glm::vec4& vec);
     void setMatrix(const char* key, const glm::mat2& mat);
     void setMatrix(const char* key, const glm::mat3& mat);
     void setMatrix(const char* key, const glm::mat4& mat);

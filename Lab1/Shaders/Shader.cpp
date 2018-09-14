@@ -82,6 +82,12 @@ void ShaderProgram::setValue(const char* key, float f0) {
 // void ShaderProgram::setValue(const char* key, float f0, float f1);
 // void ShaderProgram::setValue(const char* key, float f0, float f1, float f2);
 // void ShaderProgram::setValue(const char* key, float f0, float f1, float f2, float f3);
+// void ShaderProgram::setVector(const char* key, const glm::vec1& vec);
+// void ShaderProgram::setVector(const char* key, const glm::vec2& vec);
+void ShaderProgram::setVector(const char* key, const glm::vec3& vec) {
+    glProgramUniform3fv(getProgramId(), glGetUniformLocation(getProgramId(), key), 1, glm::value_ptr(vec));
+}
+// void ShaderProgram::setVector(const char* key, const glm::vec4& vec);
 // void ShaderProgram::setMatrix(const char* key, const glm::mat2& mat);
 // void ShaderProgram::setMatrix(const char* key, const glm::mat3& mat);
 void ShaderProgram::setMatrix(const char* key, const glm::mat4& mat) {
