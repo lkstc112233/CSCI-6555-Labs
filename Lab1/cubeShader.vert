@@ -13,7 +13,7 @@ out vec3 worldCord;
 
 void main()
 {
-    norm = normalize(vec3(transform * vec4(aNormal, 1.0)));
+    norm = normalize(mat3(transpose(inverse(model))) * aNormal);
     gl_Position = projection * view * transform * vec4(aPos, 1.0);
     worldCord = vec3(transform * vec4(aPos, 1.0));
     TexCoord = vec2(aPos.xy);
