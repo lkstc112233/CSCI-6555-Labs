@@ -211,6 +211,8 @@ int main()
 	teapotShaderProgram.setMatrix("projection", projection);
 	lightShaderProgram.setMatrix("projection", projection);
 
+	teapotShaderProgram.setVector("lightColor", glm::vec3(1.0f));
+
 	Camera camera;
 	activeCamera = &camera;
 
