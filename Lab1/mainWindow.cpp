@@ -128,48 +128,12 @@ int main()
 	program = &teapotShaderProgram;
 	teapotShaderProgram.setMatrix("transform", glm::mat4(1.0f));
 
-	Texture2D texture1("res/wall.jpg");
-	Texture2D texture2("res/container.jpg");
-
-	float vertices[] = {
-		// positions		// colors           // texture coords
-		0.5f, 0.5f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f, 1.0f,   // top right
-		0.5f, -0.5f, 0.0f, 0.0f, 1.0f, 0.0f, 1.0f, 0.0f,  // bottom right
-		-0.5f, -0.5f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, // bottom left
-		-0.5f, 0.5f, 0.0f, 1.0f, 1.0f, 0.0f, 0.0f, 1.0f   // top left
-	};
-	unsigned int indices[] = {
-		// note that we start from 0!
-		0, 1, 3, // first triangle
-		1, 2, 3  // second triangle
-	};
-
-	unsigned int VAO, teapotVao;
-	glGenVertexArrays(1, &VAO);
+	unsigned int teapotVao;
 	glGenVertexArrays(1, &teapotVao);
-	glBindVertexArray(VAO);
-	unsigned int VBO, teapotVbo;
-	glGenBuffers(1, &VBO);
+	unsigned int teapotVbo;
 	glGenBuffers(1, &teapotVbo);
 	unsigned int EBO, teapotEbo;
-	glGenBuffers(1, &EBO);
 	glGenBuffers(1, &teapotEbo);
-	glBindBuffer(GL_ARRAY_BUFFER, VBO);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
-
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void *)0);
-	glEnableVertexAttribArray(0);
-	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void *)(3 * sizeof(float)));
-	glEnableVertexAttribArray(1);
-	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void *)(6 * sizeof(float)));
-	glEnableVertexAttribArray(2);
-	shaderProgram.use();
-
-	shaderProgram.setValue("texture0", 0);
-	shaderProgram.setValue("texture1", 1);
-	shaderProgram.setValue("ratio", 0.2f);
 
 #include "cube.h"
 	glBindVertexArray(teapotVao);
@@ -209,10 +173,6 @@ int main()
 	lightTransform = glm::scale(lightTransform, glm::vec3(0.2f)); 
 	lightShaderProgram.setMatrix("transform", lightTransform);
 
-	// glm::mat4 model(1.0f);
-	// model = glm::rotate(model, glm::radians(-55.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-	glm::mat4 view(1.0f);
-	view = glm::translate(view, glm::vec3(0.0f, 0.0f, -3.0f));
 	glm::mat4 projection(1.0f);
 	projection = glm::perspective(glm::radians(45.0f), PROJECTION_RATIO, 0.1f, 100.0f);
 
@@ -233,23 +193,9 @@ int main()
 		glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-		texture1.bind(0);
-		texture2.bind(1);
-
 		float ratioValue = (sin(glfwGetTime()) / 2.0f) + 0.5f;
 		shaderProgram.setValue("ratio", ratioValue);
 
-		glm::mat4 trans(1.0f);
-		// trans = glm::rotate(trans, glm::radians(90.0f), glm::vec3(0.0, 0.0, 1.0));
-		// trans = glm::scale(trans, glm::vec3(0.5f, 0.5f, 0.5f));
-		shaderProgram.setMatrix("transform", trans);
-
-		glBindVertexArray(VAO);
-		shaderProgram.use();
-		// glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
-
-		// // glDrawArrays(GL_TRIANGLES, 0, 3);
-		// glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 		glBindVertexArray(teapotVao);
 		teapotShaderProgram.use();
 		teapotShaderProgram.setMatrix("view", camera.getViewMat());
