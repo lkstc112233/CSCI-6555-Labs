@@ -35,8 +35,12 @@ void Camera::moveRight(float distance) {
     position += glm::normalize(glm::cross(front, up)) * distance; // Right handed.
 }
 
-// void Camera::moveUp(float distance);
-// void Camera::moveDown(float distance);
+void Camera::moveUp(float distance) {
+    position += distance * up;
+}
+void Camera::moveDown(float distance) {
+    position -= distance * up;
+}
 
 glm::mat4 Camera::getViewMat() {
     if (lock) {

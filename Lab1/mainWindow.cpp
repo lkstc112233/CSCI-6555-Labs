@@ -55,6 +55,14 @@ void processInput(GLFWwindow *window)
 	{
 		activeCamera->moveRight(cameraSpeed);
 	}
+	if (glfwGetKey(window, GLFW_KEY_R) == GLFW_PRESS)
+	{
+		activeCamera->moveUp(cameraSpeed);
+	}
+	if (glfwGetKey(window, GLFW_KEY_F) == GLFW_PRESS)
+	{
+		activeCamera->moveDown(cameraSpeed);
+	}
 	static bool zhandled = false;
 	if (glfwGetKey(window, GLFW_KEY_Z) == GLFW_PRESS)
 	{
