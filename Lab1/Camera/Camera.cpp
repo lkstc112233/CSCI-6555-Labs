@@ -3,10 +3,6 @@
 
 #include "Camera.h"
 
-void Camera::setPosition(const glm::vec3& pos) {
-    position = pos;
-}
-
 void Camera::move(const glm::vec3& direction) {
     position += direction;
 }

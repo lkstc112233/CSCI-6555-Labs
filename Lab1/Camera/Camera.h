@@ -8,11 +8,10 @@ class Camera
   private:
     const glm::vec3 up = glm::vec3(0, 1, 0);
     bool lock = false;
-    glm::vec3 position = glm::vec3(0);
     glm::vec3 front = glm::vec3(0, 0, 1);
     glm::vec3 target = glm::vec3(0);
-    void setPosition(const glm::vec3& position);
   public:
+    glm::vec3 position = glm::vec3(0);
     void move(const glm::vec3 &direction);
     void moveForward(float distance);
     void moveBackward(float distance);
