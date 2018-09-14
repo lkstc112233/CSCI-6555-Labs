@@ -178,6 +178,29 @@ int main()
 	teapotShaderProgram.setValue("texture1", 1);
 	teapotShaderProgram.setValue("ratio", 0.2f);
 
+	unsigned int lightVao;
+	glGenVertexArrays(1, &lightVao);
+	glBindVertexArray(lightVao);
+	glBindBuffer(GL_ARRAY_BUFFER, teapotVbo);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, teapotEbo);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void *)0);
+	glEnableVertexAttribArray(0);
+	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void *)(3 * sizeof(float)));
+	glEnableVertexAttribArray(1);
+
+	ShaderProgram lightShaderProgram {
+		Shader::createVertexShader("cubeShader.vert"),
+		Shader::createFragmentShader("lightShader.frag")};
+	if (!lightShaderProgram.isValid())
+	{
+		return -4;
+	}
+	glm::vec3 lightPos(1.2f, 1.0f, 2.0f);
+	glm::mat4 lightTransform = glm::mat4(1.0f);
+	lightTransform = glm::translate(lightTransform, lightPos);
+	lightTransform = glm::scale(lightTransform, glm::vec3(0.2f)); 
+	lightShaderProgram.setMatrix("transform", lightTransform);
+
 	// glm::mat4 model(1.0f);
 	// model = glm::rotate(model, glm::radians(-55.0f), glm::vec3(1.0f, 0.0f, 0.0f));
 	glm::mat4 view(1.0f);
@@ -186,6 +209,7 @@ int main()
 	projection = glm::perspective(glm::radians(45.0f), PROJECTION_RATIO, 0.1f, 100.0f);
 
 	teapotShaderProgram.setMatrix("projection", projection);
+	lightShaderProgram.setMatrix("projection", projection);
 
 	Camera camera;
 	activeCamera = &camera;
@@ -219,6 +243,11 @@ int main()
 		glBindVertexArray(teapotVao);
 		teapotShaderProgram.use();
 		teapotShaderProgram.setMatrix("view", camera.getViewMat());
+		glDrawElements(GL_TRIANGLES, sizeof(teapotIndices) / sizeof(unsigned), GL_UNSIGNED_INT, 0);
+
+		glBindVertexArray(lightVao);
+		lightShaderProgram.use();
+		lightShaderProgram.setMatrix("view", camera.getViewMat());
 		glDrawElements(GL_TRIANGLES, sizeof(teapotIndices) / sizeof(unsigned), GL_UNSIGNED_INT, 0);
 
 		glfwSwapBuffers(window);
