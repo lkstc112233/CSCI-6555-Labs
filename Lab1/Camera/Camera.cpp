@@ -1,3 +1,5 @@
+#include <iostream>
+
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 
@@ -40,6 +42,20 @@ void Camera::moveUp(float distance) {
 }
 void Camera::moveDown(float distance) {
     position -= distance * up;
+}
+
+void Camera::turnYaw(float yaw) {
+    glm::mat4 turn(1.0f);
+    turn = glm::rotate(turn, yaw, glm::vec3(0, 1, 0));
+    auto newFront = turn * glm::vec4(front, 1.0);
+    front = glm::normalize(glm::vec3(newFront));
+}
+void Camera::turnPitch(float pitch) {
+    glm::mat4 turn(1.0f);
+    turn = glm::rotate(turn, pitch, glm::normalize(glm::cross(front, up)));
+    auto newFront = turn * glm::vec4(front, 1.0);
+    // if
+    front = glm::normalize(glm::vec3(newFront));
 }
 
 glm::mat4 Camera::getViewMat() {

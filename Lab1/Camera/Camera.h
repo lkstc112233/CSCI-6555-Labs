@@ -19,6 +19,8 @@ class Camera
     void moveRight(float distance);
     void moveUp(float distance);
     void moveDown(float distance);
+    void turnYaw(float yaw);
+    void turnPitch(float pitch);
     void lookAt(const glm::vec3 &position);
     void lockView(const glm::vec3 &position);
     void unlockView();

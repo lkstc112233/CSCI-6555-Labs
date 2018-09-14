@@ -78,6 +78,21 @@ void processInput(GLFWwindow *window)
 	}
 }
 
+double lastMouseX, lastMouseY;
+void mouse_callback(GLFWwindow* window, double xpos, double ypos) {
+	float xoffset = xpos - lastMouseX;
+	float yoffset = lastMouseY - ypos; // reversed since y-coordinates range from bottom to top
+	lastMouseX = xpos;
+	lastMouseY = ypos;
+
+	float sensitivity = 0.005f;
+	xoffset *= sensitivity;
+	yoffset *= sensitivity;
+
+	activeCamera->turnYaw(xoffset);
+	activeCamera->turnPitch(yoffset);
+}
+
 void update()
 {
 }
@@ -107,6 +122,8 @@ int main()
 	}
 	glViewport(0, 0, SCREEN_WIDTH * 2, SCREEN_HEIGHT * 2);
 	glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
+	glfwGetCursorPos(window, &lastMouseX, &lastMouseY);
+	glfwSetCursorPosCallback(window, mouse_callback);
 	glEnable(GL_DEPTH_TEST);
 	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
