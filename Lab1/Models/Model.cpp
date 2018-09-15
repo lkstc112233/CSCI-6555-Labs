@@ -36,12 +36,12 @@ Model ModelLoader::loadFile(const char *filename)
 	std::string type;
 	if(!(file >> type)) {
 		loadedModel.valid = false;
-		return;
+		return loadedModel;
 	}
 
     if (type != "OFF") {
         loadedModel.valid = false;
-        return;
+        return loadedModel;
     }
 
     int vertexesCount;

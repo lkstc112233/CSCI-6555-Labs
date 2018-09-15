@@ -10,7 +10,7 @@ class Model
     float *vertexes = nullptr;
     int *indices = nullptr;
     bool valid = true;
-    unsigned VAO, VBO, EBO;
+    unsigned VAO = 0, VBO = 0, EBO = 0;
     Model();
     Model(const Model &) = delete;
     Model &operator=(const Model &) = delete;
