@@ -3,11 +3,12 @@
 
 #include <glm/glm.hpp>
 
-class Model {
-private:
-    float *vertexes = 0;
-    int *indices = 0;
-public:
+class Model
+{
+  private:
+    float *vertexes = nullptr;
+    int *indices = nullptr;
+  public:
     ~Model();
 };
 
