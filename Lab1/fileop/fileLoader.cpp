@@ -1,17 +1,12 @@
 #include "fileLoader.h"
 
-#include <iostream>
+#include <fstream>
 
-FileLoader::~FileLoader()
-{
-	delete[] data;
-}
-
-FileLoader::operator char **()
-{
+FileLoader::FileLoader(const char *filename) {
+	std::ifstream file(filename);
 	if (!file.good())
 	{
-		return nullptr;
+		return;
 	}
 
 	file.seekg(0, std::ios::end);
@@ -32,6 +27,14 @@ FileLoader::operator char **()
 	}
 
 	data[i] = 0;
+}
 
+FileLoader::~FileLoader()
+{
+	delete[] data;
+}
+
+FileLoader::operator char **()
+{
 	return &data;
 }
