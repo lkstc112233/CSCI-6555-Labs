@@ -128,16 +128,16 @@ int main()
 	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
 	ShaderProgram shaderProgram{
-		Shader::createVertexShader("GlslShaders/simpleShader.vert"),
-		Shader::createFragmentShader("GlslShaders/simpleShader.frag")};
+		Shader::createVertexShader("res/shaders/simpleShader.vert"),
+		Shader::createFragmentShader("res/shaders/simpleShader.frag")};
 	if (!shaderProgram.isValid())
 	{
 		return -4;
 	}
 
 	ShaderProgram teapotShaderProgram{
-		Shader::createVertexShader("GlslShaders/cubeShader.vert"),
-		Shader::createFragmentShader("GlslShaders/cubeShader.frag")};
+		Shader::createVertexShader("res/shaders/cubeShader.vert"),
+		Shader::createFragmentShader("res/shaders/cubeShader.frag")};
 	if (!teapotShaderProgram.isValid())
 	{
 		return -4;
@@ -178,8 +178,8 @@ int main()
 	glEnableVertexAttribArray(1);
 
 	ShaderProgram lightShaderProgram {
-		Shader::createVertexShader("GlslShaders/cubeShader.vert"),
-		Shader::createFragmentShader("GlslShaders/lightShader.frag")};
+		Shader::createVertexShader("res/shaders/cubeShader.vert"),
+		Shader::createFragmentShader("res/shaders/lightShader.frag")};
 	if (!lightShaderProgram.isValid())
 	{
 		return -4;
