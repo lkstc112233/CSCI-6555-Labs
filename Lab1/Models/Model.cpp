@@ -31,6 +31,13 @@ Model::~Model()
     delete[] indices;
 }
 
+void Model::draw(ShaderProgram &shader)
+{
+    glBindVertexArray(VAO);
+    shader.use();
+    glDrawElements(GL_TRIANGLES, indicesSize, GL_UNSIGNED_INT, 0);
+}
+
 Model ModelLoader::loadFile(const char *filename)
 {
     Model loadedModel;
@@ -86,18 +93,11 @@ Model ModelLoader::loadFile(const char *filename)
 
     glBindVertexArray(loadedModel.VAO);
     glBindBuffer(GL_ARRAY_BUFFER, loadedModel.VBO);
-    glBufferData(GL_ARRAY_BUFFER, vertexesCount * 3, loadedModel.vertexes, GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, vertexesCount * 3 * sizeof(float), loadedModel.vertexes, GL_STATIC_DRAW);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, loadedModel.EBO);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, loadedModel.indicesSize, loadedModel.indices, GL_STATIC_DRAW);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, loadedModel.indicesSize * sizeof(unsigned), loadedModel.indices, GL_STATIC_DRAW);
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void *)0);
     glEnableVertexAttribArray(0);
 
     return loadedModel;
-}
-
-void Model::draw(ShaderProgram &shader)
-{
-    glBindVertexArray(VAO);
-    shader.use();
-    glDrawElements(GL_TRIANGLES, indicesSize, GL_UNSIGNED_INT, 0);
 }
