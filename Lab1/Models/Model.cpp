@@ -32,16 +32,18 @@ Model::~Model()
 }
 
 Model ModelLoader::loadFile(const char *filename)
-{   
+{
     Model loadedModel;
-	std::ifstream file(filename);
-	std::string type;
-	if(!(file >> type)) {
-		loadedModel.valid = false;
-		return loadedModel;
-	}
+    std::ifstream file(filename);
+    std::string type;
+    if (!(file >> type))
+    {
+        loadedModel.valid = false;
+        return loadedModel;
+    }
 
-    if (type != "OFF") {
+    if (type != "OFF")
+    {
         loadedModel.valid = false;
         return loadedModel;
     }
@@ -55,19 +57,22 @@ Model ModelLoader::loadFile(const char *filename)
 
     loadedModel.vertexes = new float[vertexesCount * 3];
 
-    for (int i = 0; i < vertexesCount; ++i) {
+    for (int i = 0; i < vertexesCount; ++i)
+    {
         file >> loadedModel.vertexes[i * 3] >> loadedModel.vertexes[i * 3 + 1] >> loadedModel.vertexes[i * 3 + 2];
     }
 
-    std::vector<int> indices;
-    for (int i = 0; i < indicesCount; ++i) {
+    std::vector<unsigned> indices;
+    for (int i = 0; i < indicesCount; ++i)
+    {
         int count;
         file >> count;
         unsigned firstpoint;
         unsigned pointlast;
         unsigned pointthis;
         file >> firstpoint >> pointlast;
-        for (int j = 0; j < count - 2; ++j) {
+        for (int j = 0; j < count - 2; ++j)
+        {
             file >> pointthis;
             indices.push_back(firstpoint);
             indices.push_back(pointlast);
