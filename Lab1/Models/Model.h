@@ -9,6 +9,7 @@ class Model
     friend class ModelLoader;
     float *vertexes = nullptr;
     int *indices = nullptr;
+    bool valid = true;
     unsigned VAO, VBO, EBO;
     Model();
     Model(const Model &) = delete;
@@ -17,6 +18,7 @@ class Model
   public:
     ~Model();
     Model(Model &&);
+    bool isValid() { return valid; }
 };
 
 class ModelLoader
