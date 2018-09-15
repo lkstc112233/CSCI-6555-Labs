@@ -95,11 +95,16 @@ void update()
 {
 }
 
-int main()
+int main(int argc, char** argv)
 {
+	if (argc < 2) {
+		std::cerr << "Usage: " << argv[0] << " *model.off*" << std::endl;
+	}
+
 	if (!glfwInit())
 	{
-		return -3;
+		std::cerr << "GLFW initialize failed" << std::endl;
+		return -1;
 	}
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 1);
@@ -109,6 +114,7 @@ int main()
 	GLFWwindow *window = glfwCreateWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "LearnOpenGL", NULL, NULL);
 	if (window == NULL)
 	{
+		std::cerr << "Error occurred creating window." << std::endl;
 		glfwTerminate();
 		return -1;
 	}
@@ -116,7 +122,8 @@ int main()
 
 	if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
 	{
-		return -2;
+		std::cerr << "GLAD initialize failed" << std::endl;
+		return -1;
 	}
 	glViewport(0, 0, SCREEN_WIDTH * 2, SCREEN_HEIGHT * 2);
 	glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
@@ -125,7 +132,11 @@ int main()
 	glEnable(GL_DEPTH_TEST);
 	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
-	Model cube = ModelLoader::loadFile("res/models/cube.off");
+	Model cube = ModelLoader::loadFile(argv[1]);
+	if (!cube.isValid()) {
+		std::cerr << "Loading model file '" << argv[1] << "' failed." << std::endl;
+		return -1;
+	}
 
 	ShaderProgram shaderProgram{
 		Shader::createVertexShader("res/shaders/simpleShader.vert"),
