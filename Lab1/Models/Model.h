@@ -3,12 +3,15 @@
 
 #include <glm/glm.hpp>
 
+#include "../Shaders/Shader.h"
+
 class Model
 {
   private:
     friend class ModelLoader;
     float *vertexes = nullptr;
-    int *indices = nullptr;
+    unsigned *indices = nullptr;
+    int indicesSize = 0;
     bool valid = true;
     unsigned VAO = 0, VBO = 0, EBO = 0;
     Model();
@@ -18,6 +21,7 @@ class Model
   public:
     ~Model();
     Model(Model &&);
+    void draw(ShaderProgram& shader);
     bool isValid() { return valid; }
 };
 

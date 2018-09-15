@@ -5,6 +5,8 @@
 
 #include <glad/glad.h>
 
+#include "../Shaders/Shader.h"
+
 Model::Model()
 {
     glGenVertexArrays(1, &VAO);
@@ -61,9 +63,9 @@ Model ModelLoader::loadFile(const char *filename)
     for (int i = 0; i < indicesCount; ++i) {
         int count;
         file >> count;
-        int firstpoint;
-        int pointlast;
-        int pointthis;
+        unsigned firstpoint;
+        unsigned pointlast;
+        unsigned pointthis;
         file >> firstpoint >> pointlast;
         for (int j = 0; j < count - 2; ++j) {
             file >> pointthis;
@@ -73,17 +75,24 @@ Model ModelLoader::loadFile(const char *filename)
             pointlast = pointthis;
         }
     }
-    loadedModel.indices = new int[indices.size()];
+    loadedModel.indices = new unsigned[loadedModel.indicesSize = indices.size()];
 
     std::copy(begin(indices), end(indices), loadedModel.indices);
 
-	glBindVertexArray(loadedModel.VAO);
-	glBindBuffer(GL_ARRAY_BUFFER, loadedModel.VBO);
-	glBufferData(GL_ARRAY_BUFFER, vertexesCount * 3, loadedModel.vertexes, GL_STATIC_DRAW);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, loadedModel.EBO);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size(), loadedModel.indices, GL_STATIC_DRAW);
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void *)0);
-	glEnableVertexAttribArray(0);
+    glBindVertexArray(loadedModel.VAO);
+    glBindBuffer(GL_ARRAY_BUFFER, loadedModel.VBO);
+    glBufferData(GL_ARRAY_BUFFER, vertexesCount * 3, loadedModel.vertexes, GL_STATIC_DRAW);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, loadedModel.EBO);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, loadedModel.indicesSize, loadedModel.indices, GL_STATIC_DRAW);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void *)0);
+    glEnableVertexAttribArray(0);
 
     return loadedModel;
+}
+
+void Model::draw(ShaderProgram &shader)
+{
+    glBindVertexArray(VAO);
+    shader.use();
+    glDrawElements(GL_TRIANGLES, indicesSize, GL_UNSIGNED_INT, 0);
 }
