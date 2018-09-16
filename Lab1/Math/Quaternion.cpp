@@ -93,7 +93,7 @@ void Quaternion::normalize()
 
 // Heads up for myself: matrix in glm is stored in a column major way.
 // So references to element happens as mat[col][row].
-glm::mat3 getRotationMatrix() {
+glm::mat3 Quaternion::getRotationMatrix() {
 	// It's a good idea to keep the quaternion normalized.
 	normalize();
 
