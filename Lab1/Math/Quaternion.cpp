@@ -76,7 +76,7 @@ Quaternion Quaternion::operator*(float op2)const
     Quaternion result(*this);
     return result *= op2;
 }
-Quaternion operator*(float op1, const Quaternion &op2) const {
+Quaternion operator*(float op1, const Quaternion &op2) {
 	Quaternion result(op2);
 	return result *= op1;
 }
