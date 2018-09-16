@@ -5,7 +5,7 @@
 
 #include "Texture.h"
 
-#include "../Libraries/stb_image.h"
+#include "../../Libraries/stb_image.h"
 
 Texture2D::Texture2D(const char *filename)
 {
