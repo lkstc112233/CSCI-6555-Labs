@@ -159,8 +159,10 @@ int main(int argc, char** argv)
 	Camera camera;
 	activeCamera = &camera;
 
+	Keyframe<Quaternion> prebegin(100,100,400,Quaternion(0.5, 0.5, 0.5, 0.5));
 	Keyframe<Quaternion> begin(1,1,4,Quaternion(1, 0, 0, 0));
 	Keyframe<Quaternion> end(-1,-1,4,Quaternion(0.5, 0.5, 0.5, 0.5));
+	Keyframe<Quaternion> postend(-100,-100,400,Quaternion(1, 0, 0, 0));
 
 	while (!glfwWindowShouldClose(window))
 	{
@@ -171,7 +173,10 @@ int main(int argc, char** argv)
 		glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-		program->setMatrix("transform", simpleLinearInterpolate(abs(sin(glfwGetTime())), begin, end).getTranscationMatrix());
+		program->setMatrix("transform", 
+		// simpleLinearInterpolate(abs(sin(glfwGetTime())), begin, end)
+		catmullRomInterpolate(abs(fmod(glfwGetTime(), 2) - 1),prebegin, begin, end, postend)
+		.getTranscationMatrix());
 
 		shaderProgram.use();
 		shaderProgram.setMatrix("view", camera.getViewMat());
