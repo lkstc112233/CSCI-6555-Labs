@@ -16,7 +16,6 @@ Quaternion &Quaternion::operator+=(const Quaternion &op2)
     x += op2.x;
     y += op2.y;
     z += op2.z;
-    normalize();
     return *this;
 }
 Quaternion &Quaternion::operator-=(const Quaternion &op2)
@@ -25,7 +24,6 @@ Quaternion &Quaternion::operator-=(const Quaternion &op2)
     x -= op2.x;
     y -= op2.y;
     z -= op2.z;
-    normalize();
     return *this;
 }
 Quaternion &Quaternion::operator*=(const Quaternion &op2)
@@ -34,7 +32,6 @@ Quaternion &Quaternion::operator*=(const Quaternion &op2)
     x = w * op2.x + x * op2.w + y * op2.z - z * op2.y;
     y = w * op2.y - x * op2.z + y * op2.w + z * op2.x;
     z = w * op2.z + x * op2.y - y * op2.x + z * op2.w;
-    normalize();
     return *this;
 }
 Quaternion &Quaternion::operator*=(float op2)
@@ -43,7 +40,6 @@ Quaternion &Quaternion::operator*=(float op2)
     x *= op2;
     y *= op2;
     z *= op2;
-    normalize();
     return *this;
 }
 Quaternion &Quaternion::operator/=(float op2)
@@ -52,7 +48,6 @@ Quaternion &Quaternion::operator/=(float op2)
     x /= op2;
     y /= op2;
     z /= op2;
-    normalize();
     return *this;
 }
 
