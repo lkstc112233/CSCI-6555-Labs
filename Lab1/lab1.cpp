@@ -14,6 +14,7 @@
 #include "Graphics/Models/Model.h"
 
 #include "Math/Quaternion.h"
+#include "Animate/Keyframe.hpp"
 #include "Animate/Interpolate.hpp"
 
 const int SCREEN_WIDTH = 800;
@@ -158,8 +159,8 @@ int main(int argc, char** argv)
 	Camera camera;
 	activeCamera = &camera;
 
-	Quaternion begin(1, 0, 0, 0);
-	Quaternion end(0.5, 0.5, 0.5, 0.5);
+	Keyframe<Quaternion> begin(1,1,4,Quaternion(1, 0, 0, 0));
+	Keyframe<Quaternion> end(-1,-1,4,Quaternion(0.5, 0.5, 0.5, 0.5));
 
 	while (!glfwWindowShouldClose(window))
 	{
@@ -170,8 +171,7 @@ int main(int argc, char** argv)
 		glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-		glm::mat4 teapotTrans(simpleLinearInterpolate(abs(sin(glfwGetTime())), begin, end).getRotationMatrix());
-		program->setMatrix("transform", teapotTrans);
+		program->setMatrix("transform", simpleLinearInterpolate(abs(sin(glfwGetTime())), begin, end).getTranscationMatrix());
 
 		shaderProgram.use();
 		shaderProgram.setMatrix("view", camera.getViewMat());
