@@ -13,6 +13,9 @@
 #include "Graphics/Camera/Camera.h"
 #include "Graphics/Models/Model.h"
 
+#include "Math/Quaternion.h"
+#include "Animate/Interpolate.hpp"
+
 const int SCREEN_WIDTH = 800;
 const int SCREEN_HEIGHT = 600;
 const float PROJECTION_RATIO = float(SCREEN_WIDTH) / SCREEN_HEIGHT;
@@ -155,6 +158,9 @@ int main(int argc, char** argv)
 	Camera camera;
 	activeCamera = &camera;
 
+	Quaternion begin(1, 0, 0, 0);
+	Quaternion end(0, 1, 1, 1);
+
 	while (!glfwWindowShouldClose(window))
 	{
 		processInput(window);
@@ -163,6 +169,9 @@ int main(int argc, char** argv)
 		// ------
 		glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+		glm::mat4 teapotTrans(simpleLinearInterpolate(abs(sin(glfwGetTime())), begin, end).getRotationMatrix());
+		program->setMatrix("transform", teapotTrans);
 
 		shaderProgram.use();
 		shaderProgram.setMatrix("view", camera.getViewMat());
