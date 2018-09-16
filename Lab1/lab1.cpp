@@ -159,7 +159,7 @@ int main(int argc, char** argv)
 	activeCamera = &camera;
 
 	Quaternion begin(1, 0, 0, 0);
-	Quaternion end(0, 1, 1, 1);
+	Quaternion end(0.5, 0.5, 0.5, 0.5);
 
 	while (!glfwWindowShouldClose(window))
 	{
