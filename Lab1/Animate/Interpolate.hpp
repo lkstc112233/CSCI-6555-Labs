@@ -58,7 +58,7 @@ T catmullRomInterpolate(float t, const T& val1, const T& val2, const T& val3, co
         {  0.0,  1.0,  0.0,  0.0 },
     };
 
-    return linearInterpolate(t, val1, val2, val3, val4, catmullRomM);
+    return cubicInterpolate(t, val1, val2, val3, val4, catmullRomM);
 }
 
 template<typename T>
@@ -70,7 +70,7 @@ T uniformNonrationalBasisSplineInterpolate(float t, const T& val1, const T& val2
         {  1.0 / 6,  4.0 / 6,  1.0 / 6,  0.0 / 6 },
     };
 
-    return linearInterpolate(t, val1, val2, val3, val4, catmullRomM);
+    return cubicInterpolate(t, val1, val2, val3, val4, catmullRomM);
 }
 
 #endif // ANIMATE_INTERPOLATE_HPP
