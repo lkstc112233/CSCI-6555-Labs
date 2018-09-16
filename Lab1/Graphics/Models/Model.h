@@ -1,5 +1,5 @@
-#ifndef MODELS_MODEL_H
-#define MODELS_MODEL_H
+#ifndef GRAPHICS_MODELS_MODEL_H
+#define GRAPHICS_MODELS_MODEL_H
 
 #include <glm/glm.hpp>
 
@@ -31,4 +31,4 @@ public:
   static Model loadFile(const char *filename);
 };
 
-#endif // MODELS_MODEL_H
+#endif // GRAPHICS_MODELS_MODEL_H

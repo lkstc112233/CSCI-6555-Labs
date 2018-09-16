@@ -1,5 +1,5 @@
-#ifndef CAMERA_CAMERA_H
-#define CAMERA_CAMERA_H
+#ifndef GRAPHICS_CAMERA_CAMERA_H
+#define GRAPHICS_CAMERA_CAMERA_H
 
 #include <glm/glm.hpp>
 
@@ -28,4 +28,4 @@ class Camera
     glm::mat4 getViewMat();
 };
 
-#endif // CAMERA_CAMERA_H
+#endif // GRAPHICS_CAMERA_CAMERA_H

@@ -1,5 +1,5 @@
-#ifndef TEXTURE_TEXTURE_H
-#define TEXTURE_TEXTURE_H
+#ifndef GRAPHICS_TEXTURE_TEXTURE_H
+#define GRAPHICS_TEXTURE_TEXTURE_H
 
 class Texture2D {
 private:
@@ -9,4 +9,4 @@ public:
     void bind(int position = 0);
 };
 
-#endif // TEXTURE_TEXTURE_H
+#endif // GRAPHICS_TEXTURE_TEXTURE_H

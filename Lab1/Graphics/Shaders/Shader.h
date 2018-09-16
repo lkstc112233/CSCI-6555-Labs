@@ -1,5 +1,5 @@
-#ifndef SHADERS_SHADER_H
-#define SHADERS_SHADER_H
+#ifndef GRAPHICS_SHADERS_SHADER_H
+#define GRAPHICS_SHADERS_SHADER_H
 
 #include <initializer_list>
 #include <glm/glm.hpp>
@@ -61,4 +61,4 @@ class ShaderProgram
     void use();
 };
 
-#endif // SHADERS_SHADER_H
+#endif // GRAPHICS_SHADERS_SHADER_H
