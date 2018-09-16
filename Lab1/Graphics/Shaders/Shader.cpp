@@ -6,7 +6,7 @@
 #include <glm/gtc/type_ptr.hpp>
 
 #include "Shader.h"
-#include "../fileop/fileLoader.h"
+#include "../../fileop/fileLoader.h"
 
 Shader::Shader(const char *filename, int shaderType, const char *errorHint)
 {

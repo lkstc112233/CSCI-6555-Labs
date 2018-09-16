@@ -1,7 +1,7 @@
 CXX = g++-8
 LINK_FLAGS = -lglfw
 # SRCS = $(wildcard *.cpp) $(wildcard **/*.cpp)
-SRCS = $(wildcard **/*.cpp)
+SRCS = $(wildcard **/*.cpp) $(wildcard **/**/*.cpp)
 MAIN_SRCS = $(wildcard *.cpp)
 ALL_SRCS = $(SRCS) $(MAIN_SRCS)
 HEDS = $(wildcard *.h) $(wildcard **/*.h)

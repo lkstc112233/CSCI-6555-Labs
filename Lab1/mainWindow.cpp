@@ -8,10 +8,9 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 
-#include "fileop/fileLoader.h"
-#include "Shaders/Shader.h"
-#include "Texture/Texture.h"
-#include "Camera/Camera.h"
+#include "Graphics/Shaders/Shader.h"
+#include "Graphics/Texture/Texture.h"
+#include "Graphics/Camera/Camera.h"
 
 const int SCREEN_WIDTH = 800;
 const int SCREEN_HEIGHT = 600;
