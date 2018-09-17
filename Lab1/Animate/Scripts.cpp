@@ -37,8 +37,8 @@ glm::mat4 ScriptsImplementation<T>::getTranscationMatrixAt(float time)
 
     float frame = fmod(time, maximum);
     float t = fmod(frame, 1.0);
-    int indexBegin = frame - 1;
-    
+    int indexBegin = floor(frame);
+
     return catmullRomInterpolate(t, keyframes.begin() + indexBegin).getTranscationMatrix();
 }
 
