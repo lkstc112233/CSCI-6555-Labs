@@ -25,7 +25,7 @@ glm::mat4 ScriptsImplementation<T>::getTranscationMatrixAt(float time)
     // For now it's only uniform, repeating.
 
     int maximum = keyframes.size() - 3;
-    if (maximum <= 3)
+    if (maximum <= 0)
     {
         // Too less keyframes. Just return what's available.
         if (keyframes.size())
