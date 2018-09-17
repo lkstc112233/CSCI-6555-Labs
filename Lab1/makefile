@@ -10,12 +10,15 @@ MAIN_OBJS = $(MAIN_SRCS:.cpp=.o)
 DEPS = dependencies.dep
 
 .PHONY: all
-all: testWindow lab1
+all: testWindow lab1 parserExamine
 
 testWindow: mainWindow.o glad.o $(OBJS)
 	$(CXX) $^ $(LINK_FLAGS) -o $@
 
 lab1: lab1.o glad.o $(OBJS)
+	$(CXX) $^ $(LINK_FLAGS) -o $@
+
+parserExamine: parserExamine.o glad.o $(OBJS)
 	$(CXX) $^ $(LINK_FLAGS) -o $@
 
 $(DEPS): $(ALL_SRCS) $(HEDS)
