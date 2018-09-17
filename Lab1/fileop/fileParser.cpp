@@ -19,9 +19,6 @@ FileParser::~FileParser()
 }
 
 void FileParser::restoreFromBad() {
-	if (file) {
-		return;
-	}
 	if (file.eof()) {
 		valid = false;
 		return;
