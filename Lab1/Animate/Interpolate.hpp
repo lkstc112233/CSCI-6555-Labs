@@ -5,7 +5,7 @@
 
 template<typename T>
 T linearInterpolate(float t, const T& val1, const T& val2, const float M[2][2]) {
-    /*  T          M          G
+    /*  T          M             G
      *         / m00  m01 \   / val1 \
      * [t 1] * |          | * |      |
      *         \ m10  m11 /   \ val2 /
