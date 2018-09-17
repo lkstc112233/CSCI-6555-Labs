@@ -73,3 +73,25 @@ int FileParser::tryParseInt(int *pointer, int count)
 {
 	return tryParseSomething(pointer, count);
 }
+
+bool FileParser::expect(char c)
+{
+	char receiver;
+	if (file >> receiver) {
+		if (receiver == '#') {
+			file.putback(receiver);
+			restoreFromBad();
+			return expect(c);
+		}
+		if (c == receiver) {
+			return true;
+		}
+		file.putback(receiver);
+		return false;
+	}
+	restoreFromBad();
+	if (!isValid()) {
+		return false;
+	}
+	return expect(c);
+}

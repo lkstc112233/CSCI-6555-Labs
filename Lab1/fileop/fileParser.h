@@ -26,6 +26,9 @@ public:
 	int tryParseFloat(float *pointer, int count = 1);
 	int tryParseInt(int *pointer, int count = 1);
 
+	// Expect next character to be c.
+	bool expect(char c);
+
 	void restoreFromBad();
 };
 
