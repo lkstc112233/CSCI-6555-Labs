@@ -6,7 +6,7 @@
 class FileParser
 {
 private:
-	ifstream file;
+	std::ifstream file;
 	bool valid = false;
 public:
 	FileParser(const char *filename);

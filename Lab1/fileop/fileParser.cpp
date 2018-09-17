@@ -44,7 +44,7 @@ void FileParser::restoreFromBad() {
 
 int FileParser::tryParseFloat(int count, float *pointer)
 {
-	vector<float> values;
+	std::vector<float> values;
 	for (int i = 0; i < count; ++i) {
 		if (!isValid()) {
 			break;
@@ -59,6 +59,6 @@ int FileParser::tryParseFloat(int count, float *pointer)
 		}
 		values.push_back(f);
 	}
-	std::copy(first(values), end(values), pointer);
+	std::copy(std::begin(values), std::end(values), pointer);
 	return values.size();
 }
