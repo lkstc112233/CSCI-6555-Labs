@@ -61,6 +61,11 @@ T catmullRomInterpolate(float t, const T& val1, const T& val2, const T& val3, co
     return cubicInterpolate(t, val1, val2, val3, val4, catmullRomM);
 }
 
+template<typename T, typename Iterator>
+T catmullRomInterpolate(float t, Iterator begin) {
+    return catmullRomInterpolate(t, *begin, *(begin + 1), *(begin + 2), *(begin + 3));
+}
+
 template<typename T>
 T uniformNonrationalBasisSplineInterpolate(float t, const T& val1, const T& val2, const T& val3, const T& val4) {
     const float catmullRomM[4][4] = {
@@ -71,6 +76,11 @@ T uniformNonrationalBasisSplineInterpolate(float t, const T& val1, const T& val2
     };
 
     return cubicInterpolate(t, val1, val2, val3, val4, catmullRomM);
+}
+
+template<typename T, typename Iterator>
+T uniformNonrationalBasisSplineInterpolate(float t, Iterator begin) {
+    return uniformNonrationalBasisSplineInterpolate(t, *begin, *(begin + 1), *(begin + 2), *(begin + 3));
 }
 
 #endif // ANIMATE_INTERPOLATE_HPP
