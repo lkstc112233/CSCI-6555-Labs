@@ -18,9 +18,6 @@ testWindow: mainWindow.o glad.o $(OBJS)
 lab1: lab1.o glad.o $(OBJS)
 	$(CXX) $^ $(LINK_FLAGS) -o $@
 
-parserExamine: parserExamine.o glad.o $(OBJS)
-	$(CXX) $^ $(LINK_FLAGS) -o $@
-
 $(DEPS): $(ALL_SRCS) $(HEDS)
 	@$(CXX) -MM $(ALL_SRCS) > $(DEPS)
 
