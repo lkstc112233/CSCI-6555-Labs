@@ -2,8 +2,11 @@
 #define ANIMATE_SCRIPTS_H
 
 #include <memory>
+#include <vector>
 
 #include <glm/glm.hpp>
+
+#include "Keyframe.hpp"
 
 class Scripts
 {
@@ -17,6 +20,9 @@ class ScriptsImplementation : public Scripts
 {
   private:
     friend class ScriptsLoader;
+    std::vector<Keyframe<T>> keyframes;
+    void addKeyframe(const Keyframe<T> keyframe);
+
   public:
     virtual glm::mat4 getTransformMatrixAt(float time);
 };
