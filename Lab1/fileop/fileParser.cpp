@@ -42,23 +42,29 @@ void FileParser::restoreFromBad() {
 	valid = false;
 }
 
-int FileParser::tryParseFloat(float *pointer, int count)
+template<typename T>
+int FileParser::tryParseFloat(T *pointer, int count)
 {
-	std::vector<float> values;
+	std::vector<T> values;
 	for (int i = 0; i < count; ++i) {
 		if (!isValid()) {
 			break;
 		}
-		float f;
-		if (!(file >> f)) {
+		T receiver;
+		if (!(file >> receiver)) {
 			restoreFromBad();
-			if (!(file >> f)) {
+			if (!(file >> receiver)) {
 				restoreFromBad();
 				break;
 			}
 		}
-		values.push_back(f);
+		values.emplace_back(receiver);
 	}
 	std::copy(std::begin(values), std::end(values), pointer);
 	return values.size();
+}
+
+int FileParser::tryParseFloat(float *pointer, int count)
+{
+	return tryParseFloat(pointer, count);
 }
