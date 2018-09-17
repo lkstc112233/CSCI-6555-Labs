@@ -12,7 +12,7 @@ class Scripts
 {
   public:
     virtual ~Scripts();
-    virtual glm::mat4 getTransformMatrixAt(float time) = 0;
+    virtual glm::mat4 getTranscationMatrixAt(float time) = 0;
 };
 
 template <typename T>
@@ -24,7 +24,7 @@ class ScriptsImplementation : public Scripts
     void addKeyframe(const Keyframe<T> keyframe);
 
   public:
-    virtual glm::mat4 getTransformMatrixAt(float time);
+    virtual glm::mat4 getTranscationMatrixAt(float time);
 };
 
 class ScriptsLoader

@@ -16,7 +16,7 @@ void ScriptsImplementation<T>::addKeyframe(const Keyframe<T> keyframe)
 }
 
 template <typename T>
-glm::mat4 ScriptsImplementation<T>::getTransformMatrixAt(float time)
+glm::mat4 ScriptsImplementation<T>::getTranscationMatrixAt(float time)
 {
     // TODO: implement keyframe speed.
 
