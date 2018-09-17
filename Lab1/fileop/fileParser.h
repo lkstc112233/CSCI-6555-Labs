@@ -9,7 +9,7 @@ private:
 	std::ifstream file;
 	bool valid = false;
 	template<typename T>
-	int tryParseFloat(T *pointer, int count);
+	int tryParseSomething(T *pointer, int count);
 public:
 	FileParser(const char *filename);
 	~FileParser();

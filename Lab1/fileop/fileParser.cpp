@@ -43,7 +43,7 @@ void FileParser::restoreFromBad() {
 }
 
 template<typename T>
-int FileParser::tryParseFloat(T *pointer, int count)
+int FileParser::tryParseSomething(T *pointer, int count)
 {
 	std::vector<T> values;
 	for (int i = 0; i < count; ++i) {
@@ -66,5 +66,5 @@ int FileParser::tryParseFloat(T *pointer, int count)
 
 int FileParser::tryParseFloat(float *pointer, int count)
 {
-	return tryParseFloat(pointer, count);
+	return tryParseSomething(pointer, count);
 }
