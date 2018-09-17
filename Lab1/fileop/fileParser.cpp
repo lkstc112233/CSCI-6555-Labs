@@ -68,3 +68,8 @@ int FileParser::tryParseFloat(float *pointer, int count)
 {
 	return tryParseSomething(pointer, count);
 }
+
+int FileParser::tryParseInt(int *pointer, int count)
+{
+	return tryParseSomething(pointer, count);
+}

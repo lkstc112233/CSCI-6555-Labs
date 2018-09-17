@@ -24,6 +24,7 @@ public:
 	// after that, the file pointer will point to as far as it can reach.
 
 	int tryParseFloat(float *pointer, int count = 1);
+	int tryParseInt(int *pointer, int count = 1);
 
 	void restoreFromBad();
 };
