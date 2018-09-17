@@ -42,7 +42,7 @@ void FileParser::restoreFromBad() {
 	valid = false;
 }
 
-int FileParser::tryParseFloat(int count, float *pointer)
+int FileParser::tryParseFloat(float *pointer, int count)
 {
 	std::vector<float> values;
 	for (int i = 0; i < count; ++i) {

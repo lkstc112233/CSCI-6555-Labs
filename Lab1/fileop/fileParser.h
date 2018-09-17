@@ -21,7 +21,7 @@ public:
 	// if failed, returns false, and fill the pointer as much as possible.
 	// after that, the file pointer will point to as far as it can reach.
 
-	int tryParseFloat(int count, float *pointer);
+	int tryParseFloat(float *pointer, int count = 1);
 
 	void restoreFromBad();
 };
