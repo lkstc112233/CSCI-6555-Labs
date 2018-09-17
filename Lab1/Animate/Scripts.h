@@ -11,7 +11,7 @@
 class Scripts
 {
   public:
-    virtual ~Scripts();
+    virtual ~Scripts(){}
     virtual glm::mat4 getTranscationMatrixAt(float time) = 0;
 };
 
