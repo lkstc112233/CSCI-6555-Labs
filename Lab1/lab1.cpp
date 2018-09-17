@@ -16,6 +16,7 @@
 #include "Math/Quaternion.h"
 #include "Animate/Keyframe.hpp"
 #include "Animate/Interpolate.hpp"
+#include "Animate/Scripts.h"
 
 const int SCREEN_WIDTH = 800;
 const int SCREEN_HEIGHT = 600;
@@ -100,9 +101,11 @@ void update()
 
 int main(int argc, char** argv)
 {
-	if (argc < 2) {
-		std::cerr << "Usage: " << argv[0] << " *model.off*" << std::endl;
+	if (argc < 3) {
+		std::cerr << "Usage:\n\t" << argv[0] << " *model.off* *script.keys*" << std::endl;
 	}
+
+	auto script = ScriptsLoader::loadScript(argv[2]);
 
 	if (!glfwInit())
 	{
@@ -159,11 +162,6 @@ int main(int argc, char** argv)
 	Camera camera;
 	activeCamera = &camera;
 
-	Keyframe<Quaternion> prebegin(100,100,400,Quaternion(0.5, 0.5, 0.5, 0.5));
-	Keyframe<Quaternion> begin(1,1,4,Quaternion(1, 0, 0, 0));
-	Keyframe<Quaternion> end(-1,-1,4,Quaternion(0.5, 0.5, 0.5, 0.5));
-	Keyframe<Quaternion> postend(-100,-100,400,Quaternion(1, 0, 0, 0));
-
 	while (!glfwWindowShouldClose(window))
 	{
 		processInput(window);
@@ -173,10 +171,7 @@ int main(int argc, char** argv)
 		glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-		program->setMatrix("transform", 
-		// simpleLinearInterpolate(abs(sin(glfwGetTime())), begin, end)
-		catmullRomInterpolate(abs(fmod(glfwGetTime(), 2) - 1),prebegin, begin, end, postend)
-		.getTranscationMatrix());
+		program->setMatrix("transform", script->getTranscationMatrixAt(glfwGetTime()));
 
 		shaderProgram.use();
 		shaderProgram.setMatrix("view", camera.getViewMat());
