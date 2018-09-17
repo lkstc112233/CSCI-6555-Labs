@@ -1,5 +1,4 @@
 # This is a comment. Comments are begin with # to end of line.
-4 # number of keyframes.
 # Each keyframe should contain 6 or 7 parameters, successively x, y, z, yaw, pitch, roll
 #                                                           or x, y, z, qw, qx, qy, qz
 # In that means, each keyframe is wrapped with (parentheses).

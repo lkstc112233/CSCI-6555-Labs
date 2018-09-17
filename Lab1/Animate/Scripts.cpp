@@ -47,10 +47,8 @@ std::unique_ptr<Scripts> ScriptsLoader::loadScript(const char *filename)
     class QuaternionScript:public ScriptsImplementation<Quaternion>{};
     auto quaternionScripts = std::make_unique<QuaternionScript>();
     FileParser parser(filename);
-    int keyframesCount;
-    parser.tryParseInt(&keyframesCount);
 
-    for (int i = 0; i < keyframesCount; ++i)
+    while (parser.isValid())
     {
         if (!parser.expect('('))
         {
