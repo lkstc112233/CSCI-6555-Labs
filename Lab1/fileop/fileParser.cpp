@@ -3,6 +3,9 @@
 FileParser::FileParser(const char *filename)
 	: file(filename)
 {
+	if (file) {
+		valid = true;
+	}
 }
 
 FileParser::~FileParser() 
