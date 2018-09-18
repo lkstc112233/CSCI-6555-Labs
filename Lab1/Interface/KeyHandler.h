@@ -6,8 +6,9 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
-class KeyHandler {
-private:
+class KeyHandler
+{
+  private:
 	GLFWwindow *window;
 	int keyListening;
 	// argument: bool: isKeyPressed.
@@ -15,8 +16,9 @@ private:
 	std::function<void()> handleInactive;
 	bool pressOnly;
 	bool pressed = false;
-public:
-	KeyHandler(GLFWwindow *window, int keyListening, decltype(handleActive), bool pressOnly = false, decltype(handleInactive) handleInactive = [](){});
+
+  public:
+	KeyHandler(GLFWwindow *window, int keyListening, decltype(handleActive), bool pressOnly = false, decltype(handleInactive) handleInactive = []() {});
 	void handle();
 };
 
