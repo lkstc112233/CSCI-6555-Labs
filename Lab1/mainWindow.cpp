@@ -2,7 +2,6 @@
 #include <cassert>
 #include <cmath>
 #include <iostream>
-#include <vector>
 
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
@@ -23,14 +22,6 @@ void framebuffer_size_callback(GLFWwindow *window, int width, int height)
 	glViewport(0, 0, width, height);
 }
 
-std::vector<KeyHandler> keyHandlers;
-
-void processInput(GLFWwindow *window)
-{
-	for (auto &handler: keyHandlers) {
-		handler.handle();
-	}
-}
 Camera* activeCamera;
 double lastMouseX, lastMouseY;
 void mouse_callback(GLFWwindow* window, double xpos, double ypos) {
@@ -154,35 +145,37 @@ int main()
 	Camera camera;
 	activeCamera = &camera;
 
+	KeyHandlerContainer keyHandlers(window);
+
 	const float cameraSpeed = 0.05;
-	keyHandlers.emplace_back(window, GLFW_KEY_ESCAPE, [window]() {
+	keyHandlers.emplace_handler(GLFW_KEY_ESCAPE, [window]() {
 		glfwSetWindowShouldClose(window, true);
 	});
-	keyHandlers.emplace_back(window, GLFW_KEY_SPACE, [&teapotShaderProgram]() {
+	keyHandlers.emplace_handler(GLFW_KEY_SPACE, [&teapotShaderProgram]() {
 		glm::mat4 teapotTrans(1.0f);
 		static float angle = 0;
 		teapotTrans = glm::rotate(teapotTrans, float(angle += M_PI / 60.), glm::normalize(glm::vec3(1.0, 1.0, 1.0)));
 		teapotShaderProgram.setMatrix("transform", teapotTrans);
 	});
-	keyHandlers.emplace_back(window, GLFW_KEY_W, [&camera, cameraSpeed]() {
+	keyHandlers.emplace_handler(GLFW_KEY_W, [&camera, cameraSpeed]() {
 		camera.moveForward(cameraSpeed);
 	});
-	keyHandlers.emplace_back(window, GLFW_KEY_S, [&camera, cameraSpeed]() {
+	keyHandlers.emplace_handler(GLFW_KEY_S, [&camera, cameraSpeed]() {
 		camera.moveBackward(cameraSpeed);
 	});
-	keyHandlers.emplace_back(window, GLFW_KEY_A, [&camera, cameraSpeed]() {
+	keyHandlers.emplace_handler(GLFW_KEY_A, [&camera, cameraSpeed]() {
 		camera.moveLeft(cameraSpeed);
 	});
-	keyHandlers.emplace_back(window, GLFW_KEY_D, [&camera, cameraSpeed]() {
+	keyHandlers.emplace_handler(GLFW_KEY_D, [&camera, cameraSpeed]() {
 		camera.moveRight(cameraSpeed);
 	});
-	keyHandlers.emplace_back(window, GLFW_KEY_R, [&camera, cameraSpeed]() {
+	keyHandlers.emplace_handler(GLFW_KEY_R, [&camera, cameraSpeed]() {
 		camera.moveUp(cameraSpeed);
 	});
-	keyHandlers.emplace_back(window, GLFW_KEY_F, [&camera, cameraSpeed]() {
+	keyHandlers.emplace_handler(GLFW_KEY_F, [&camera, cameraSpeed]() {
 		camera.moveDown(cameraSpeed);
 	});
-	keyHandlers.emplace_back(window, GLFW_KEY_Z, [&camera]() {
+	keyHandlers.emplace_handler(GLFW_KEY_Z, [&camera]() {
 		if (camera.isViewLocked())
 			camera.unlockView();
 		else
@@ -191,7 +184,7 @@ int main()
 
 	while (!glfwWindowShouldClose(window))
 	{
-		processInput(window);
+		keyHandlers.handle();
 
 		// render
 		// ------
