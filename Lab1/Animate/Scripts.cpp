@@ -74,7 +74,8 @@ std::unique_ptr<Scripts> ScriptsLoader::loadScript(const char *filename)
         }
         if (loaded == 6) {
             ecount += 1;
-            eulerAnglesScripts->addKeyframe(Keyframe<EulerAngles>(data[0], data[1], data[2], EulerAngles(data[3], data[4], data[5])));
+            eulerAnglesScripts->addKeyframe(Keyframe<EulerAngles>(data[0], data[1], data[2], 
+            EulerAngles(glm::radians(data[3]), glm::radians(data[4]), glm::radians(data[5]))));
         }
 
     }
