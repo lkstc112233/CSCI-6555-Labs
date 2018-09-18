@@ -31,7 +31,7 @@ void processInput(GLFWwindow *window)
 		handler.handle();
 	}
 }
-
+Camera* activeCamera;
 double lastMouseX, lastMouseY;
 void mouse_callback(GLFWwindow* window, double xpos, double ypos) {
 	float xoffset = xpos - lastMouseX;
@@ -152,6 +152,7 @@ int main()
 	teapotShaderProgram.setVector("lightColor", glm::vec3(1.0f));
 
 	Camera camera;
+	activeCamera = &camera;
 
 	const float cameraSpeed = 0.05;
 	keyHandlers.emplace_back(window, GLFW_KEY_ESCAPE, [window](bool press) {

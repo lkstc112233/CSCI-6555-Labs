@@ -3,6 +3,9 @@
 
 #include <functional>
 
+#include <glad/glad.h>
+#include <GLFW/glfw3.h>
+
 class KeyHandler {
 private:
 	GLFWwindow *window;

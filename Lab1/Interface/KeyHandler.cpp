@@ -2,7 +2,7 @@
 
 #include <glad/glad.h>
 
-KeyHandler::KeyHandler(GLFWwindow *windowi, int keyListeningi, decltype(handler) handleri, bool pressOnly)
+KeyHandler::KeyHandler(GLFWwindow *windowi, int keyListeningi, decltype(handler) handleri, bool pressOnlyi)
 	: window(windowi)
 	, keyListening(keyListeningi)
 	, handler(handleri)
@@ -17,7 +17,7 @@ void KeyHandler::handle() {
 		}
 		pressed = true;
 	} else {
-		if (!pressOnly || pressed)) {
+		if (!pressOnly || pressed) {
 			handler(false);
 		}
 		pressed = false;
