@@ -12,7 +12,6 @@ class KeyHandler
   private:
 	GLFWwindow *window;
 	int keyListening;
-	// argument: bool: isKeyPressed.
 	std::function<void()> handleActive;
 	std::function<void()> handleInactive;
 	bool pressOnly;
