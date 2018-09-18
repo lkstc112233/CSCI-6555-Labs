@@ -10,6 +10,7 @@
 #include "Interpolate.hpp"
 #include "../fileop/fileParser.h"
 #include "../Math/Quaternion.h"
+#include "../Math/EulerAngles.h"
 
 
 template <typename T>
@@ -45,8 +46,13 @@ glm::mat4 ScriptsImplementation<T>::getTranscationMatrixAt(float time)
 std::unique_ptr<Scripts> ScriptsLoader::loadScript(const char *filename)
 {
     class QuaternionScript:public ScriptsImplementation<Quaternion>{};
+    class EulerAnglesScript:public ScriptsImplementation<EulerAngles>{};
     auto quaternionScripts = std::make_unique<QuaternionScript>();
+    auto eulerAnglesScripts = std::make_unique<EulerAnglesScript>();
     FileParser parser(filename);
+
+    int qcount = 0;
+    int ecount = 0;
 
     while (parser.isValid())
     {
@@ -63,9 +69,18 @@ std::unique_ptr<Scripts> ScriptsLoader::loadScript(const char *filename)
             break;
         }
         if (loaded == 7) {
+            qcount += 1;
             quaternionScripts->addKeyframe(Keyframe<Quaternion>(data[0], data[1], data[2], Quaternion(data[3], data[4], data[5], data[6])));
         }
+        if (loaded == 6) {
+            ecount += 1;
+            eulerAnglesScripts->addKeyframe(Keyframe<EulerAngles>(data[0], data[1], data[2], EulerAngles(data[3], data[4], data[5])));
+        }
 
+    }
+    if (qcount < ecount)
+    {
+        return eulerAnglesScripts;
     }
     return quaternionScripts;
 }
