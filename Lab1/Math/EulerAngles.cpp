@@ -68,20 +68,20 @@ EulerAngles EulerAngles::operator/(float op2) const
 glm::mat3 EulerAngles::getRotationMatrix() {
 	glm::mat3 result(1.0f);
     glm::mat3 rotationX(1.0f);
-    rotationX[1][1] = cos(yaw);
-    rotationX[1][2] = sin(yaw);
-    rotationX[2][1] = -sin(yaw);
-    rotationX[2][2] = cos(yaw);
+    rotationX[1][1] = cos(pitch);
+    rotationX[1][2] = sin(pitch);
+    rotationX[2][1] = -sin(pitch);
+    rotationX[2][2] = cos(pitch);
     glm::mat3 rotationY(1.0f);
-    rotationY[0][0] = cos(pitch);
-    rotationY[0][2] = -sin(pitch);
-    rotationY[2][0] = sin(pitch);
-    rotationY[2][2] = cos(pitch);
+    rotationY[0][0] = cos(yaw);
+    rotationY[0][2] = -sin(yaw);
+    rotationY[2][0] = sin(yaw);
+    rotationY[2][2] = cos(yaw);
     glm::mat3 rotationZ(1.0f);
     rotationZ[0][0] = cos(roll);
     rotationZ[0][1] = sin(roll);
     rotationZ[1][0] = -sin(roll);
     rotationZ[1][1] = cos(roll);
     // TODO: form these matrics together.
-	return rotationZ * rotationY * rotationX * result;
+	return rotationZ * rotationX * rotationY * result;
 }
