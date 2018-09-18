@@ -27,6 +27,16 @@ class KeyHandlerContainer
 {
   private:
 	std::vector<KeyHandler> handlers;
+	GLFWwindow *window;
+
+  public:
+	KeyHandlerContainer(GLFWwindow *window);
+	void handle();
+	template <class... Args>
+	void emplace_handler(Args &&... args)
+	{
+		handlers.emplace_back(window, std::forward<Args>(args)...);
+	}
 };
 
 #endif // INTERFACE_KEYHANDLER_H

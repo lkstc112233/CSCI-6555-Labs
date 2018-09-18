@@ -26,3 +26,14 @@ void KeyHandler::handle()
 		pressed = false;
 	}
 }
+
+KeyHandlerContainer::KeyHandlerContainer(GLFWwindow *windowi)
+	: window(windowi)
+{
+}
+
+void KeyHandlerContainer::handle() {
+	for (auto &handler: handlers) {
+		handler.handle();
+	}
+}
