@@ -1,6 +1,7 @@
 #ifndef INTERFACE_KEYHANDLER_H
 #define INTERFACE_KEYHANDLER_H
 
+#include <vector>
 #include <functional>
 
 #include <glad/glad.h>
@@ -20,6 +21,12 @@ class KeyHandler
   public:
 	KeyHandler(GLFWwindow *window, int keyListening, decltype(handleActive), bool pressOnly = false, decltype(handleInactive) handleInactive = []() {});
 	void handle();
+};
+
+class KeyHandlerContainer
+{
+  private:
+	std::vector<KeyHandler> handlers;
 };
 
 #endif // INTERFACE_KEYHANDLER_H
