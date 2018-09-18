@@ -13,10 +13,12 @@ DEPS = dependencies.dep
 all: testWindow lab1
 
 testWindow: mainWindow.o glad.o $(OBJS)
-	$(CXX) $^ $(LINK_FLAGS) -o $@
+	@echo Making testWindow.
+	@$(CXX) $^ $(LINK_FLAGS) -o $@
 
 lab1: lab1.o glad.o $(OBJS)
-	$(CXX) $^ $(LINK_FLAGS) -o $@
+	@echo Making lab1.
+	@$(CXX) $^ $(LINK_FLAGS) -o $@
 
 $(DEPS): $(ALL_SRCS) $(HEDS)
 	@$(CXX) -MM $(ALL_SRCS) > $(DEPS)
