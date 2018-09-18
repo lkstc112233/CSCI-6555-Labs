@@ -155,57 +155,38 @@ int main()
 	activeCamera = &camera;
 
 	const float cameraSpeed = 0.05;
-	keyHandlers.emplace_back(window, GLFW_KEY_ESCAPE, [window](bool press) {
-		if (press) { glfwSetWindowShouldClose(window, true); }
+	keyHandlers.emplace_back(window, GLFW_KEY_ESCAPE, [window]() {
+		glfwSetWindowShouldClose(window, true);
 	});
-	keyHandlers.emplace_back(window, GLFW_KEY_SPACE, [&teapotShaderProgram](bool press) {
-		if (press) {
-			glm::mat4 teapotTrans(1.0f);
-			static float angle = 0;
-			// teapotTrans = glm::translate(teapotTrans, glm::vec3(0, -0.3, 0));
-			// teapotTrans = glm::translate(teapotTrans, glm::vec3(0, 0, 0.6));
-			// teapotTrans = glm::rotate(teapotTrans, glm::radians(-45.0f), glm::vec3(1.0, 0.0, 0.0));
-			teapotTrans = glm::rotate(teapotTrans, float(angle += M_PI / 60.), glm::normalize(glm::vec3(1.0, 1.0, 1.0)));
-			teapotShaderProgram.setMatrix("transform", teapotTrans);
-		}
+	keyHandlers.emplace_back(window, GLFW_KEY_SPACE, [&teapotShaderProgram]() {
+		glm::mat4 teapotTrans(1.0f);
+		static float angle = 0;
+		teapotTrans = glm::rotate(teapotTrans, float(angle += M_PI / 60.), glm::normalize(glm::vec3(1.0, 1.0, 1.0)));
+		teapotShaderProgram.setMatrix("transform", teapotTrans);
 	});
-	keyHandlers.emplace_back(window, GLFW_KEY_W, [&camera, cameraSpeed](bool press) {
-		if (press) {
-			camera.moveForward(cameraSpeed);
-		}
+	keyHandlers.emplace_back(window, GLFW_KEY_W, [&camera, cameraSpeed]() {
+		camera.moveForward(cameraSpeed);
 	});
-	keyHandlers.emplace_back(window, GLFW_KEY_S, [&camera, cameraSpeed](bool press) {
-		if (press) {
-			camera.moveBackward(cameraSpeed);
-		}
+	keyHandlers.emplace_back(window, GLFW_KEY_S, [&camera, cameraSpeed]() {
+		camera.moveBackward(cameraSpeed);
 	});
-	keyHandlers.emplace_back(window, GLFW_KEY_A, [&camera, cameraSpeed](bool press) {
-		if (press) {
-			camera.moveLeft(cameraSpeed);
-		}
+	keyHandlers.emplace_back(window, GLFW_KEY_A, [&camera, cameraSpeed]() {
+		camera.moveLeft(cameraSpeed);
 	});
-	keyHandlers.emplace_back(window, GLFW_KEY_D, [&camera, cameraSpeed](bool press) {
-		if (press) {
-			camera.moveRight(cameraSpeed);
-		}
+	keyHandlers.emplace_back(window, GLFW_KEY_D, [&camera, cameraSpeed]() {
+		camera.moveRight(cameraSpeed);
 	});
-	keyHandlers.emplace_back(window, GLFW_KEY_R, [&camera, cameraSpeed](bool press) {
-		if (press) {
-			camera.moveUp(cameraSpeed);
-		}
+	keyHandlers.emplace_back(window, GLFW_KEY_R, [&camera, cameraSpeed]() {
+		camera.moveUp(cameraSpeed);
 	});
-	keyHandlers.emplace_back(window, GLFW_KEY_F, [&camera, cameraSpeed](bool press) {
-		if (press) {
-			camera.moveDown(cameraSpeed);
-		}
+	keyHandlers.emplace_back(window, GLFW_KEY_F, [&camera, cameraSpeed]() {
+		camera.moveDown(cameraSpeed);
 	});
-	keyHandlers.emplace_back(window, GLFW_KEY_Z, [&camera](bool press) {
-		if (press) {
-			if (camera.isViewLocked())
-				camera.unlockView();
-			else
-				camera.lockView(glm::vec3(0, 0, 0));
-		}
+	keyHandlers.emplace_back(window, GLFW_KEY_Z, [&camera]() {
+		if (camera.isViewLocked())
+			camera.unlockView();
+		else
+			camera.lockView(glm::vec3(0, 0, 0));
 	}, true);
 
 	while (!glfwWindowShouldClose(window))

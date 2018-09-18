@@ -11,11 +11,12 @@ private:
 	GLFWwindow *window;
 	int keyListening;
 	// argument: bool: isKeyPressed.
-	std::function<void(bool)> handler;
+	std::function<void()> handleActive;
+	std::function<void()> handleInactive;
 	bool pressOnly;
 	bool pressed = false;
 public:
-	KeyHandler(GLFWwindow *window, int keyListening, decltype(handler), bool pressOnly = false);
+	KeyHandler(GLFWwindow *window, int keyListening, decltype(handleActive), bool pressOnly = false, decltype(handleInactive) handleInactive = [](){});
 	void handle();
 };
 
