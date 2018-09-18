@@ -2,6 +2,7 @@
 #include <cassert>
 #include <cmath>
 #include <iostream>
+#include <vector>
 
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
@@ -11,6 +12,7 @@
 #include "Graphics/Shaders/Shader.h"
 #include "Graphics/Texture/Texture.h"
 #include "Graphics/Camera/Camera.h"
+#include "Interface/KeyHandler.h"
 
 const int SCREEN_WIDTH = 800;
 const int SCREEN_HEIGHT = 600;
@@ -21,59 +23,12 @@ void framebuffer_size_callback(GLFWwindow *window, int width, int height)
 	glViewport(0, 0, width, height);
 }
 
-ShaderProgram *program;
-Camera *activeCamera;
+std::vector<KeyHandler> keyHandlers;
+
 void processInput(GLFWwindow *window)
 {
-	if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
-		glfwSetWindowShouldClose(window, true);
-	if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS)
-	{
-		glm::mat4 teapotTrans(1.0f);
-		static float angle = 0;
-		// teapotTrans = glm::translate(teapotTrans, glm::vec3(0, -0.3, 0));
-		// teapotTrans = glm::translate(teapotTrans, glm::vec3(0, 0, 0.6));
-		// teapotTrans = glm::rotate(teapotTrans, glm::radians(-45.0f), glm::vec3(1.0, 0.0, 0.0));
-		teapotTrans = glm::rotate(teapotTrans, float(angle += M_PI / 60.), glm::normalize(glm::vec3(1.0, 1.0, 1.0)));
-		program->setMatrix("transform", teapotTrans);
-	}
-	const float cameraSpeed = 0.05;
-	if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
-	{
-		activeCamera->moveForward(cameraSpeed);
-	}
-	if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
-	{
-		activeCamera->moveBackward(cameraSpeed);
-	}
-	if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
-	{
-		activeCamera->moveLeft(cameraSpeed);
-	}
-	if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
-	{
-		activeCamera->moveRight(cameraSpeed);
-	}
-	if (glfwGetKey(window, GLFW_KEY_R) == GLFW_PRESS)
-	{
-		activeCamera->moveUp(cameraSpeed);
-	}
-	if (glfwGetKey(window, GLFW_KEY_F) == GLFW_PRESS)
-	{
-		activeCamera->moveDown(cameraSpeed);
-	}
-	static bool zhandled = false;
-	if (glfwGetKey(window, GLFW_KEY_Z) == GLFW_PRESS)
-	{
-		if (!zhandled) {
-			zhandled = true;
-			if (activeCamera->isViewLocked())
-				activeCamera->unlockView();
-			else
-				activeCamera->lockView(glm::vec3(0, 0, 0));
-		}
-	} else {
-		zhandled = false;
+	for (auto &handler: keyHandlers) {
+		handler.handle();
 	}
 }
 
@@ -141,7 +96,6 @@ int main()
 	{
 		return -4;
 	}
-	program = &teapotShaderProgram;
 	teapotShaderProgram.setMatrix("transform", glm::mat4(1.0f));
 
 	unsigned int teapotVao;
@@ -198,7 +152,60 @@ int main()
 	teapotShaderProgram.setVector("lightColor", glm::vec3(1.0f));
 
 	Camera camera;
-	activeCamera = &camera;
+
+	const float cameraSpeed = 0.05;
+	keyHandlers.emplace_back(window, GLFW_KEY_ESCAPE, [window](bool press) {
+		if (press) { glfwSetWindowShouldClose(window, true); }
+	});
+	keyHandlers.emplace_back(window, GLFW_KEY_SPACE, [&teapotShaderProgram](bool press) {
+		if (press) {
+			glm::mat4 teapotTrans(1.0f);
+			static float angle = 0;
+			// teapotTrans = glm::translate(teapotTrans, glm::vec3(0, -0.3, 0));
+			// teapotTrans = glm::translate(teapotTrans, glm::vec3(0, 0, 0.6));
+			// teapotTrans = glm::rotate(teapotTrans, glm::radians(-45.0f), glm::vec3(1.0, 0.0, 0.0));
+			teapotTrans = glm::rotate(teapotTrans, float(angle += M_PI / 60.), glm::normalize(glm::vec3(1.0, 1.0, 1.0)));
+			teapotShaderProgram.setMatrix("transform", teapotTrans);
+		}
+	});
+	keyHandlers.emplace_back(window, GLFW_KEY_W, [&camera, cameraSpeed](bool press) {
+		if (press) {
+			camera.moveForward(cameraSpeed);
+		}
+	});
+	keyHandlers.emplace_back(window, GLFW_KEY_S, [&camera, cameraSpeed](bool press) {
+		if (press) {
+			camera.moveBackward(cameraSpeed);
+		}
+	});
+	keyHandlers.emplace_back(window, GLFW_KEY_A, [&camera, cameraSpeed](bool press) {
+		if (press) {
+			camera.moveLeft(cameraSpeed);
+		}
+	});
+	keyHandlers.emplace_back(window, GLFW_KEY_D, [&camera, cameraSpeed](bool press) {
+		if (press) {
+			camera.moveRight(cameraSpeed);
+		}
+	});
+	keyHandlers.emplace_back(window, GLFW_KEY_R, [&camera, cameraSpeed](bool press) {
+		if (press) {
+			camera.moveUp(cameraSpeed);
+		}
+	});
+	keyHandlers.emplace_back(window, GLFW_KEY_F, [&camera, cameraSpeed](bool press) {
+		if (press) {
+			camera.moveDown(cameraSpeed);
+		}
+	});
+	keyHandlers.emplace_back(window, GLFW_KEY_Z, [&camera](bool press) {
+		if (press) {
+			if (camera.isViewLocked())
+				camera.unlockView();
+			else
+				camera.lockView(glm::vec3(0, 0, 0));
+		}
+	}, true);
 
 	while (!glfwWindowShouldClose(window))
 	{
