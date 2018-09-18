@@ -83,5 +83,5 @@ glm::mat3 EulerAngles::getRotationMatrix() {
     rotationZ[1][0] = -sin(roll);
     rotationZ[1][1] = cos(roll);
     // TODO: form these matrics together.
-	return rotationZ * rotationX * rotationY * result;
+	return rotationY * rotationX * rotationZ * result;
 }
