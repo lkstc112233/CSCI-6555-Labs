@@ -128,7 +128,7 @@ Model ModelLoader::loadShpFile(const char *filename)
 
     for (int i = 0; i < vertexesCount; ++i)
     {
-        file >> loadedModel.vertexes[i * 2] >> loadedModel.vertexes[i * 2 + 1] >> loadedModel.vertexes[i * 2 + 2];
+        file >> loadedModel.vertexes[i * 2] >> loadedModel.vertexes[i * 2 + 1];
     }
 
     std::vector<unsigned> indices;
