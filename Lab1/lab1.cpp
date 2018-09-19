@@ -140,6 +140,24 @@ int main(int argc, char** argv)
 			camera.lockView(glm::vec3(0, 0, 0));
 	}, true);
 
+	ShaderProgram cursorShader{
+		Shader::createVertexShader("res/shaders/2DShader.vert"),
+		Shader::createFragmentShader("res/shaders/2DShader.frag")};
+	if (!cursorShader.isValid())
+	{
+		return -4;
+	}
+	glm::mat3 cursorTransform(1.0f);
+	cursorTransform[2][0] = mouseX / SCREEN_WIDTH - 1;
+	cursorTransform[2][1] = mouseY / SCREEN_HEIGHT - 1;
+	cursorShader.setVector("color", glm::vec4(1.0f));
+	cursorShader.setMatrix("transform", cursorTransform);
+	mouseHandlers.emplace_handler([&cursorTransform, &cursorShader](int mouseFlags, float x, float y, float diffx, float diffy) {
+		cursorTransform[2][0] = glm::clamp(x / SCREEN_WIDTH - 1, -1.0f, 1.0f);
+		cursorTransform[2][1] = glm::clamp(1 - y / SCREEN_HEIGHT, -1.0f, 1.0f);
+	});
+	Model cursor = ModelLoader::loadShpFile("res/shapes/cursor.shp");
+
 	while (!glfwWindowShouldClose(window))
 	{
 		keyHandlers.handle();
@@ -155,6 +173,12 @@ int main(int argc, char** argv)
 		shaderProgram.use();
 		shaderProgram.setMatrix("view", camera.getViewMat());
 		cube.draw(shaderProgram);
+
+		// Draw HDR
+		glClear(GL_DEPTH_BUFFER_BIT);
+		cursorShader.setValue("z", 0);
+		cursorShader.setMatrix("transform", cursorTransform);
+		cursor.draw(cursorShader);
 
 		glfwSwapBuffers(window);
 		glfwPollEvents();
