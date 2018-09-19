@@ -16,6 +16,14 @@ MouseHandler::MouseHandler(std::function<void(int)> handler)
 }
 
 
+MouseHandlerContainer::MouseHandlerContainer(float xi, float yi) 
+	: x(xi)
+	, y(yi)
+	, diffx(0)
+	, diffy(0)
+{
+}
+
 void MouseHandlerContainer::setScrollUpFlag() {
 	flags |= MOUSE_SCROLLED_UP_PRESSED;
 }

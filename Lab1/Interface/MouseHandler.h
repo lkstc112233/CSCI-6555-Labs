@@ -31,8 +31,11 @@ class MouseHandlerContainer {
 	int flags = 0;
 	float x;
 	float y;
+	float diffx;
+	float diffy;
 
   public:
+	MouseHandlerContainer(float xInit, float yInit);
 	void setScrollUpFlag();
 	void setScrollDownFlag();
 	void leftPress();
