@@ -29,6 +29,7 @@ class ModelLoader
 {
 public:
   static Model loadOffFile(const char *filename);
+  static Model loadShpFile(const char *filename);
 };
 
 #endif // GRAPHICS_MODELS_MODEL_H
