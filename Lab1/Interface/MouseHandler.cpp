@@ -49,8 +49,8 @@ void MouseHandlerContainer::resetRightHoldFlag() {
 }
 
 void MouseHandlerContainer::setPosition(float xi, float yi) {
-	diffx = xi - x;
-	diffy = yi - y;
+	diffx += xi - x;
+	diffy += yi - y;
 	x = xi;
 	y = yi;
 }
