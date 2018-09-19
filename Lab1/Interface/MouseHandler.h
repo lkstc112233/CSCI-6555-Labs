@@ -5,24 +5,36 @@
 
 enum MouseConstants
 {
-    MOUSE_LEFTBUTTON_PRESSED = 1,
-    MOUSE_RIGHTBUTTON_PRESSED = 2,
-    MOUSE_SCROLLED_UP_PRESSED = 4,
-    MOUSE_SCROLLED_DOWN_PRESSED = 8,
+	MOUSE_LEFTBUTTON_PRESSED = 1,
+	MOUSE_RIGHTBUTTON_PRESSED = 2,
+	MOUSE_LEFTBUTTON_HOLD = 4,
+	MOUSE_RIGHTBUTTON_HOLD = 8,
+    MOUSE_SCROLLED_UP_PRESSED = 16,
+    MOUSE_SCROLLED_DOWN_PRESSED = 32,
 };
 
 class MouseHandler
 {
   private:
-    std::function<void(int mouseConstants, float x, float y)> handleEvent;
+    std::function<void(int mouseFlags, float x, float y)> handleEvent;
     friend class MouseHandlerContainer;
 };
 
 class MouseHandlerContainer {
   private:
 	std::vector<MouseHandler> handlers;
+	int flags = 0;
+	float x;
+	float y;
 
   public:
+	void setScrollUpFlag();
+	void setScrollDownFlag();
+	void leftPress();
+	void rightPress();
+	void resetLeftHoldFlag();
+	void resetRightHoldFlag();
+	void setPosition(float x, float y);
 	void handle();
 	template <class... Args>
 	void emplace_handler(Args &&... args)
