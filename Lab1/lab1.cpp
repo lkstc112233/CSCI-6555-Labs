@@ -142,6 +142,19 @@ int main(int argc, char** argv)
 			camera.lockView(glm::vec3(0, 0, 0));
 	}, true);
 
+
+	ShaderProgram playPauseShader{
+		Shader::createVertexShader("res/shaders/2DShader.vert"),
+		Shader::createFragmentShader("res/shaders/2DShader.frag")};
+	glm::mat3 buttonTransform(1.0f);
+	buttonTransform[0][0] = 0.2;
+	buttonTransform[1][1] = 0.2;
+	buttonTransform[2][0] = -0.9;
+	buttonTransform[2][1] = -0.9;
+	playPauseShader.setVector("color", glm::vec4(1.0f));
+	playPauseShader.setMatrix("transform", buttonTransform);
+	bool playing = true;
+
 	ShaderProgram cursorShader{
 		Shader::createVertexShader("res/shaders/2DShader.vert"),
 		Shader::createFragmentShader("res/shaders/2DShader.frag")};
@@ -154,9 +167,12 @@ int main(int argc, char** argv)
 	cursorTransform[2][1] = mouseY / SCREEN_HEIGHT - 1;
 	cursorShader.setVector("color", glm::vec4(1.0f));
 	cursorShader.setMatrix("transform", cursorTransform);
-	mouseHandlers.emplace_handler([&cursorTransform, &cursorShader](int mouseFlags, float x, float y, float diffx, float diffy) {
+	mouseHandlers.emplace_handler([&cursorTransform, &cursorShader, &playing](int mouseFlags, float x, float y, float diffx, float diffy) {
 		cursorTransform[2][0] = glm::clamp(cursorTransform[2][0] + diffx / SCREEN_WIDTH, -1.0f, 1.0f);
 		cursorTransform[2][1] = glm::clamp(cursorTransform[2][1] - diffy / SCREEN_HEIGHT, -1.0f, 1.0f);
+		if (mouseFlags & MOUSE_LEFTBUTTON_PRESSED && cursorTransform[2][0] < -0.9 && cursorTransform[2][1] < -0.9) {
+			playing = !playing;
+		}
 		if (mouseFlags & MOUSE_RIGHTBUTTON_HOLD) {
 			cursorShader.setVector("color", glm::vec4(glm::vec3(1.0f), 0.0f));
 		} else {
@@ -164,24 +180,44 @@ int main(int argc, char** argv)
 		}
 	});
 	Model cursor = ModelLoader::loadShpFile("res/shapes/cursor.shp");
+	Model play = ModelLoader::loadShpFile("res/shapes/play.shp");
+	Model pause = ModelLoader::loadShpFile("res/shapes/pause.shp");
+
+	double acumulatedTime = 0;
+	double lastTime = glfwGetTime();
 
 	while (!glfwWindowShouldClose(window))
 	{
 		keyHandlers.handle();
 		mouseHandlers.handle();
 
+		double thisTime = glfwGetTime();
+		if (playing) {
+			acumulatedTime += thisTime - lastTime;
+		}
+		lastTime = thisTime;
+
 		// render
 		// ------
 		glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-		shaderProgram.setMatrix("transform", script->getTranscationMatrixAt(glfwGetTime()));
+		shaderProgram.setMatrix("transform", script->getTranscationMatrixAt(acumulatedTime));
 
 		shaderProgram.use();
 		shaderProgram.setMatrix("view", camera.getViewMat());
 		cube.draw(shaderProgram);
 
 		// Draw HDR
+		glClear(GL_DEPTH_BUFFER_BIT);
+		playPauseShader.setValue("z", 0);
+		if (playing) {
+			pause.draw(playPauseShader);
+		} else {
+			play.draw(playPauseShader);
+		}
+
+		// Draw cursor
 		glClear(GL_DEPTH_BUFFER_BIT);
 		cursorShader.setValue("z", 0);
 		cursorShader.setMatrix("transform", cursorTransform);
