@@ -153,8 +153,8 @@ int main(int argc, char** argv)
 	cursorShader.setVector("color", glm::vec4(1.0f));
 	cursorShader.setMatrix("transform", cursorTransform);
 	mouseHandlers.emplace_handler([&cursorTransform, &cursorShader](int mouseFlags, float x, float y, float diffx, float diffy) {
-		cursorTransform[2][0] = glm::clamp(x / SCREEN_WIDTH - 1, -1.0f, 1.0f);
-		cursorTransform[2][1] = glm::clamp(1 - y / SCREEN_HEIGHT, -1.0f, 1.0f);
+		cursorTransform[2][0] = glm::clamp(cursorTransform[2][0] + diffx / SCREEN_WIDTH, -1.0f, 1.0f);
+		cursorTransform[2][1] = glm::clamp(cursorTransform[2][1] - diffy / SCREEN_HEIGHT, -1.0f, 1.0f);
 	});
 	Model cursor = ModelLoader::loadShpFile("res/shapes/cursor.shp");
 
