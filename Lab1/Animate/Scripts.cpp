@@ -58,7 +58,6 @@ std::unique_ptr<Scripts> ScriptsLoader::loadScript(const char *filename)
     {
         if (!parser.expect('('))
         {
-            std::cerr << "ScriptsLoader: Warning: Error happened parsing the script: " << filename << std::endl;
             break;
         }
         float data[7];
