@@ -13,6 +13,7 @@
 #include "Graphics/Camera/Camera.h"
 #include "Interface/KeyHandler.h"
 #include "Interface/MouseHandler.h"
+#include "Interface/InterfaceRelatedStuffHolder.hpp"
 
 const int SCREEN_WIDTH = 800;
 const int SCREEN_HEIGHT = 600;
@@ -55,9 +56,10 @@ int main()
 	double mouseX, mouseY;
 	glfwGetCursorPos(window, &mouseX, &mouseY);
 	MouseHandlerContainer mouseHandlers(mouseX, mouseY);
-	glfwSetCursorPosCallback(window, [&mouseHandler](GLFWwindow* window, double xpos, double ypos) {
+	Holder::mouseCallback = [&mouseHandler](GLFWwindow* window, double xpos, double ypos) {
 		mouseHandlers.setPosition(xpos, ypos);
-	});
+	};
+	glfwSetCursorPosCallback(window, Holder::callback);
 	glEnable(GL_DEPTH_TEST);
 	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
