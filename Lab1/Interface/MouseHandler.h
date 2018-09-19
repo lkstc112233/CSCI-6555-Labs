@@ -15,8 +15,19 @@ class MouseHandler
 {
   private:
     std::function<void(int mouseConstants, float x, float y)> handleEvent;
-
-  public:
+    friend class MouseHandlerContainer;
 };
 
+class MouseHandlerContainer {
+  private:
+	std::vector<MouseHandler> handlers;
+
+  public:
+	void handle();
+	template <class... Args>
+	void emplace_handler(Args &&... args)
+	{
+		handlers.emplace_back(std::forward<Args>(args)...);
+	}
+};
 #endif // INTERFACE_MOUSEHANDLER_H
