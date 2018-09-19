@@ -1,5 +1,7 @@
 #include "MouseHandler.h"
 
+#include <functional>
+
 MouseHandler::MouseHandler(std::function<void(int, float, float, float, float)> handler)
 	: handleEvent(handler)
 {

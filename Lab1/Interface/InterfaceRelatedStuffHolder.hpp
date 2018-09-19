@@ -7,8 +7,8 @@
 
 class Holder {
 public:
-	static std::function<void(GLFWwindow *window, int width, int height)> mouseCallback;
-	static void callback(GLFWwindow *window, int width, int height) {
+	static std::function<void(GLFWwindow *window, double width, double height)> mouseCallback;
+	static void callback(GLFWwindow *window, double width, double height) {
 		if (mouseCallback) mouseCallback(window, width, height);
 	}
 };
