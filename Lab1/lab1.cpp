@@ -74,6 +74,8 @@ int main(int argc, char** argv)
 	MouseHandlerContainer mouseHandlers(mouseX, mouseY);
 	MouseCallbackWrapper::registerHandlerCallbacks(window, &mouseHandlers);
 	glEnable(GL_DEPTH_TEST);
+	glEnable(GL_BLEND); 
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
 	Model cube = ModelLoader::loadOffFile(argv[1]);
@@ -155,6 +157,11 @@ int main(int argc, char** argv)
 	mouseHandlers.emplace_handler([&cursorTransform, &cursorShader](int mouseFlags, float x, float y, float diffx, float diffy) {
 		cursorTransform[2][0] = glm::clamp(cursorTransform[2][0] + diffx / SCREEN_WIDTH, -1.0f, 1.0f);
 		cursorTransform[2][1] = glm::clamp(cursorTransform[2][1] - diffy / SCREEN_HEIGHT, -1.0f, 1.0f);
+		if (mouseFlags & MOUSE_RIGHTBUTTON_HOLD) {
+			cursorShader.setVector("color", glm::vec4(glm::vec3(1.0f), 0.0f));
+		} else {
+			cursorShader.setVector("color", glm::vec4(1.0f));
+		}
 	});
 	Model cursor = ModelLoader::loadShpFile("res/shapes/cursor.shp");
 
