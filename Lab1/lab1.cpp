@@ -76,7 +76,7 @@ int main(int argc, char** argv)
 	glEnable(GL_DEPTH_TEST);
 	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
-	Model cube = ModelLoader::loadFile(argv[1]);
+	Model cube = ModelLoader::loadOffFile(argv[1]);
 	if (!cube.isValid()) {
 		std::cerr << "Loading model file '" << argv[1] << "' failed." << std::endl;
 		return -1;

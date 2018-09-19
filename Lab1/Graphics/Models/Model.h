@@ -28,7 +28,7 @@ public:
 class ModelLoader
 {
 public:
-  static Model loadFile(const char *filename);
+  static Model loadOffFile(const char *filename);
 };
 
 #endif // GRAPHICS_MODELS_MODEL_H

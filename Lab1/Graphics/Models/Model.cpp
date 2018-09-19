@@ -38,7 +38,7 @@ void Model::draw(ShaderProgram &shader)
     glDrawElements(GL_TRIANGLES, indicesSize, GL_UNSIGNED_INT, 0);
 }
 
-Model ModelLoader::loadFile(const char *filename)
+Model ModelLoader::loadOffFile(const char *filename)
 {
     Model loadedModel;
     std::ifstream file(filename);
