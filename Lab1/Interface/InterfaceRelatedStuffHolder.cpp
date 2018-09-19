@@ -7,4 +7,4 @@
 
 #include "MouseHandler.h"
 
-MouseHandlerContainer* MouseCallbackWrapper::handler = nullptr;
+MouseHandlerContainer *MouseCallbackWrapper::handlers = nullptr;

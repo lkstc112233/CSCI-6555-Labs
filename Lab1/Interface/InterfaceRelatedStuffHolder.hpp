@@ -7,30 +7,48 @@
 
 #include "MouseHandler.h"
 
-class MouseCallbackWrapper {
-public:
-	static MouseHandlerContainer* handler;
-	static void callback(GLFWwindow *window, double x, double y) {
-		if (handler) {
-			handler->setPosition(x, y);
+class MouseCallbackWrapper
+{
+  private:
+	static MouseHandlerContainer *handlers;
+
+  public:
+    static void registerHandlerCallbacks(GLFWwindow *window, MouseHandlerContainer *handler) {
+		handlers = handler;
+		glfwSetCursorPosCallback(window, callback);
+		glfwSetMouseButtonCallback(window, callback);
+	}
+	static void callback(GLFWwindow *window, double x, double y)
+	{
+		if (handlers)
+		{
+			handlers->setPosition(x, y);
 		}
 	}
-	static void callback(GLFWwindow* window, int button, int action, int mods) {
-		if (handler) {
-			switch (button) {
+	static void callback(GLFWwindow *window, int button, int action, int mods)
+	{
+		if (handlers)
+		{
+			switch (button)
+			{
 			case GLFW_MOUSE_BUTTON_RIGHT:
-				if (action == GLFW_PRESS) {
-					handler->leftPress();
-				} else {
-					handler->resetLeftHoldFlag();
+				if (action == GLFW_PRESS)
+				{
+					handlers->leftPress();
+				}
+				else
+				{
+					handlers->resetLeftHoldFlag();
 				}
 				break;
 			case GLFW_MOUSE_BUTTON_LEFT:
-				if (action == GLFW_PRESS) {
-					handler->rightPress();
+				if (action == GLFW_PRESS)
+				{
+					handlers->rightPress();
 				}
-				else {
-					handler->resetRightHoldFlag();
+				else
+				{
+					handlers->resetRightHoldFlag();
 				}
 				break;
 			}
