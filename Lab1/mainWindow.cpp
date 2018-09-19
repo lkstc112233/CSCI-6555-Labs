@@ -174,14 +174,14 @@ int main()
 	Camera camera;
 
 	mouseHandlers.emplace_handler([&camera](int mouseFlags, float, float, float diffx, float diffy) {
-		//if (mouseFlags & MOUSE_RIGHTBUTTON_HOLD) {
+		if (mouseFlags & MOUSE_RIGHTBUTTON_HOLD) {
 			float sensitivity = 0.005f;
 			diffx *= sensitivity;
 			diffy *= sensitivity;
 
 			camera.turnYaw(diffx);
 			camera.turnPitch(diffy);
-		//}
+		}
 	});
 
 	KeyHandlerContainer keyHandlers(window);
