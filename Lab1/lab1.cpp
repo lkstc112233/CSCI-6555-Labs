@@ -13,6 +13,10 @@
 #include "Graphics/Camera/Camera.h"
 #include "Graphics/Models/Model.h"
 
+#include "Interface/KeyHandler.h"
+#include "Interface/MouseHandler.h"
+#include "Interface/InterfaceRelatedStuffHolder.hpp"
+
 #include "Math/Quaternion.h"
 #include "Animate/Keyframe.hpp"
 #include "Animate/Interpolate.hpp"
@@ -25,74 +29,6 @@ const float PROJECTION_RATIO = float(SCREEN_WIDTH) / SCREEN_HEIGHT;
 void framebuffer_size_callback(GLFWwindow *window, int width, int height)
 {
 	glViewport(0, 0, width, height);
-}
-
-ShaderProgram *program;
-Camera *activeCamera;
-void processInput(GLFWwindow *window)
-{
-	if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
-		glfwSetWindowShouldClose(window, true);
-	if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS)
-	{
-		glm::mat4 teapotTrans(1.0f);
-		static float angle = 0;
-		teapotTrans = glm::rotate(teapotTrans, float(angle += M_PI / 60.), glm::normalize(glm::vec3(1.0, 1.0, 1.0)));
-		program->setMatrix("transform", teapotTrans);
-	}
-	const float cameraSpeed = 0.05;
-	if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
-	{
-		activeCamera->moveForward(cameraSpeed);
-	}
-	if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
-	{
-		activeCamera->moveBackward(cameraSpeed);
-	}
-	if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
-	{
-		activeCamera->moveLeft(cameraSpeed);
-	}
-	if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
-	{
-		activeCamera->moveRight(cameraSpeed);
-	}
-	if (glfwGetKey(window, GLFW_KEY_R) == GLFW_PRESS)
-	{
-		activeCamera->moveUp(cameraSpeed);
-	}
-	if (glfwGetKey(window, GLFW_KEY_F) == GLFW_PRESS)
-	{
-		activeCamera->moveDown(cameraSpeed);
-	}
-	static bool zhandled = false;
-	if (glfwGetKey(window, GLFW_KEY_Z) == GLFW_PRESS)
-	{
-		if (!zhandled) {
-			zhandled = true;
-			if (activeCamera->isViewLocked())
-				activeCamera->unlockView();
-			else
-				activeCamera->lockView(glm::vec3(0, 0, 0));
-		}
-	} else {
-		zhandled = false;
-	}
-}
-
-double lastMouseX, lastMouseY;
-void mouse_callback(GLFWwindow* window, double xpos, double ypos) {
-	float xoffset = xpos - lastMouseX;
-	float yoffset = lastMouseY - ypos; // reversed since y-coordinates range from bottom to top
-	lastMouseX = xpos;
-	lastMouseY = ypos;
-
-	float sensitivity = 0.005f;
-	xoffset *= sensitivity;
-	yoffset *= sensitivity;
-
-	activeCamera->turnYaw(xoffset);
-	activeCamera->turnPitch(yoffset);
 }
 
 void update()
@@ -133,8 +69,10 @@ int main(int argc, char** argv)
 	}
 	glViewport(0, 0, SCREEN_WIDTH * 2, SCREEN_HEIGHT * 2);
 	glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
-	glfwGetCursorPos(window, &lastMouseX, &lastMouseY);
-	glfwSetCursorPosCallback(window, mouse_callback);
+	double mouseX, mouseY;
+	glfwGetCursorPos(window, &mouseX, &mouseY);
+	MouseHandlerContainer mouseHandlers(mouseX, mouseY);
+	MouseCallbackWrapper::registerHandlerCallbacks(window, &mouseHandlers);
 	glEnable(GL_DEPTH_TEST);
 	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
@@ -160,11 +98,53 @@ int main(int argc, char** argv)
 	shaderProgram.setMatrix("projection", projection);
 
 	Camera camera;
-	activeCamera = &camera;
+
+	mouseHandlers.emplace_handler([&camera](int mouseFlags, float, float, float diffx, float diffy) {
+		if (mouseFlags & MOUSE_RIGHTBUTTON_HOLD) {
+			float sensitivity = 0.005f;
+			diffx *= sensitivity;
+			diffy *= sensitivity;
+
+			camera.turnYaw(diffx);
+			camera.turnPitch(diffy);
+		}
+	});
+
+	KeyHandlerContainer keyHandlers(window);
+
+	const float cameraSpeed = 0.05;
+	keyHandlers.emplace_handler(GLFW_KEY_ESCAPE, [window]() {
+		glfwSetWindowShouldClose(window, true);
+	});
+	keyHandlers.emplace_handler(GLFW_KEY_W, [&camera, cameraSpeed]() {
+		camera.moveForward(cameraSpeed);
+	});
+	keyHandlers.emplace_handler(GLFW_KEY_S, [&camera, cameraSpeed]() {
+		camera.moveBackward(cameraSpeed);
+	});
+	keyHandlers.emplace_handler(GLFW_KEY_A, [&camera, cameraSpeed]() {
+		camera.moveLeft(cameraSpeed);
+	});
+	keyHandlers.emplace_handler(GLFW_KEY_D, [&camera, cameraSpeed]() {
+		camera.moveRight(cameraSpeed);
+	});
+	keyHandlers.emplace_handler(GLFW_KEY_R, [&camera, cameraSpeed]() {
+		camera.moveUp(cameraSpeed);
+	});
+	keyHandlers.emplace_handler(GLFW_KEY_F, [&camera, cameraSpeed]() {
+		camera.moveDown(cameraSpeed);
+	});
+	keyHandlers.emplace_handler(GLFW_KEY_Z, [&camera]() {
+		if (camera.isViewLocked())
+			camera.unlockView();
+		else
+			camera.lockView(glm::vec3(0, 0, 0));
+	}, true);
 
 	while (!glfwWindowShouldClose(window))
 	{
-		processInput(window);
+		keyHandlers.handle();
+		mouseHandlers.handle();
 
 		// render
 		// ------
