@@ -12,6 +12,7 @@
 #include "Graphics/Texture/Texture.h"
 #include "Graphics/Camera/Camera.h"
 #include "Interface/KeyHandler.h"
+#include "Interface/MouseHandler.h"
 
 const int SCREEN_WIDTH = 800;
 const int SCREEN_HEIGHT = 600;
@@ -20,22 +21,6 @@ const float PROJECTION_RATIO = float(SCREEN_WIDTH) / SCREEN_HEIGHT;
 void framebuffer_size_callback(GLFWwindow *window, int width, int height)
 {
 	glViewport(0, 0, width, height);
-}
-
-Camera* activeCamera;
-double lastMouseX, lastMouseY;
-void mouse_callback(GLFWwindow* window, double xpos, double ypos) {
-	float xoffset = xpos - lastMouseX;
-	float yoffset = lastMouseY - ypos; // reversed since y-coordinates range from bottom to top
-	lastMouseX = xpos;
-	lastMouseY = ypos;
-
-	float sensitivity = 0.005f;
-	xoffset *= sensitivity;
-	yoffset *= sensitivity;
-
-	activeCamera->turnYaw(xoffset);
-	activeCamera->turnPitch(yoffset);
 }
 
 void update()
@@ -67,8 +52,12 @@ int main()
 	}
 	glViewport(0, 0, SCREEN_WIDTH * 2, SCREEN_HEIGHT * 2);
 	glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
-	glfwGetCursorPos(window, &lastMouseX, &lastMouseY);
-	glfwSetCursorPosCallback(window, mouse_callback);
+	double mouseX, mouseY;
+	glfwGetCursorPos(window, &mouseX, &mouseY);
+	MouseHandlerContainer mouseHandlers(mouseX, mouseY);
+	glfwSetCursorPosCallback(window, [&mouseHandler](GLFWwindow* window, double xpos, double ypos) {
+		mouseHandlers.setPosition(xpos, ypos);
+	});
 	glEnable(GL_DEPTH_TEST);
 	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
@@ -184,7 +173,17 @@ int main()
 	teapotShaderProgram.setVector("lightColor", glm::vec3(1.0f));
 
 	Camera camera;
-	activeCamera = &camera;
+
+	mouseHandlers.emplace_handler([&camera](int mouseFlags, float, float, float diffx, float diffy) {
+		//if (mouseFlags & MOUSE_RIGHTBUTTON_HOLD) {
+			float sensitivity = 0.005f;
+			diffx *= sensitivity;
+			diffy *= sensitivity;
+
+			camera.turnYaw(diffx);
+			camera.turnPitch(diffy);
+		//}
+	});
 
 	KeyHandlerContainer keyHandlers(window);
 
@@ -226,6 +225,7 @@ int main()
 	while (!glfwWindowShouldClose(window))
 	{
 		keyHandlers.handle();
+		mouseHandlers.handle();
 
 		// render
 		// ------
