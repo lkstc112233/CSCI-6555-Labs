@@ -1,5 +1,21 @@
 #include "MouseHandler.h"
 
+MouseHandler::MouseHandler(std::function<void(int, float, float, float, float)> handler)
+	: handleEvent(handler)
+{
+}
+
+MouseHandler::MouseHandler(std::function<void(int, float, float)> handler)
+	: handleEvent([handler](int mouseFlags, float x, float y, float, float) { handler(mouseFlags, x, y); })
+{
+}
+
+MouseHandler::MouseHandler(std::function<void(int)> handler)
+	: handleEvent([handler](int mouseFlags, float, float, float, float) { handler(mouseFlags); })
+{
+}
+
+
 void MouseHandlerContainer::setScrollUpFlag() {
 	flags |= MOUSE_SCROLLED_UP_PRESSED;
 }
