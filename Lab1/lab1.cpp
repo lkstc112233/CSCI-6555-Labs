@@ -147,10 +147,10 @@ int main(int argc, char** argv)
 		Shader::createVertexShader("res/shaders/2DShader.vert"),
 		Shader::createFragmentShader("res/shaders/2DShader.frag")};
 	glm::mat3 buttonTransform(1.0f);
-	buttonTransform[0][0] = 0.2;
-	buttonTransform[1][1] = 0.2;
-	buttonTransform[2][0] = -0.9;
-	buttonTransform[2][1] = -0.9;
+	buttonTransform[0][0] = 0.1;
+	buttonTransform[1][1] = 0.1;
+	buttonTransform[2][0] = -0.95;
+	buttonTransform[2][1] = -0.95;
 	playPauseShader.setVector("color", glm::vec4(1.0f));
 	playPauseShader.setMatrix("transform", buttonTransform);
 	bool playing = true;
