@@ -41,13 +41,15 @@ void MouseHandlerContainer::resetRightHoldFlag() {
 }
 
 void MouseHandlerContainer::setPosition(float xi, float yi) {
+	diffx = xi - x;
+	diffy = yi - y;
 	x = xi;
 	y = yi;
 }
 
 void MouseHandlerContainer::handle() {
 	for (auto& handler : handlers) {
-		handler.handleEvent(flags, x, y);
+		handler.handleEvent(flags, x, y, diffx, diffy);
 	}
 	// Reset One-time Flags.
 	flags &= ~(
@@ -55,4 +57,5 @@ void MouseHandlerContainer::handle() {
 		MOUSE_RIGHTBUTTON_PRESSED |
 		MOUSE_SCROLLED_UP_PRESSED |
 		MOUSE_SCROLLED_DOWN_PRESSED);
+	diffx = diffy = 0;
 }
