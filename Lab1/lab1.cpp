@@ -89,7 +89,6 @@ int main(int argc, char** argv)
 	{
 		return -4;
 	}
-	program = &shaderProgram;
 	shaderProgram.setMatrix("transform", glm::mat4(1.0f));
 
 	glm::mat4 projection(1.0f);
@@ -151,7 +150,7 @@ int main(int argc, char** argv)
 		glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-		program->setMatrix("transform", script->getTranscationMatrixAt(glfwGetTime()));
+		shaderProgram.setMatrix("transform", script->getTranscationMatrixAt(glfwGetTime()));
 
 		shaderProgram.use();
 		shaderProgram.setMatrix("view", camera.getViewMat());
