@@ -9,7 +9,7 @@
 
 class MouseCallbackWrapper {
 public:
-	static MouseHandler* handler;
+	static MouseHandlerContainer* handler;
 	static void callback(GLFWwindow *window, double x, double y) {
 		if (handler) {
 			handler->setPosition(x, y);

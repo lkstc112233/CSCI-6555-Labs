@@ -5,4 +5,6 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
-MouseHandler* MouseCallbackHolder::handler = nullptr;
+#include "MouseHandler.h"
+
+MouseHandlerContainer* MouseCallbackWrapper::handler = nullptr;
