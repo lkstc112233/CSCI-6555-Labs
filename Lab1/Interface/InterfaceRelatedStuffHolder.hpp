@@ -31,7 +31,7 @@ class MouseCallbackWrapper
 		{
 			switch (button)
 			{
-			case GLFW_MOUSE_BUTTON_RIGHT:
+			case GLFW_MOUSE_BUTTON_LEFT:
 				if (action == GLFW_PRESS)
 				{
 					handlers->leftPress();
@@ -41,7 +41,7 @@ class MouseCallbackWrapper
 					handlers->resetLeftHoldFlag();
 				}
 				break;
-			case GLFW_MOUSE_BUTTON_LEFT:
+			case GLFW_MOUSE_BUTTON_RIGHT:
 				if (action == GLFW_PRESS)
 				{
 					handlers->rightPress();
