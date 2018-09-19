@@ -1,6 +1,7 @@
 #ifndef INTERFACE_MOUSEHANDLER_H
 #define INTERFACE_MOUSEHANDLER_H
 
+#include <vector>
 #include <functional>
 
 enum MouseConstants
