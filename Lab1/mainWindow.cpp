@@ -56,10 +56,8 @@ int main()
 	double mouseX, mouseY;
 	glfwGetCursorPos(window, &mouseX, &mouseY);
 	MouseHandlerContainer mouseHandlers(mouseX, mouseY);
-	Holder::mouseCallback = [&mouseHandlers](GLFWwindow* window, double xpos, double ypos) {
-		mouseHandlers.setPosition(xpos, ypos);
-	};
-	glfwSetCursorPosCallback(window, &Holder::callback);
+	MouseCallbackWrapper::handler = &mouseHandlers;
+	glfwSetCursorPosCallback(window, &MouseCallbackWrapper::callback);
 	glEnable(GL_DEPTH_TEST);
 	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
