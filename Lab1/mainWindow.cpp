@@ -18,11 +18,6 @@
 
 const float PROJECTION_RATIO = float(SCREEN_WIDTH) / SCREEN_HEIGHT;
 
-void framebuffer_size_callback(GLFWwindow *window, int width, int height)
-{
-	glViewport(0, 0, width, height);
-}
-
 void update()
 {
 }
