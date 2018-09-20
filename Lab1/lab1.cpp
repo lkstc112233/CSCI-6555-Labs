@@ -80,6 +80,7 @@ int main(int argc, char** argv)
 	playPauseShader.setVector("color", glm::vec4(1.0f));
 	bool playing = true;
 
+	Object2D cursor(ModelLoader::loadShpFile("res/shapes/cursor.shp"));
 	ShaderProgram cursorShader{
 		Shader::createVertexShader("res/shaders/2DShader.vert"),
 		Shader::createFragmentShader("res/shaders/2DShader.frag")};
@@ -87,14 +88,14 @@ int main(int argc, char** argv)
 	{
 		return -4;
 	}
-	glm::mat3 cursorTransform(1.0f);
 	cursorTransform[2][0] = mouseX / SCREEN_WIDTH - 1;
 	cursorTransform[2][1] = mouseY / SCREEN_HEIGHT - 1;
 	cursorShader.setVector("color", glm::vec4(1.0f));
 	cursorShader.setMatrix("transform", cursorTransform);
-	mouseHandlers.emplace_handler([&cursorTransform, &cursorShader, &playing](int mouseFlags, float clampedx, float clampedy) {
-		cursorTransform[2][0] = glm::clamp(clampedx / SCREEN_WIDTH, -1.0f, 1.0f);
-		cursorTransform[2][1] = glm::clamp(clampedy / SCREEN_HEIGHT, -1.0f, 1.0f);
+	mouseHandlers.emplace_handler([&cursor, &cursorShader, &playing](int mouseFlags, float clampedx, float clampedy) {
+		glm::mat3 cursorTransform(1.0f);
+		cursorTransform[2][0] = clampedx / SCREEN_WIDTH;
+		cursorTransform[2][1] = clampedy / SCREEN_HEIGHT;
 		if (mouseFlags & MOUSE_LEFTBUTTON_PRESSED && cursorTransform[2][0] < -0.9 && cursorTransform[2][1] < -0.9) {
 			playing = !playing;
 		}
@@ -104,7 +105,6 @@ int main(int argc, char** argv)
 			cursorShader.setVector("color", glm::vec4(1.0f));
 		}
 	}); 
-	Object2D cursor(ModelLoader::loadShpFile("res/shapes/cursor.shp"));
 	Object2D play(ModelLoader::loadShpFile("res/shapes/play.shp"));
 	Object2D pause(ModelLoader::loadShpFile("res/shapes/pause.shp"));
 	glm::mat3 buttonTransform(1.0f);
