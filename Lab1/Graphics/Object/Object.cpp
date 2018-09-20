@@ -25,7 +25,7 @@ void Object3D::draw(ShaderProgram& shader) {
 }
 
 Object2D::Object2D(const Model &modeli)
-    : model(modeli), transform(1.0f), z(0)
+    : model(modeli), transform(1.0f), color(1.0f), z(0)
 {
 	if (modeli.getDimensions() != 2) {
 		throw "INCAPABLE_DIMENSION";
@@ -34,6 +34,22 @@ Object2D::Object2D(const Model &modeli)
 
 void Object2D::setTransformMatrix(const glm::mat3& transformi) {
 	transform = transformi;
+}
+
+void Object2D::setColor(const glm::vec3& colori) {
+	color = colori;
+}
+
+void Object2D::setR(float r) {
+	color.r = r;
+}
+
+void Object2D::setG(float g) {
+	color.g = g;
+}
+
+void Object2D::setB(float b) {
+	color.b = b;
 }
 
 void Object2D::setZ(float zi) {
@@ -46,6 +62,7 @@ void Object2D::setOpacity(float opacityi) {
 
 void Object2D::draw(ShaderProgram& shader) {
 	shader.setMatrix("transform", transform);
+	shader.setVector("color", color);
 	shader.setValue("z", z);
 	shader.setValue("opacity", opacity);
 	model.draw(shader);

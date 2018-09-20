@@ -23,12 +23,17 @@ class Object2D
 private:
 	const Model &model;
 	glm::mat3 transform;
+	glm::vec3 color;
 	float z;
 	float opacity = 1.0;
 
 public:
 	Object2D(const Model &model);
 	void setTransformMatrix(const glm::mat3& transform);
+	void setColor(const glm::vec3& color);
+	void setR(float r);
+	void setG(float g);
+	void setB(float b);
 	void setZ(float z);
 	void setOpacity(float opacity);
 	void draw(ShaderProgram& shader);
