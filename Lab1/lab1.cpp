@@ -184,7 +184,6 @@ int main(int argc, char** argv)
 
 		// Draw cursor
 		glClear(GL_DEPTH_BUFFER_BIT);
-		cursorShader.setValue("z", 0);
 		cursorShader.setMatrix("transform", cursorTransform);
 		cursor.draw(cursorShader);
 
