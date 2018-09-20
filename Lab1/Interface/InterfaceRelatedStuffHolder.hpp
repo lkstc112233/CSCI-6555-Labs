@@ -6,6 +6,10 @@
 #include <GLFW/glfw3.h>
 
 #include "MouseHandler.h"
+#include "KeyHandler.h"
+#include "../Graphics/Camera/Camera.h"
+
+void attachCameraControls(KeyHandlerContainer& keyContainer, MouseHandlerContainer& mouseContainer, Camera &camera);
 
 class MouseCallbackWrapper
 {

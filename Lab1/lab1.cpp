@@ -100,39 +100,12 @@ int main(int argc, char** argv)
 
 	Camera camera;
 
-	mouseHandlers.emplace_handler([&camera](int mouseFlags, float, float, float diffx, float diffy) {
-		if (mouseFlags & MOUSE_RIGHTBUTTON_HOLD) {
-			float sensitivity = 0.005f;
-			diffx *= sensitivity;
-			diffy *= sensitivity;
-
-			camera.turnYaw(diffx);
-			camera.turnPitch(diffy);
-		}
-	});
-
 	KeyHandlerContainer keyHandlers(window);
+
+	attachCameraControls(keyHandlers, MouseHandlers, camera);
 
 	keyHandlers.emplace_handler(GLFW_KEY_ESCAPE, [window]() {
 		glfwSetWindowShouldClose(window, true);
-	});
-	keyHandlers.emplace_handler(GLFW_KEY_W, [&camera]() {
-		camera.moveForward();
-	});
-	keyHandlers.emplace_handler(GLFW_KEY_S, [&camera]() {
-		camera.moveBackward();
-	});
-	keyHandlers.emplace_handler(GLFW_KEY_A, [&camera]() {
-		camera.moveLeft();
-	});
-	keyHandlers.emplace_handler(GLFW_KEY_D, [&camera]() {
-		camera.moveRight();
-	});
-	keyHandlers.emplace_handler(GLFW_KEY_R, [&camera]() {
-		camera.moveUp();
-	});
-	keyHandlers.emplace_handler(GLFW_KEY_F, [&camera]() {
-		camera.moveDown();
 	});
 	keyHandlers.emplace_handler(GLFW_KEY_Z, [&camera]() {
 		if (camera.isViewLocked())
