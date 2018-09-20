@@ -109,6 +109,10 @@ int main(int argc, char** argv)
 
 	double acumulatedTime = 0;
 	double lastTime = glfwGetTime();
+	Object2D playedProgressBar(ModelLoader::getUnitSquareShape());
+	playedProgressBar.setColor(glm::vec3(1.0, 0, 0));
+	Object2D unplayedProgressBar(ModelLoader::getUnitSquareShape());
+	unplayedProgressBar.setColor(glm::vec3(0.9));
 
 	while (!glfwWindowShouldClose(window))
 	{
@@ -120,6 +124,8 @@ int main(int argc, char** argv)
 			acumulatedTime += thisTime - lastTime;
 		}
 		lastTime = thisTime;
+
+		float timeRate = fmod(acumulatedTime, script->getMaximumTime()) / script->getMaximumTime();
 
 		// render
 		// ------
@@ -138,6 +144,10 @@ int main(int argc, char** argv)
 		} else {
 			play.draw(hudShader);
 		}
+		playedProgressBar.setTransformMatrix(glm::mat3{{timeRate * 1.833, 0, 0}, {0, 0.033 ,0}, {-0.867, -0.967, 1}});
+		playedProgressBar.draw(hudShader);
+		unplayedProgressBar.setTransformMatrix(glm::mat3{{1.833 - timeRate * 1.833, 0, 0}, {0, 0.033 ,0}, { timeRate *  1.833 - 0.867, -0.967, 1}});
+		unplayedProgressBar.draw(hudShader);
 
 		// Draw cursor
 		glClear(GL_DEPTH_BUFFER_BIT);
