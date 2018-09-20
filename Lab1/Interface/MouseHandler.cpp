@@ -27,8 +27,8 @@ MouseHandlerContainer::MouseHandlerContainer(float xi, float yi, float xClampi, 
 	, yClamp(yClampi)
 	, diffx(0)
 	, diffy(0)
-	, clampedx(glm::clamp(x, 0.0f, xClampi))
-	, clampedy(glm::clamp(y, 0.0f, yClampi))
+	, clampedx(glm::clamp(x, -xClampi, xClampi))
+	, clampedy(glm::clamp(y, -yClampi, yClampi))
 {
 }
 
@@ -59,8 +59,8 @@ void MouseHandlerContainer::resetRightHoldFlag() {
 void MouseHandlerContainer::setPosition(float xi, float yi) {
 	diffx += xi - x;
 	diffy += yi - y;
-	clampedx = glm::clamp(clampedx + diffx, 0.0f, xClamp);
-	clampedy = glm::clamp(clampedy + diffy, 0.0f, yClamp);
+	clampedx = glm::clamp(clampedx + diffx, -xClamp, xClamp);
+	clampedy = glm::clamp(clampedy - diffy, -yClamp, yClamp); // invert y diff since the mouse uses a different coordinate system.
 	x = xi;
 	y = yi;
 }
