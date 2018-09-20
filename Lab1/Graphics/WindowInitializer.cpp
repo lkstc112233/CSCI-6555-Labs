@@ -1,5 +1,7 @@
 #include "WindowInitializer.h"
 
+#include <iostream>
+
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
@@ -8,7 +10,7 @@ void framebuffer_size_callback(GLFWwindow *window, int width, int height)
 	glViewport(0, 0, width, height);
 }
 
-GLFWwindow *initializeWindow(const char* title, int width = SCREEN_WIDTH, int height = SCREEN_HEIGHT) {
+GLFWwindow *initializeWindow(const char* title, int width, int height) {
 	if (!glfwInit())
 	{
 		std::cerr << "GLFW initialize failed" << std::endl;
