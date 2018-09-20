@@ -20,6 +20,12 @@ void ScriptsImplementation<T>::addKeyframe(const Keyframe<T> keyframe)
 }
 
 template <typename T>
+float ScriptsImplementation<T>::getMaximumTime()
+{
+    return keyframes.size() - 3;
+}
+
+template <typename T>
 glm::mat4 ScriptsImplementation<T>::getTranscationMatrixAt(float time)
 {
     // TODO: implement keyframe speed.
