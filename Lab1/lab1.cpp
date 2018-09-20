@@ -13,6 +13,7 @@
 #include "Graphics/Texture/Texture.h"
 #include "Graphics/Camera/Camera.h"
 #include "Graphics/Models/Model.h"
+#include "Graphics/Object/Object.h"
 
 #include "Interface/KeyHandler.h"
 #include "Interface/MouseHandler.h"
@@ -48,11 +49,7 @@ int main(int argc, char** argv)
 	MouseHandlerContainer mouseHandlers(mouseX, mouseY);
 	MouseCallbackWrapper::registerHandlerCallbacks(window, &mouseHandlers);
 
-	Model cube = ModelLoader::loadOffFile(argv[1]);
-	if (!cube.isValid()) {
-		std::cerr << "Loading model file '" << argv[1] << "' failed." << std::endl;
-		return -1;
-	}
+	Object3D cube(ModelLoader::loadOffFile(argv[1]));
 
 	ShaderProgram shaderProgram{
 		Shader::createVertexShader("res/shaders/simpleShader.vert"),
@@ -61,11 +58,8 @@ int main(int argc, char** argv)
 	{
 		return -4;
 	}
-	shaderProgram.setMatrix("transform", glm::mat4(1.0f));
-
 	glm::mat4 projection(1.0f);
 	projection = glm::perspective(glm::radians(45.0f), PROJECTION_RATIO, 0.1f, 100.0f);
-
 	shaderProgram.setMatrix("projection", projection);
 
 	Camera camera;
@@ -137,9 +131,8 @@ int main(int argc, char** argv)
 		glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-		shaderProgram.setMatrix("transform", script->getTranscationMatrixAt(acumulatedTime));
+		cube.setTransformMatrix(script->getTranscationMatrixAt(acumulatedTime));
 
-		shaderProgram.use();
 		shaderProgram.setMatrix("view", camera.getViewMat());
 		cube.draw(shaderProgram);
 
