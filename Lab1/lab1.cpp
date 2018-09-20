@@ -22,14 +22,7 @@
 #include "Animate/Interpolate.hpp"
 #include "Animate/Scripts.h"
 
-const int SCREEN_WIDTH = 800;
-const int SCREEN_HEIGHT = 600;
 const float PROJECTION_RATIO = float(SCREEN_WIDTH) / SCREEN_HEIGHT;
-
-void framebuffer_size_callback(GLFWwindow *window, int width, int height)
-{
-	glViewport(0, 0, width, height);
-}
 
 void update()
 {
@@ -43,40 +36,15 @@ int main(int argc, char** argv)
 
 	auto script = ScriptsLoader::loadScript(argv[2]);
 
-	if (!glfwInit())
-	{
-		std::cerr << "GLFW initialize failed" << std::endl;
+	GLFWwindow *window = initializeWindow("Lab1");
+	if (!window) {
 		return -1;
 	}
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 1);
-	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-	glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 
-	GLFWwindow *window = glfwCreateWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "LearnOpenGL", NULL, NULL);
-	if (window == NULL)
-	{
-		std::cerr << "Error occurred creating window." << std::endl;
-		glfwTerminate();
-		return -1;
-	}
-	glfwMakeContextCurrent(window);
-
-	if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
-	{
-		std::cerr << "GLAD initialize failed" << std::endl;
-		return -1;
-	}
-	glViewport(0, 0, SCREEN_WIDTH * 2, SCREEN_HEIGHT * 2);
-	glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
 	double mouseX, mouseY;
 	glfwGetCursorPos(window, &mouseX, &mouseY);
 	MouseHandlerContainer mouseHandlers(mouseX, mouseY);
 	MouseCallbackWrapper::registerHandlerCallbacks(window, &mouseHandlers);
-	glEnable(GL_DEPTH_TEST);
-	glEnable(GL_BLEND); 
-	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
 	Model cube = ModelLoader::loadOffFile(argv[1]);
 	if (!cube.isValid()) {
