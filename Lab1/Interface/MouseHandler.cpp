@@ -59,7 +59,7 @@ void MouseHandlerContainer::setPosition(float xi, float yi) {
 
 void MouseHandlerContainer::handle() {
 	for (auto& handler : handlers) {
-		handler.handleEvent(flags, x, y, diffx, diffy);
+		handler.handleEvent(flags, diffx, diffy, x, y);
 	}
 	// Reset One-time Flags.
 	flags &= ~(
