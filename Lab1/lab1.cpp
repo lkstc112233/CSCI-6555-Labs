@@ -74,45 +74,38 @@ int main(int argc, char** argv)
 		glfwSetWindowShouldClose(window, true);
 	});
 
-	ShaderProgram playPauseShader{
+	ShaderProgram hudShader{
 		Shader::createVertexShader("res/shaders/2DShader.vert"),
 		Shader::createFragmentShader("res/shaders/2DShader.frag")};
-	glm::mat3 buttonTransform(1.0f);
-	buttonTransform[0][0] = 0.1;
-	buttonTransform[1][1] = 0.1;
-	buttonTransform[2][0] = -0.95;
-	buttonTransform[2][1] = -0.95;
-	playPauseShader.setVector("color", glm::vec4(1.0f));
-	playPauseShader.setMatrix("transform", buttonTransform);
 	bool playing = true;
 
-	ShaderProgram cursorShader{
-		Shader::createVertexShader("res/shaders/2DShader.vert"),
-		Shader::createFragmentShader("res/shaders/2DShader.frag")};
-	if (!cursorShader.isValid())
+	Object2D cursor(ModelLoader::loadShpFile("res/shapes/cursor.shp"));
+	if (!hudShader.isValid())
 	{
 		return -4;
 	}
-	glm::mat3 cursorTransform(1.0f);
-	cursorTransform[2][0] = mouseX / SCREEN_WIDTH - 1;
-	cursorTransform[2][1] = mouseY / SCREEN_HEIGHT - 1;
-	cursorShader.setVector("color", glm::vec4(1.0f));
-	cursorShader.setMatrix("transform", cursorTransform);
-	mouseHandlers.emplace_handler([&cursorTransform, &cursorShader, &playing](int mouseFlags, float clampedx, float clampedy) {
-		cursorTransform[2][0] = glm::clamp(clampedx / SCREEN_WIDTH, -1.0f, 1.0f);
-		cursorTransform[2][1] = glm::clamp(clampedy / SCREEN_HEIGHT, -1.0f, 1.0f);
-		if (mouseFlags & MOUSE_LEFTBUTTON_PRESSED && cursorTransform[2][0] < -0.9 && cursorTransform[2][1] < -0.9) {
+	mouseHandlers.emplace_handler([&cursor](int mouseFlags, float clampedx, float clampedy) {
+		glm::mat3 cursorTransform(1.0f);
+		cursorTransform[2] = { clampedx / SCREEN_WIDTH, clampedy / SCREEN_HEIGHT, 1.0};
+		cursor.setTransformMatrix(cursorTransform);
+		if (mouseFlags & MOUSE_RIGHTBUTTON_HOLD) {
+			cursor.setOpacity(0.0f);
+		} else {
+			cursor.setOpacity(1.0f);
+		}
+	}); 
+	Object2D play(ModelLoader::loadShpFile("res/shapes/play.shp"));
+	Object2D pause(ModelLoader::loadShpFile("res/shapes/pause.shp"));
+	glm::mat3 buttonTransform{{0.1, 0, 0}, {0, 0.1, 0}, {-0.95, -0.95, 1}};
+	play.setTransformMatrix(buttonTransform);
+	pause.setTransformMatrix(buttonTransform);
+	mouseHandlers.emplace_handler([&playing](int mouseFlags, float clampedx, float clampedy) {
+		float x = clampedx / SCREEN_WIDTH;
+		float y = clampedy / SCREEN_HEIGHT;
+		if ((mouseFlags & MOUSE_LEFTBUTTON_PRESSED) && x < -0.9 && y < -0.9) {
 			playing = !playing;
 		}
-		if (mouseFlags & MOUSE_RIGHTBUTTON_HOLD) {
-			cursorShader.setVector("color", glm::vec4(glm::vec3(1.0f), 0.0f));
-		} else {
-			cursorShader.setVector("color", glm::vec4(1.0f));
-		}
 	});
-	Model cursor = ModelLoader::loadShpFile("res/shapes/cursor.shp");
-	Model play = ModelLoader::loadShpFile("res/shapes/play.shp");
-	Model pause = ModelLoader::loadShpFile("res/shapes/pause.shp");
 
 	double acumulatedTime = 0;
 	double lastTime = glfwGetTime();
@@ -140,17 +133,15 @@ int main(int argc, char** argv)
 
 		// Draw HDR
 		glClear(GL_DEPTH_BUFFER_BIT);
-		playPauseShader.setValue("z", 0);
 		if (playing) {
-			pause.draw(playPauseShader);
+			pause.draw(hudShader);
 		} else {
-			play.draw(playPauseShader);
+			play.draw(hudShader);
 		}
 
 		// Draw cursor
 		glClear(GL_DEPTH_BUFFER_BIT);
-		cursorShader.setMatrix("transform", cursorTransform);
-		cursor.draw(cursorShader);
+		cursor.draw(hudShader);
 
 		glfwSwapBuffers(window);
 		glfwPollEvents();
