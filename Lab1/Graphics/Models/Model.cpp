@@ -163,3 +163,37 @@ Model ModelLoader::loadShpFile(const char *filename)
 	loadedModel.valid = true;
     return loadedModel;
 }
+
+const Model ModelLoader::unitSquareShape;
+const float UNIT_SQUARE_VERTEXES[] =
+{
+	0, 0,
+	0, 1,
+	1, 0,
+	1, 1
+};
+const unsigned UNIT_SQUARE_INDICES[] =
+{
+	0, 1, 3,
+	0, 3, 2,
+};
+
+const Model& ModelLoader::getUnitSquareShape()
+{
+	if (unitSquareShape.isValid()) {
+		return unitSquareShape;
+	}
+	unitSquareShape.valid = true;
+	unitSquareShape.dimensions = 2;
+	int indicesCount = 1;
+
+	glBindVertexArray(unitSquareShape.VAO);
+	glBindBuffer(GL_ARRAY_BUFFER, unitSquareShape.VBO);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(UNIT_SQUARE_VERTEXES), UNIT_SQUARE_VERTEXES, GL_STATIC_DRAW);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, unitSquareShape.EBO);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(UNIT_SQUARE_INDICES), UNIT_SQUARE_INDICES, GL_STATIC_DRAW);
+	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), (void *)0);
+	glEnableVertexAttribArray(0);
+
+	return unitSquareShape;
+}

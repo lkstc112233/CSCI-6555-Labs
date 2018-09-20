@@ -29,7 +29,10 @@ public:
 
 class ModelLoader
 {
+private:
+  static Model unitSquareShape;
 public:
+  static Model getUnitSquareShape();
   static Model loadOffFile(const char *filename);
   static Model loadShpFile(const char *filename);
 };
