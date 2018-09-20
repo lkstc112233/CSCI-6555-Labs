@@ -1,7 +1,8 @@
 #include "MouseHandler.h"
 
 #include <functional>
-#include <cmath>
+
+#include <glm/glm.hpp>
 
 MouseHandler::MouseHandler(std::function<void(int, float, float, float, float)> handler)
 	: handleEvent(handler)
@@ -26,8 +27,8 @@ MouseHandlerContainer::MouseHandlerContainer(float xi, float yi, float xClampi, 
 	, yClamp(yClampi)
 	, diffx(0)
 	, diffy(0)
-	, clampedx(clamp(x, 0, xClampi))
-	, clampedy(clamp(y, 0, yClampi))
+	, clampedx(glm::clamp(x, 0.0f, xClampi))
+	, clampedy(glm::clamp(y, 0.0f, yClampi))
 {
 }
 
@@ -58,8 +59,8 @@ void MouseHandlerContainer::resetRightHoldFlag() {
 void MouseHandlerContainer::setPosition(float xi, float yi) {
 	diffx += xi - x;
 	diffy += yi - y;
-	clampedx = clamp(clampedx + diffx, 0, xClamp);
-	clampedy = clamp(clampedy + diffy, 0, yClamp);
+	clampedx = glm::clamp(clampedx + diffx, 0.0f, xClamp);
+	clampedy = glm::clamp(clampedy + diffy, 0.0f, yClamp);
 	x = xi;
 	y = yi;
 }
