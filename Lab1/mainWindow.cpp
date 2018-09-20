@@ -16,8 +16,6 @@
 #include "Interface/MouseHandler.h"
 #include "Interface/InterfaceRelatedStuffHolder.hpp"
 
-const int SCREEN_WIDTH = 800;
-const int SCREEN_HEIGHT = 600;
 const float PROJECTION_RATIO = float(SCREEN_WIDTH) / SCREEN_HEIGHT;
 
 void framebuffer_size_callback(GLFWwindow *window, int width, int height)
