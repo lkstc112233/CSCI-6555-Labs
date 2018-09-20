@@ -74,16 +74,13 @@ int main(int argc, char** argv)
 		glfwSetWindowShouldClose(window, true);
 	});
 
-	ShaderProgram playPauseShader{
+	ShaderProgram hudShader{
 		Shader::createVertexShader("res/shaders/2DShader.vert"),
 		Shader::createFragmentShader("res/shaders/2DShader.frag")};
 	bool playing = true;
 
 	Object2D cursor(ModelLoader::loadShpFile("res/shapes/cursor.shp"));
-	ShaderProgram cursorShader{
-		Shader::createVertexShader("res/shaders/2DShader.vert"),
-		Shader::createFragmentShader("res/shaders/2DShader.frag")};
-	if (!cursorShader.isValid())
+	if (!hudShader.isValid())
 	{
 		return -4;
 	}
@@ -136,16 +133,15 @@ int main(int argc, char** argv)
 
 		// Draw HDR
 		glClear(GL_DEPTH_BUFFER_BIT);
-		playPauseShader.setValue("z", 0);
 		if (playing) {
-			pause.draw(playPauseShader);
+			pause.draw(hudShader);
 		} else {
-			play.draw(playPauseShader);
+			play.draw(hudShader);
 		}
 
 		// Draw cursor
 		glClear(GL_DEPTH_BUFFER_BIT);
-		cursor.draw(cursorShader);
+		cursor.draw(hudShader);
 
 		glfwSwapBuffers(window);
 		glfwPollEvents();
