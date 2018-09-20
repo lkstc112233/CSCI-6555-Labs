@@ -4,14 +4,16 @@
 #include <glm/glm.hpp>
 #include "../Models/Model.h"
 
-class Object
+class Object3D
 {
   private:
     const Model &model;
+	glm::mat4 transform;
 
   public:
-    Object(const Model &model);
-    glm::mat4 transform;
+	Object3D(const Model &model);
+	void setTransformMatrix(const glm::mat4& transform);
+	void draw(ShaderProgram& shader);
 };
 
 #endif // GRAPHICS_OBJECT_OBJECT_H
