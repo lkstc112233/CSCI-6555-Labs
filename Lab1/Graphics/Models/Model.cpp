@@ -41,6 +41,7 @@ void Model::draw(ShaderProgram &shader)
 Model ModelLoader::loadOffFile(const char *filename)
 {
     Model loadedModel;
+	loadedModel.dimensions = 3;
     std::ifstream file(filename);
     std::string type;
     if (!(file >> type))
@@ -105,6 +106,7 @@ Model ModelLoader::loadOffFile(const char *filename)
 Model ModelLoader::loadShpFile(const char *filename)
 {
     Model loadedModel;
+	loadedModel.dimensions = 2;
     std::ifstream file(filename);
     std::string type;
     if (!(file >> type))

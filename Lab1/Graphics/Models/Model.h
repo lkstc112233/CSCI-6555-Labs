@@ -10,6 +10,7 @@ class Model
 private:
   friend class ModelLoader;
   float *vertexes = nullptr;
+  int dimensions = 0;
   unsigned *indices = nullptr;
   int indicesSize = 0;
   bool valid = true;
@@ -22,6 +23,7 @@ public:
   ~Model();
   Model(Model &&);
   void draw(ShaderProgram &shader);
+  int getDimensions() { return dimensions; }
   bool isValid() { return valid; }
 };
 
