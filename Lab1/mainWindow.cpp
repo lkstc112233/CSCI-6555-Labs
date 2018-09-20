@@ -173,7 +173,7 @@ int main()
 
 	Camera camera;
 
-	mouseHandlers.emplace_handler([&camera](int mouseFlags, float, float, float diffx, float diffy) {
+	mouseHandlers.emplace_handler([&camera](int mouseFlags, float diffx, float diffy) {
 		if (mouseFlags & MOUSE_RIGHTBUTTON_HOLD) {
 			float sensitivity = 0.005f;
 			diffx *= sensitivity;
