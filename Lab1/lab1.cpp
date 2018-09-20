@@ -99,8 +99,8 @@ int main(int argc, char** argv)
 	cursorShader.setVector("color", glm::vec4(1.0f));
 	cursorShader.setMatrix("transform", cursorTransform);
 	mouseHandlers.emplace_handler([&cursorTransform, &cursorShader, &playing](int mouseFlags, float clampedx, float clampedy) {
-		cursorTransform[2][0] = glm::clamp(clampedx / SCREEN_WIDTH, -1.0f, 1.0f);
-		cursorTransform[2][1] = glm::clamp(clampedy / SCREEN_HEIGHT, -1.0f, 1.0f);
+		cursorTransform[2][0] = clampedx / SCREEN_WIDTH;
+		cursorTransform[2][1] = clampedy / SCREEN_HEIGHT;
 		if (mouseFlags & MOUSE_LEFTBUTTON_PRESSED && cursorTransform[2][0] < -0.9 && cursorTransform[2][1] < -0.9) {
 			playing = !playing;
 		}
