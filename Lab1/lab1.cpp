@@ -92,9 +92,9 @@ int main(int argc, char** argv)
 		cursorTransform[2] = { clampedx / SCREEN_WIDTH, clampedy / SCREEN_HEIGHT, 1.0};
 		cursor.setTransformMatrix(cursorTransform);
 		if (mouseFlags & MOUSE_RIGHTBUTTON_HOLD) {
-			cursorShader.setVector("color", glm::vec4(glm::vec3(1.0f), 0.0f));
+			cursorShader.setValue("opacity", 0.0f);
 		} else {
-			cursorShader.setVector("color", glm::vec4(1.0f));
+			cursorShader.setValue("opacity", 1.0f);
 		}
 	}); 
 	Object2D play(ModelLoader::loadShpFile("res/shapes/play.shp"));
