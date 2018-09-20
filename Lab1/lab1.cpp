@@ -87,7 +87,7 @@ int main(int argc, char** argv)
 	{
 		return -4;
 	}
-	mouseHandlers.emplace_handler([&cursor, &cursorShader, &playing](int mouseFlags, float clampedx, float clampedy) {
+	mouseHandlers.emplace_handler([&cursor, &cursorShader](int mouseFlags, float clampedx, float clampedy) {
 		glm::mat3 cursorTransform(1.0f);
 		cursorTransform[2] = { clampedx / SCREEN_WIDTH, clampedy / SCREEN_HEIGHT, 1.0};
 		cursor.setTransformMatrix(cursorTransform);
