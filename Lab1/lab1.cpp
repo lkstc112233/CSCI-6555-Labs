@@ -87,14 +87,14 @@ int main(int argc, char** argv)
 	{
 		return -4;
 	}
-	mouseHandlers.emplace_handler([&cursor, &cursorShader](int mouseFlags, float clampedx, float clampedy) {
+	mouseHandlers.emplace_handler([&cursor](int mouseFlags, float clampedx, float clampedy) {
 		glm::mat3 cursorTransform(1.0f);
 		cursorTransform[2] = { clampedx / SCREEN_WIDTH, clampedy / SCREEN_HEIGHT, 1.0};
 		cursor.setTransformMatrix(cursorTransform);
 		if (mouseFlags & MOUSE_RIGHTBUTTON_HOLD) {
-			cursorShader.setValue("opacity", 0.0f);
+			cursor.setOpacity(0.0f);
 		} else {
-			cursorShader.setValue("opacity", 1.0f);
+			cursor.setOpacity(1.0f);
 		}
 	}); 
 	Object2D play(ModelLoader::loadShpFile("res/shapes/play.shp"));
