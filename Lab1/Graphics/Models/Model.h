@@ -1,6 +1,7 @@
 #ifndef GRAPHICS_MODELS_MODEL_H
 #define GRAPHICS_MODELS_MODEL_H
 
+#include <memory>
 #include <glm/glm.hpp>
 
 #include "../Shaders/Shader.h"
@@ -30,7 +31,7 @@ public:
 class ModelLoader
 {
 private:
-  static Model unitSquareShape;
+  static std::unique_ptr<Model> unitSquareShape;
 public:
   static const Model& getUnitSquareShape();
   static Model loadOffFile(const char *filename);
