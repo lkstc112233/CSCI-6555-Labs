@@ -8,7 +8,7 @@ MouseHandler::MouseHandler(std::function<void(int, float, float, float, float)> 
 }
 
 MouseHandler::MouseHandler(std::function<void(int, float, float)> handler)
-	: handleEvent([handler](int mouseFlags, float x, float y, float, float) { handler(mouseFlags, x, y); })
+	: handleEvent([handler](int mouseFlags, float diffx, float diffy, float, float) { handler(mouseFlags, diffx, diffy); })
 {
 }
 
