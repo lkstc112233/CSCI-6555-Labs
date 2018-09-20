@@ -14,6 +14,20 @@ class Object3D
 	Object3D(const Model &model);
 	void setTransformMatrix(const glm::mat4& transform);
 	void draw(ShaderProgram& shader);
+}; 
+
+class Object2D
+{
+private:
+	const Model &model;
+	glm::mat3 transform;
+	float z;
+
+public:
+	Object2D(const Model &model);
+	void setTransformMatrix(const glm::mat3& transform);
+	void setZ(float z);
+	void draw(ShaderProgram& shader);
 };
 
 #endif // GRAPHICS_OBJECT_OBJECT_H
