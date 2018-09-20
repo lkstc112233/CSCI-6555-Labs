@@ -13,7 +13,7 @@ private:
   int dimensions = 0;
   unsigned *indices = nullptr;
   int indicesSize = 0;
-  bool valid = true;
+  bool valid = false;
   unsigned VAO = 0, VBO = 0, EBO = 0;
   Model();
   Model(const Model &) = delete;

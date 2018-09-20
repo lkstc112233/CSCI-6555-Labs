@@ -46,13 +46,11 @@ Model ModelLoader::loadOffFile(const char *filename)
     std::string type;
     if (!(file >> type))
     {
-        loadedModel.valid = false;
         return loadedModel;
     }
 
     if (type != "OFF")
     {
-        loadedModel.valid = false;
         return loadedModel;
     }
 
@@ -100,6 +98,7 @@ Model ModelLoader::loadOffFile(const char *filename)
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void *)0);
     glEnableVertexAttribArray(0);
 
+	loadedModel.valid = true;
     return loadedModel;
 }
 
@@ -111,13 +110,11 @@ Model ModelLoader::loadShpFile(const char *filename)
     std::string type;
     if (!(file >> type))
     {
-        loadedModel.valid = false;
         return loadedModel;
     }
 
     if (type != "SHP")
     {
-        loadedModel.valid = false;
         return loadedModel;
     }
 
@@ -163,5 +160,6 @@ Model ModelLoader::loadShpFile(const char *filename)
     glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), (void *)0);
     glEnableVertexAttribArray(0);
 
+	loadedModel.valid = true;
     return loadedModel;
 }
