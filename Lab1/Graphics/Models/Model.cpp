@@ -31,7 +31,7 @@ Model::~Model()
     delete[] indices;
 }
 
-void Model::draw(ShaderProgram &shader)
+void Model::draw(ShaderProgram &shader) const
 {
     glBindVertexArray(VAO);
     shader.use();

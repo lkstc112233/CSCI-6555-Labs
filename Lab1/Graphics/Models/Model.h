@@ -22,7 +22,7 @@ private:
 public:
   ~Model();
   Model(Model &&);
-  void draw(ShaderProgram &shader);
+  void draw(ShaderProgram &shader) const;
   int getDimensions() const { return dimensions; }
   bool isValid() const { return valid; }
 };
