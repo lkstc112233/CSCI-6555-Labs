@@ -10,7 +10,7 @@ MouseHandler::MouseHandler(std::function<void(int, float, float, float, float)> 
 }
 
 MouseHandler::MouseHandler(std::function<void(int, float, float)> handler)
-	: handleEvent([handler](int mouseFlags, float diffx, float diffy, float, float) { handler(mouseFlags, diffx, diffy); })
+	: handleEvent([handler](int mouseFlags, float clampedx, float clampedy, float, float) { handler(mouseFlags, clampedx, clampedy); })
 {
 }
 
@@ -67,7 +67,7 @@ void MouseHandlerContainer::setPosition(float xi, float yi) {
 
 void MouseHandlerContainer::handle() {
 	for (auto& handler : handlers) {
-		handler.handleEvent(flags, diffx, diffy, clampedx, clampedy);
+		handler.handleEvent(flags, clampedx, clampedy, diffx, diffy);
 	}
 	// Reset One-time Flags.
 	flags &= ~(
