@@ -17,10 +17,10 @@ enum MouseConstants
 class MouseHandler
 {
   private:
-	  std::function<void(int mouseFlags, float diffx, float diffy, float x, float y)> handleEvent;
+	  std::function<void(int mouseFlags, float diffx, float diffy, float clampedx, float clampedy)> handleEvent;
 	  friend class MouseHandlerContainer;
   public:
-	  MouseHandler(std::function<void(int mouseFlags, float diffx, float diffy, float x, float y)> handleEvent);
+	  MouseHandler(std::function<void(int mouseFlags, float diffx, float diffy, float clampedx, float clampedy)> handleEvent);
 	  MouseHandler(std::function<void(int mouseFlags, float diffx, float diffy)> handleEvent);
 	  MouseHandler(std::function<void(int mouseFlags)> handleEvent);
 };
@@ -33,6 +33,8 @@ class MouseHandlerContainer {
 	float y;
 	float diffx;
 	float diffy;
+	float clampedx;
+	float clampedy;
 
   public:
 	MouseHandlerContainer(float xInit, float yInit);
