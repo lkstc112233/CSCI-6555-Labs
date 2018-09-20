@@ -91,14 +91,11 @@ int main(int argc, char** argv)
 	cursorTransform[2][0] = mouseX / SCREEN_WIDTH - 1;
 	cursorTransform[2][1] = mouseY / SCREEN_HEIGHT - 1;
 	cursorShader.setVector("color", glm::vec4(1.0f));
-	cursorShader.setMatrix("transform", cursorTransform);
 	mouseHandlers.emplace_handler([&cursor, &cursorShader, &playing](int mouseFlags, float clampedx, float clampedy) {
 		glm::mat3 cursorTransform(1.0f);
 		cursorTransform[2][0] = clampedx / SCREEN_WIDTH;
 		cursorTransform[2][1] = clampedy / SCREEN_HEIGHT;
-		if (mouseFlags & MOUSE_LEFTBUTTON_PRESSED && cursorTransform[2][0] < -0.9 && cursorTransform[2][1] < -0.9) {
-			playing = !playing;
-		}
+		cursor.setTransformMatrix(cursorTransform);
 		if (mouseFlags & MOUSE_RIGHTBUTTON_HOLD) {
 			cursorShader.setVector("color", glm::vec4(glm::vec3(1.0f), 0.0f));
 		} else {
@@ -114,6 +111,13 @@ int main(int argc, char** argv)
 	buttonTransform[2][1] = -0.95;
 	play.setTransformMatrix(buttonTransform);
 	pause.setTransformMatrix(buttonTransform);
+	mouseHandlers.emplace_handler([](int mouseFlags, float clampedx, float clampedy) {
+		float x = clampedx / SCREEN_WIDTH;
+		float y = clampedy / SCREEN_HEIGHT;
+		if ((mouseFlags & MOUSE_LEFTBUTTON_PRESSED) && x < -0.9 && y < -0.9) {
+			playing = !playing;
+		}
+	});
 
 	double acumulatedTime = 0;
 	double lastTime = glfwGetTime();
