@@ -164,7 +164,7 @@ Model ModelLoader::loadShpFile(const char *filename)
     return loadedModel;
 }
 
-const Model ModelLoader::unitSquareShape;
+Model ModelLoader::unitSquareShape;
 const float UNIT_SQUARE_VERTEXES[] =
 {
 	0, 0,
