@@ -1,6 +1,7 @@
 #include "MouseHandler.h"
 
 #include <functional>
+#include <cmath>
 
 MouseHandler::MouseHandler(std::function<void(int, float, float, float, float)> handler)
 	: handleEvent(handler)
@@ -18,11 +19,15 @@ MouseHandler::MouseHandler(std::function<void(int)> handler)
 }
 
 
-MouseHandlerContainer::MouseHandlerContainer(float xi, float yi) 
+MouseHandlerContainer::MouseHandlerContainer(float xi, float yi, float xClampi, float yClampi)
 	: x(xi)
 	, y(yi)
+	, xClamp(xClampi)
+	, yClamp(yClampi)
 	, diffx(0)
 	, diffy(0)
+	, clampedx(clamp(x, 0, xClampi))
+	, clampedy(clamp(y, 0, yClampi))
 {
 }
 
@@ -53,13 +58,15 @@ void MouseHandlerContainer::resetRightHoldFlag() {
 void MouseHandlerContainer::setPosition(float xi, float yi) {
 	diffx += xi - x;
 	diffy += yi - y;
+	clampedx = clamp(clampedx + diffx, 0, xClamp);
+	clampedy = clamp(clampedy + diffy, 0, yClamp);
 	x = xi;
 	y = yi;
 }
 
 void MouseHandlerContainer::handle() {
 	for (auto& handler : handlers) {
-		handler.handleEvent(flags, diffx, diffy, x, y);
+		handler.handleEvent(flags, diffx, diffy, clampedx, clampedy);
 	}
 	// Reset One-time Flags.
 	flags &= ~(

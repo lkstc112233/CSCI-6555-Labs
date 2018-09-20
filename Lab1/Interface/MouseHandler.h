@@ -29,6 +29,8 @@ class MouseHandlerContainer {
   private:
 	std::vector<MouseHandler> handlers;
 	int flags = 0;
+	float xClamp;
+	float yClamp;
 	float x;
 	float y;
 	float diffx;
@@ -37,7 +39,7 @@ class MouseHandlerContainer {
 	float clampedy;
 
   public:
-	MouseHandlerContainer(float xInit, float yInit);
+	MouseHandlerContainer(float xInit, float yInit, float xClamp, float yClamp);
 	void setScrollUpFlag();
 	void setScrollDownFlag();
 	void leftPress();
