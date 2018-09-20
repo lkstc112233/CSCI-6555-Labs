@@ -8,6 +8,7 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 
+#include "Graphics/WindowInitializer.h"
 #include "Graphics/Shaders/Shader.h"
 #include "Graphics/Texture/Texture.h"
 #include "Graphics/Camera/Camera.h"
