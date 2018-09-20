@@ -30,8 +30,10 @@ int main()
 	}
 
 	double mouseX, mouseY;
+	int windowWidth, windowHeight;
 	glfwGetCursorPos(window, &mouseX, &mouseY);
-	MouseHandlerContainer mouseHandlers(mouseX, mouseY);
+	glfwGetWindowSize(window, &windowWidth, &windowHeight);
+	MouseHandlerContainer mouseHandlers(mouseX, mouseY, windowWidth, windowHeight);
 	MouseCallbackWrapper::registerHandlerCallbacks(window, &mouseHandlers);
 
 	ShaderProgram shaderProgram{

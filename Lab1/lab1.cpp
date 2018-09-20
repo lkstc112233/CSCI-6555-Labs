@@ -45,8 +45,10 @@ int main(int argc, char** argv)
 	}
 
 	double mouseX, mouseY;
+	int windowWidth, windowHeight;
 	glfwGetCursorPos(window, &mouseX, &mouseY);
-	MouseHandlerContainer mouseHandlers(mouseX, mouseY);
+	glfwGetWindowSize(window, &windowWidth, &windowHeight);
+	MouseHandlerContainer mouseHandlers(mouseX, mouseY, windowWidth, windowHeight);
 	MouseCallbackWrapper::registerHandlerCallbacks(window, &mouseHandlers);
 
 	Object3D cube(ModelLoader::loadOffFile(argv[1]));
