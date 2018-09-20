@@ -102,11 +102,7 @@ int main(int argc, char** argv)
 	}); 
 	Object2D play(ModelLoader::loadShpFile("res/shapes/play.shp"));
 	Object2D pause(ModelLoader::loadShpFile("res/shapes/pause.shp"));
-	glm::mat3 buttonTransform(1.0f);
-	buttonTransform[0][0] = 0.1;
-	buttonTransform[1][1] = 0.1;
-	buttonTransform[2][0] = -0.95;
-	buttonTransform[2][1] = -0.95;
+	glm::mat3 buttonTransform{{0.1, 0, 0}, {0, 0.1, 0}, {-0.95, -0.95, 1}};
 	play.setTransformMatrix(buttonTransform);
 	pause.setTransformMatrix(buttonTransform);
 	mouseHandlers.emplace_handler([&playing](int mouseFlags, float clampedx, float clampedy) {
