@@ -109,10 +109,37 @@ int main(int argc, char** argv)
 
 	double acumulatedTime = 0;
 	double lastTime = glfwGetTime();
+	const float progressBarLowerBound = -0.967;
+	const float progressBarLeftBound = -0.867;
+	const float progressBarLength = 1.833;
+	const float progressBarHeight = 0.033;
 	Object2D playedProgressBar(ModelLoader::getUnitSquareShape());
 	playedProgressBar.setColor(glm::vec3(1.0, 0, 0));
 	Object2D unplayedProgressBar(ModelLoader::getUnitSquareShape());
 	unplayedProgressBar.setColor(glm::vec3(0.9));
+
+	mouseHandlers.emplace_handler([=, &acumulatedTime, &script](int mouseFlags, float clampedx, float clampedy) {
+		static bool pressed = false;
+		clampedx /= SCREEN_WIDTH;
+		clampedy /= SCREEN_HEIGHT;
+		if ((mouseFlags & MOUSE_LEFTBUTTON_PRESSED) 
+		&& clampedy < progressBarLowerBound + progressBarHeight
+		&& clampedy > progressBarLowerBound
+		&& clampedx < progressBarLeftBound + progressBarLength
+		&& clampedx > progressBarLeftBound) {
+			pressed = true;
+			std::cout << "Mouse Captured." << std::endl;
+		}
+		if (pressed && (mouseFlags & MOUSE_LEFTBUTTON_HOLD)) {
+			acumulatedTime = script->getMaximumTime() * (
+				glm::clamp(clampedx - progressBarLeftBound,
+				0.0f, 
+				progressBarLength) / progressBarLength);
+		}
+		if (!(mouseFlags & MOUSE_LEFTBUTTON_HOLD)) {
+			pressed = false;
+		}
+	}); 
 
 	while (!glfwWindowShouldClose(window))
 	{
@@ -144,9 +171,15 @@ int main(int argc, char** argv)
 		} else {
 			play.draw(hudShader);
 		}
-		playedProgressBar.setTransformMatrix(glm::mat3{{timeRate * 1.833, 0, 0}, {0, 0.033 ,0}, {-0.867, -0.967, 1}});
+		playedProgressBar.setTransformMatrix(glm::mat3{
+			{timeRate * progressBarLength, 0, 0},
+			{0, progressBarHeight ,0},
+			{progressBarLeftBound, progressBarLowerBound, 1}});
 		playedProgressBar.draw(hudShader);
-		unplayedProgressBar.setTransformMatrix(glm::mat3{{1.833 - timeRate * 1.833, 0, 0}, {0, 0.033 ,0}, { timeRate *  1.833 - 0.867, -0.967, 1}});
+		unplayedProgressBar.setTransformMatrix(glm::mat3{
+			{progressBarLength - timeRate * progressBarLength, 0, 0}, 
+			{0, progressBarHeight ,0}, 
+			{ timeRate *  progressBarLength + progressBarLeftBound, progressBarLowerBound, 1}});
 		unplayedProgressBar.draw(hudShader);
 
 		// Draw cursor
