@@ -33,6 +33,7 @@ int main(int argc, char** argv)
 {
 	if (argc < 3) {
 		std::cerr << "Usage:\n\t" << argv[0] << " *model.off* *script.keys*" << std::endl;
+		return -1;
 	}
 
 	auto script = ScriptsLoader::loadScript(argv[2]);
