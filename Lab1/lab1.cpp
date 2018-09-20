@@ -13,6 +13,7 @@
 #include "Graphics/Texture/Texture.h"
 #include "Graphics/Camera/Camera.h"
 #include "Graphics/Models/Model.h"
+#include "Graphics/Object/Object.h"
 
 #include "Interface/KeyHandler.h"
 #include "Interface/MouseHandler.h"
@@ -44,15 +45,13 @@ int main(int argc, char** argv)
 	}
 
 	double mouseX, mouseY;
+	int windowWidth, windowHeight;
 	glfwGetCursorPos(window, &mouseX, &mouseY);
-	MouseHandlerContainer mouseHandlers(mouseX, mouseY);
+	glfwGetWindowSize(window, &windowWidth, &windowHeight);
+	MouseHandlerContainer mouseHandlers(mouseX, mouseY, windowWidth, windowHeight);
 	MouseCallbackWrapper::registerHandlerCallbacks(window, &mouseHandlers);
 
-	Model cube = ModelLoader::loadOffFile(argv[1]);
-	if (!cube.isValid()) {
-		std::cerr << "Loading model file '" << argv[1] << "' failed." << std::endl;
-		return -1;
-	}
+	Object3D cube(ModelLoader::loadOffFile(argv[1]));
 
 	ShaderProgram shaderProgram{
 		Shader::createVertexShader("res/shaders/simpleShader.vert"),
@@ -61,11 +60,8 @@ int main(int argc, char** argv)
 	{
 		return -4;
 	}
-	shaderProgram.setMatrix("transform", glm::mat4(1.0f));
-
 	glm::mat4 projection(1.0f);
 	projection = glm::perspective(glm::radians(45.0f), PROJECTION_RATIO, 0.1f, 100.0f);
-
 	shaderProgram.setMatrix("projection", projection);
 
 	Camera camera;
@@ -102,9 +98,9 @@ int main(int argc, char** argv)
 	cursorTransform[2][1] = mouseY / SCREEN_HEIGHT - 1;
 	cursorShader.setVector("color", glm::vec4(1.0f));
 	cursorShader.setMatrix("transform", cursorTransform);
-	mouseHandlers.emplace_handler([&cursorTransform, &cursorShader, &playing](int mouseFlags, float diffx, float diffy) {
-		cursorTransform[2][0] = glm::clamp(cursorTransform[2][0] + diffx / SCREEN_WIDTH, -1.0f, 1.0f);
-		cursorTransform[2][1] = glm::clamp(cursorTransform[2][1] - diffy / SCREEN_HEIGHT, -1.0f, 1.0f);
+	mouseHandlers.emplace_handler([&cursorTransform, &cursorShader, &playing](int mouseFlags, float clampedx, float clampedy) {
+		cursorTransform[2][0] = glm::clamp(clampedx / SCREEN_WIDTH, -1.0f, 1.0f);
+		cursorTransform[2][1] = glm::clamp(clampedy / SCREEN_HEIGHT, -1.0f, 1.0f);
 		if (mouseFlags & MOUSE_LEFTBUTTON_PRESSED && cursorTransform[2][0] < -0.9 && cursorTransform[2][1] < -0.9) {
 			playing = !playing;
 		}
@@ -137,9 +133,8 @@ int main(int argc, char** argv)
 		glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-		shaderProgram.setMatrix("transform", script->getTranscationMatrixAt(acumulatedTime));
+		cube.setTransformMatrix(script->getTranscationMatrixAt(acumulatedTime));
 
-		shaderProgram.use();
 		shaderProgram.setMatrix("view", camera.getViewMat());
 		cube.draw(shaderProgram);
 

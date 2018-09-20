@@ -30,8 +30,10 @@ int main()
 	}
 
 	double mouseX, mouseY;
+	int windowWidth, windowHeight;
 	glfwGetCursorPos(window, &mouseX, &mouseY);
-	MouseHandlerContainer mouseHandlers(mouseX, mouseY);
+	glfwGetWindowSize(window, &windowWidth, &windowHeight);
+	MouseHandlerContainer mouseHandlers(mouseX, mouseY, windowWidth, windowHeight);
 	MouseCallbackWrapper::registerHandlerCallbacks(window, &mouseHandlers);
 
 	ShaderProgram shaderProgram{
@@ -147,7 +149,7 @@ int main()
 
 	Camera camera;
 
-	mouseHandlers.emplace_handler([&camera](int mouseFlags, float diffx, float diffy) {
+	mouseHandlers.emplace_handler([&camera](int mouseFlags, float, float, float diffx, float diffy) {
 		if (mouseFlags & MOUSE_RIGHTBUTTON_HOLD) {
 			float sensitivity = 0.005f;
 			diffx *= sensitivity;
