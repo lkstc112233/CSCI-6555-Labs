@@ -188,6 +188,7 @@ const Model& ModelLoader::getUnitSquareShape()
     unitSquareShape = std::make_unique<UnitSquareShape>();
 	unitSquareShape->valid = true;
 	unitSquareShape->dimensions = 2;
+    unitSquareShape->indicesSize = sizeof(UNIT_SQUARE_INDICES) /  sizeof(unsigned);
 	int indicesCount = 1;
 
 	glBindVertexArray(unitSquareShape->VAO);
