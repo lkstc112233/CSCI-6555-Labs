@@ -28,6 +28,12 @@ void attachCameraControls(KeyHandlerContainer& keyContainer, MouseHandlerContain
 	keyContainer.emplace_handler(GLFW_KEY_F, [&camera]() {
 		camera.moveDown();
 	});
+	keyContainer.emplace_handler(GLFW_KEY_Z, [&camera]() {
+		if (camera.isViewLocked())
+			camera.unlockView();
+		else
+			camera.lockView(glm::vec3(0, 0, 0));
+	}, true);
 	mouseContainer.emplace_handler([&camera](int mouseFlags, float, float, float diffx, float diffy) {
 		if (mouseFlags & MOUSE_RIGHTBUTTON_HOLD) {
 			float sensitivity = 0.005f;

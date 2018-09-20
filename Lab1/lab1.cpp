@@ -107,13 +107,6 @@ int main(int argc, char** argv)
 	keyHandlers.emplace_handler(GLFW_KEY_ESCAPE, [window]() {
 		glfwSetWindowShouldClose(window, true);
 	});
-	keyHandlers.emplace_handler(GLFW_KEY_Z, [&camera]() {
-		if (camera.isViewLocked())
-			camera.unlockView();
-		else
-			camera.lockView(glm::vec3(0, 0, 0));
-	}, true);
-
 
 	ShaderProgram playPauseShader{
 		Shader::createVertexShader("res/shaders/2DShader.vert"),
