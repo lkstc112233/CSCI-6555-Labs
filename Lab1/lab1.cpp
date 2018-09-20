@@ -102,7 +102,7 @@ int main(int argc, char** argv)
 
 	KeyHandlerContainer keyHandlers(window);
 
-	attachCameraControls(keyHandlers, MouseHandlers, camera);
+	attachCameraControls(keyHandlers, mouseHandlers, camera);
 
 	keyHandlers.emplace_handler(GLFW_KEY_ESCAPE, [window]() {
 		glfwSetWindowShouldClose(window, true);
