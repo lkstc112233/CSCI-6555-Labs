@@ -113,27 +113,26 @@ int main(int argc, char** argv)
 
 	KeyHandlerContainer keyHandlers(window);
 
-	const float cameraSpeed = 0.05;
 	keyHandlers.emplace_handler(GLFW_KEY_ESCAPE, [window]() {
 		glfwSetWindowShouldClose(window, true);
 	});
-	keyHandlers.emplace_handler(GLFW_KEY_W, [&camera, cameraSpeed]() {
-		camera.moveForward(cameraSpeed);
+	keyHandlers.emplace_handler(GLFW_KEY_W, [&camera]() {
+		camera.moveForward();
 	});
-	keyHandlers.emplace_handler(GLFW_KEY_S, [&camera, cameraSpeed]() {
-		camera.moveBackward(cameraSpeed);
+	keyHandlers.emplace_handler(GLFW_KEY_S, [&camera]() {
+		camera.moveBackward();
 	});
-	keyHandlers.emplace_handler(GLFW_KEY_A, [&camera, cameraSpeed]() {
-		camera.moveLeft(cameraSpeed);
+	keyHandlers.emplace_handler(GLFW_KEY_A, [&camera]() {
+		camera.moveLeft();
 	});
-	keyHandlers.emplace_handler(GLFW_KEY_D, [&camera, cameraSpeed]() {
-		camera.moveRight(cameraSpeed);
+	keyHandlers.emplace_handler(GLFW_KEY_D, [&camera]() {
+		camera.moveRight();
 	});
-	keyHandlers.emplace_handler(GLFW_KEY_R, [&camera, cameraSpeed]() {
-		camera.moveUp(cameraSpeed);
+	keyHandlers.emplace_handler(GLFW_KEY_R, [&camera]() {
+		camera.moveUp();
 	});
-	keyHandlers.emplace_handler(GLFW_KEY_F, [&camera, cameraSpeed]() {
-		camera.moveDown(cameraSpeed);
+	keyHandlers.emplace_handler(GLFW_KEY_F, [&camera]() {
+		camera.moveDown();
 	});
 	keyHandlers.emplace_handler(GLFW_KEY_Z, [&camera]() {
 		if (camera.isViewLocked())

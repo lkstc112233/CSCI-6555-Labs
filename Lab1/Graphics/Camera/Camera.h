@@ -3,6 +3,8 @@
 
 #include <glm/glm.hpp>
 
+const float DEFAULT_CAMERA_SPEED = 0.05;
+
 class Camera
 {
   private:
@@ -13,12 +15,12 @@ class Camera
   public:
     glm::vec3 position = glm::vec3(0);
     void move(const glm::vec3 &direction);
-    void moveForward(float distance);
-    void moveBackward(float distance);
-    void moveLeft(float distance);
-    void moveRight(float distance);
-    void moveUp(float distance);
-    void moveDown(float distance);
+    void moveForward(float distance = DEFAULT_CAMERA_SPEED);
+    void moveBackward(float distance = DEFAULT_CAMERA_SPEED);
+    void moveLeft(float distance = DEFAULT_CAMERA_SPEED);
+    void moveRight(float distance = DEFAULT_CAMERA_SPEED);
+    void moveUp(float distance = DEFAULT_CAMERA_SPEED);
+    void moveDown(float distance = DEFAULT_CAMERA_SPEED);
     void turnYaw(float yaw);
     void turnPitch(float pitch);
     void lookAt(const glm::vec3 &position);
