@@ -106,6 +106,9 @@ int main(int argc, char** argv)
 			playing = !playing;
 		}
 	});
+	keyHandlers.emplace_handler(GLFW_KEY_SPACE, [&playing]() {
+		playing = !playing;
+	}, true);
 
 	double acumulatedTime = 0;
 	double lastTime = glfwGetTime();
