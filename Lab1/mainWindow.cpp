@@ -30,35 +30,15 @@ void update()
 
 int main()
 {
-	if (!glfwInit())
-	{
-		return -3;
-	}
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 1);
-	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-	glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
-
-	GLFWwindow *window = glfwCreateWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "LearnOpenGL", NULL, NULL);
-	if (window == NULL)
-	{
-		glfwTerminate();
+	GLFWwindow *window = initializeWindow("Lab1");
+	if (!window) {
 		return -1;
 	}
-	glfwMakeContextCurrent(window);
 
-	if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
-	{
-		return -2;
-	}
-	glViewport(0, 0, SCREEN_WIDTH * 2, SCREEN_HEIGHT * 2);
-	glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
 	double mouseX, mouseY;
 	glfwGetCursorPos(window, &mouseX, &mouseY);
 	MouseHandlerContainer mouseHandlers(mouseX, mouseY);
 	MouseCallbackWrapper::registerHandlerCallbacks(window, &mouseHandlers);
-	glEnable(GL_DEPTH_TEST);
-	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
 	ShaderProgram shaderProgram{
 		Shader::createVertexShader("res/shaders/simpleShader.vert"),
