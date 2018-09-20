@@ -1,8 +1,8 @@
 #ifndef GRAPHICS_OBJECT_OBJECT_H
 #define GRAPHICS_OBJECT_OBJECT_H
 
-#include "../Models/Model.h"
 #include <glm/glm.hpp>
+#include "../Models/Model.h"
 
 class Object
 {
