@@ -131,7 +131,6 @@ int main(int argc, char** argv)
 		&& clampedx < progressBarLeftBound + progressBarLength
 		&& clampedx > progressBarLeftBound) {
 			pressed = true;
-			std::cout << "Mouse Captured." << std::endl;
 		}
 		if (pressed && (mouseFlags & MOUSE_LEFTBUTTON_HOLD)) {
 			acumulatedTime = script->getMaximumTime() * (
