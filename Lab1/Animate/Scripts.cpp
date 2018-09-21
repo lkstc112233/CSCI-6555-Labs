@@ -75,11 +75,11 @@ std::unique_ptr<Scripts> ScriptsLoader::loadScript(const char *filename)
         }
         if (loaded == 8) {
             qcount += 1;
-            quaternionScripts->addKeyframe(Keyframe<Quaternion>(data[1], data[2], data[3], Quaternion(data[4], data[5], data[6], data[7])));
+            quaternionScripts->addKeyframe(Keyframe<Quaternion>(data[0], data[1], data[2], data[3], Quaternion(data[4], data[5], data[6], data[7])));
         }
         if (loaded == 7) {
             ecount += 1;
-            eulerAnglesScripts->addKeyframe(Keyframe<EulerAngles>(data[1], data[2], data[3], 
+            eulerAnglesScripts->addKeyframe(Keyframe<EulerAngles>(data[0], data[1], data[2], data[3], 
             EulerAngles(glm::radians(data[4]), glm::radians(data[5]), glm::radians(data[6]))));
         }
 
