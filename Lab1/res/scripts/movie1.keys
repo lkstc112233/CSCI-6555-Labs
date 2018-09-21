@@ -1,19 +1,19 @@
 # This is a comment. Comments are begin with # to end of line.
-# Each keyframe should contain 6 or 7 parameters, successively x, y, z, yaw, pitch, roll (All In Degrees)
-#                                                           or x, y, z, qw, qx, qy, qz
+# Each keyframe should contain 7 or 8 parameters, successively timestamp, x, y, z, yaw, pitch, roll (All In Degrees)
+#                                                           or timestamp, x, y, z, qw, qx, qy, qz
 # In that means, each keyframe is wrapped with (parentheses).
 # Inside each keyframe, separate parameters by any invisiable characters, including
 # tab(  ), space( ) and new line.
 
-(100 100 40 0.5 0.5 0.5 0.5)
-(1 1 40 1 0 0 0)
-(-1 -1 40 0.5 0.5 0.5 0.5)
-(-100 -100 40 1 0 0 0)
+(0 100 100 40 0.5 0.5 0.5 0.5)
+(0 1 1 40 1 0 0 0)
+(1 -1 -1 40 0.5 0.5 0.5 0.5)
+(3 -100 -100 40 1 0 0 0)
 
-(1 1 4 1 0 0 0)
-(1 0 4 1 0 0 0)
-(1 -1 4 1 0 0 0)
-(0 -1 4 1 0 0 0)
-(0 1 4 1 0 0 0)
-(-1 -1 4 1 0 0 0)
-(1 1 4 1 0 0 0)
+(6 1 1 4 1 0 0 0)
+(7 1 0 4 1 0 0 0)
+(7.1 1 -1 4 1 0 0 0)
+(7.2 0 -1 4 1 0 0 0)
+(8 0 1 4 1 0 0 0)
+(10 -1 -1 4 1 0 0 0)
+(10 1 1 4 1 0 0 0)
