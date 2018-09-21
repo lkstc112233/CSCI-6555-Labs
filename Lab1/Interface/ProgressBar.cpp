@@ -18,8 +18,10 @@ const float ProgressBar::PROGRESS_BAR_HEIGHT = 0.033;
 ProgressBar::ProgressBar() 
     : playedProgressBar(ModelLoader::getUnitSquareShape())
     , unplayedProgressBar(ModelLoader::getUnitSquareShape())
-    , play(ModelLoader::loadShpFile("res/shapes/play.shp"))
-	, pause(ModelLoader::loadShpFile("res/shapes/pause.shp"))
+    , play(playModel)
+	, pause(pauseModel)
+    , playModel(ModelLoader::loadShpFile("res/shapes/play.shp"))
+    , pauseModel(ModelLoader::loadShpFile("res/shapes/pause.shp"))
 {
     playedProgressBar.setColor(glm::vec3(1.0, 0, 0));
     unplayedProgressBar.setColor(glm::vec3(0.9));
