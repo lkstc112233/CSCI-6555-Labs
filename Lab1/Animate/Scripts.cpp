@@ -66,21 +66,21 @@ std::unique_ptr<Scripts> ScriptsLoader::loadScript(const char *filename)
         {
             break;
         }
-        float data[7];
-        int loaded = parser.tryParseFloat(data, 7);
+        float data[8];
+        int loaded = parser.tryParseFloat(data, 8);
         if (!parser.expect(')'))
         {
             std::cerr << "ScriptsLoader: Warning: Error happened parsing the script: " << filename << std::endl;
             break;
         }
-        if (loaded == 7) {
+        if (loaded == 8) {
             qcount += 1;
-            quaternionScripts->addKeyframe(Keyframe<Quaternion>(data[0], data[1], data[2], Quaternion(data[3], data[4], data[5], data[6])));
+            quaternionScripts->addKeyframe(Keyframe<Quaternion>(data[1], data[2], data[3], Quaternion(data[4], data[5], data[6], data[7])));
         }
-        if (loaded == 6) {
+        if (loaded == 7) {
             ecount += 1;
-            eulerAnglesScripts->addKeyframe(Keyframe<EulerAngles>(data[0], data[1], data[2], 
-            EulerAngles(glm::radians(data[3]), glm::radians(data[4]), glm::radians(data[5]))));
+            eulerAnglesScripts->addKeyframe(Keyframe<EulerAngles>(data[1], data[2], data[3], 
+            EulerAngles(glm::radians(data[4]), glm::radians(data[5]), glm::radians(data[6]))));
         }
 
     }
