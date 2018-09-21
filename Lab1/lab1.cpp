@@ -18,6 +18,7 @@
 #include "Interface/KeyHandler.h"
 #include "Interface/MouseHandler.h"
 #include "Interface/InterfaceRelatedStuffHolder.hpp"
+#include "Interface/ProgressBar.h"
 
 #include "Math/Quaternion.h"
 #include "Animate/Keyframe.hpp"
@@ -93,55 +94,11 @@ int main(int argc, char** argv)
 		} else {
 			cursor.setOpacity(1.0f);
 		}
-	}); 
-	Object2D play(ModelLoader::loadShpFile("res/shapes/play.shp"));
-	Object2D pause(ModelLoader::loadShpFile("res/shapes/pause.shp"));
-	glm::mat3 buttonTransform{{0.1, 0, 0}, {0, 0.1, 0}, {-0.95, -0.95, 1}};
-	play.setTransformMatrix(buttonTransform);
-	pause.setTransformMatrix(buttonTransform);
-	mouseHandlers.emplace_handler([&playing](int mouseFlags, float clampedx, float clampedy) {
-		float x = clampedx / SCREEN_WIDTH;
-		float y = clampedy / SCREEN_HEIGHT;
-		if ((mouseFlags & MOUSE_LEFTBUTTON_PRESSED) && x < -0.9 && y < -0.9) {
-			playing = !playing;
-		}
 	});
-	keyHandlers.emplace_handler(GLFW_KEY_SPACE, [&playing]() {
-		playing = !playing;
-	}, true);
 
-	double acumulatedTime = 0;
 	double lastTime = glfwGetTime();
-	const float progressBarLowerBound = -0.967;
-	const float progressBarLeftBound = -0.867;
-	const float progressBarLength = 1.833;
-	const float progressBarHeight = 0.033;
-	Object2D playedProgressBar(ModelLoader::getUnitSquareShape());
-	playedProgressBar.setColor(glm::vec3(1.0, 0, 0));
-	Object2D unplayedProgressBar(ModelLoader::getUnitSquareShape());
-	unplayedProgressBar.setColor(glm::vec3(0.9));
-
-	mouseHandlers.emplace_handler([=, &acumulatedTime, &script](int mouseFlags, float clampedx, float clampedy) {
-		static bool pressed = false;
-		clampedx /= SCREEN_WIDTH;
-		clampedy /= SCREEN_HEIGHT;
-		if ((mouseFlags & MOUSE_LEFTBUTTON_PRESSED) 
-		&& clampedy < progressBarLowerBound + progressBarHeight
-		&& clampedy > progressBarLowerBound
-		&& clampedx < progressBarLeftBound + progressBarLength
-		&& clampedx > progressBarLeftBound) {
-			pressed = true;
-		}
-		if (pressed && (mouseFlags & MOUSE_LEFTBUTTON_HOLD)) {
-			acumulatedTime = script->getMaximumTime() * (
-				glm::clamp(clampedx - progressBarLeftBound,
-				0.0f, 
-				progressBarLength) / progressBarLength);
-		}
-		if (!(mouseFlags & MOUSE_LEFTBUTTON_HOLD)) {
-			pressed = false;
-		}
-	}); 
+	ProgressBar progressBar;
+	progressBar.attachControls(keyHandlers, mouseHandlers);
 
 	while (!glfwWindowShouldClose(window))
 	{
@@ -149,40 +106,24 @@ int main(int argc, char** argv)
 		mouseHandlers.handle();
 
 		double thisTime = glfwGetTime();
-		if (playing) {
-			acumulatedTime += thisTime - lastTime;
+		if (progressBar.playing) {
+			progressBar.process += (thisTime - lastTime) / script->getMaximumTime();
 		}
 		lastTime = thisTime;
-
-		float timeRate = fmod(acumulatedTime, script->getMaximumTime()) / script->getMaximumTime();
 
 		// render
 		// ------
 		glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-		cube.setTransformMatrix(script->getTranscationMatrixAt(acumulatedTime));
+		cube.setTransformMatrix(script->getTranscationMatrixAt(progressBar.process * script->getMaximumTime()));
 
 		shaderProgram.setMatrix("view", camera.getViewMat());
 		cube.draw(shaderProgram);
 
 		// Draw HDR
 		glClear(GL_DEPTH_BUFFER_BIT);
-		if (playing) {
-			pause.draw(hudShader);
-		} else {
-			play.draw(hudShader);
-		}
-		playedProgressBar.setTransformMatrix(glm::mat3{
-			{timeRate * progressBarLength, 0, 0},
-			{0, progressBarHeight ,0},
-			{progressBarLeftBound, progressBarLowerBound, 1}});
-		playedProgressBar.draw(hudShader);
-		unplayedProgressBar.setTransformMatrix(glm::mat3{
-			{progressBarLength - timeRate * progressBarLength, 0, 0}, 
-			{0, progressBarHeight ,0}, 
-			{ timeRate *  progressBarLength + progressBarLeftBound, progressBarLowerBound, 1}});
-		unplayedProgressBar.draw(hudShader);
+		progressBar.draw(hudShader);
 
 		// Draw cursor
 		glClear(GL_DEPTH_BUFFER_BIT);
