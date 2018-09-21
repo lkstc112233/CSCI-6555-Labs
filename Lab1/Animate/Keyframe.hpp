@@ -7,16 +7,18 @@ template <typename Rotation>
 class Keyframe
 {
 private:
+  float timestamp;
   float x;
   float y;
   float z;
   Rotation orientation;
 
 public:
-  Keyframe(float xi, float yi, float zi, const Rotation &orientationi)
-      : x(xi), y(yi), z(zi), orientation(orientationi)
+  Keyframe(float timestampi, float xi, float yi, float zi, const Rotation &orientationi)
+      : timestamp(timestampi), x(xi), y(yi), z(zi), orientation(orientationi)
   {
   }
+  float getTimestamp() { return timestamp; }
   glm::mat4 getTranscationMatrix()
   {
     glm::mat4 result(orientation.getRotationMatrix());
