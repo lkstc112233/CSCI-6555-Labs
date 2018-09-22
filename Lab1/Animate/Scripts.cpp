@@ -1,5 +1,6 @@
 #include "Scripts.h"
 
+#include <algorithm>
 #include <iostream>
 #include <memory>
 #include <vector>
@@ -12,17 +13,25 @@
 #include "../Math/Quaternion.h"
 #include "../Math/EulerAngles.h"
 
+template <typename T>
+bool ScriptsImplementation<T>::compare(const Keyframe<T> &frame1, const Keyframe<T> &frame2)
+{
+    return frame1.getTimestamp() < frame2.getTimestamp();
+}
 
 template <typename T>
 void ScriptsImplementation<T>::addKeyframe(const Keyframe<T> keyframe)
 {
-    keyframes.emplace_back(keyframe);
+    keyframes.emplace(std::upper_bound(keyframes.begin(), keyframes.end(), keyframe, ScriptsImplementation<T>::compare), keyframe);
 }
 
 template <typename T>
 float ScriptsImplementation<T>::getMaximumTime()
 {
-    return keyframes.size() - 3;
+    if (keyframes.size() < 2) {
+        return 0;
+    }
+    return keyframes[keyframes.size() - 2].getTimestamp();
 }
 
 template <typename T>

@@ -18,8 +18,8 @@ public:
       : timestamp(timestampi), x(xi), y(yi), z(zi), orientation(orientationi)
   {
   }
-  float getTimestamp() { return timestamp; }
-  glm::mat4 getTranscationMatrix()
+  float getTimestamp() const { return timestamp; }
+  glm::mat4 getTranscationMatrix() 
   {
     glm::mat4 result(orientation.getRotationMatrix());
     result[3][0] = x;

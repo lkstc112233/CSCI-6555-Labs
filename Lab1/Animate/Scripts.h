@@ -21,6 +21,7 @@ class ScriptsImplementation : public Scripts
 {
   private:
     friend class ScriptsLoader;
+    static bool compare(const Keyframe<T>& frame1, const Keyframe<T>& frame2);
     std::vector<Keyframe<T>> keyframes;
     void addKeyframe(const Keyframe<T> keyframe);
 
