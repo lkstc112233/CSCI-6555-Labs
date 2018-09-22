@@ -20,6 +20,12 @@ bool ScriptsImplementation<T>::compare(const Keyframe<T> &frame1, const Keyframe
 }
 
 template <typename T>
+bool ScriptsImplementation<T>::compareTimestamp(float timestamp, const Keyframe<T> &frame)
+{
+    return timestamp < frame.getTimestamp();
+}
+
+template <typename T>
 void ScriptsImplementation<T>::addKeyframe(const Keyframe<T> keyframe)
 {
     keyframes.emplace(std::upper_bound(keyframes.begin(), keyframes.end(), keyframe, ScriptsImplementation<T>::compare), keyframe);
@@ -37,25 +43,13 @@ float ScriptsImplementation<T>::getMaximumTime() const
 template <typename T>
 glm::mat4 ScriptsImplementation<T>::getTranscationMatrixAt(float time)
 {
-    // TODO: implement keyframe speed.
-    // For now it's only uniform, repeating.
+    time = fmod(time, getMaximumTime());
+    auto position = std::upper_bound(keyframes.begin(), keyframes.end(), time, ScriptsImplementation<T>::compareTimestamp) - 1;
 
-    int maximum = keyframes.size() - 3;
-    if (maximum <= 0)
-    {
-        // Too less keyframes. Just return what's available.
-        if (keyframes.size())
-        {
-            return keyframes[0].getTranscationMatrix();
-        }
-        return glm::mat4(1.0f);
-    }
+    time -= position->getTimestamp();
+    time /= (position + 1)->getTimestamp() - position->getTimestamp();
 
-    float frame = fmod(time, maximum);
-    float t = fmod(frame, 1.0);
-    int indexBegin = floor(frame);
-
-    return catmullRomInterpolate(t, keyframes.begin() + indexBegin).getTranscationMatrix();
+    return catmullRomInterpolate(time, position - 1).getTranscationMatrix();
 }
 
 std::unique_ptr<Scripts> ScriptsLoader::loadScript(const char *filename)
