@@ -12,7 +12,7 @@ class Scripts
 {
   public:
     virtual ~Scripts(){}
-    virtual float getMaximumTime() = 0;
+    virtual float getMaximumTime() const = 0;
     virtual glm::mat4 getTranscationMatrixAt(float time) = 0;
 };
 
@@ -26,7 +26,7 @@ class ScriptsImplementation : public Scripts
     void addKeyframe(const Keyframe<T> keyframe);
 
   public:
-    virtual float getMaximumTime();
+    virtual float getMaximumTime() const;
     virtual glm::mat4 getTranscationMatrixAt(float time);
 };
 

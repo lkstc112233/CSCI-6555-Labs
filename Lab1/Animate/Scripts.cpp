@@ -26,7 +26,7 @@ void ScriptsImplementation<T>::addKeyframe(const Keyframe<T> keyframe)
 }
 
 template <typename T>
-float ScriptsImplementation<T>::getMaximumTime()
+float ScriptsImplementation<T>::getMaximumTime() const
 {
     if (keyframes.size() < 2) {
         return 0;
