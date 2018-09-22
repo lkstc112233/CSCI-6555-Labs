@@ -21,8 +21,6 @@ class ScriptsImplementation : public Scripts
 {
   private:
     friend class ScriptsLoader;
-    static bool compare(const Keyframe<T>& frame1, const Keyframe<T>& frame2);
-    static bool compareTimestamp(float, const Keyframe<T>&);
     std::vector<Keyframe<T>> keyframes;
     void addKeyframe(const Keyframe<T> keyframe);
 

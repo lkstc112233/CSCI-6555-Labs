@@ -14,13 +14,13 @@
 #include "../Math/EulerAngles.h"
 
 template <typename T>
-bool ScriptsImplementation<T>::compare(const Keyframe<T> &frame1, const Keyframe<T> &frame2)
+static bool operator< (const Keyframe<T> &frame1, const Keyframe<T> &frame2)
 {
     return frame1.getTimestamp() < frame2.getTimestamp();
 }
 
 template <typename T>
-bool ScriptsImplementation<T>::compareTimestamp(float timestamp, const Keyframe<T> &frame)
+static bool operator< (float timestamp, const Keyframe<T> &frame)
 {
     return timestamp < frame.getTimestamp();
 }
@@ -28,7 +28,7 @@ bool ScriptsImplementation<T>::compareTimestamp(float timestamp, const Keyframe<
 template <typename T>
 void ScriptsImplementation<T>::addKeyframe(const Keyframe<T> keyframe)
 {
-    keyframes.emplace(std::upper_bound(keyframes.begin(), keyframes.end(), keyframe, ScriptsImplementation<T>::compare), keyframe);
+    keyframes.emplace(std::upper_bound(keyframes.begin(), keyframes.end(), keyframe), keyframe);
 }
 
 template <typename T>
@@ -44,7 +44,7 @@ template <typename T>
 glm::mat4 ScriptsImplementation<T>::getTranscationMatrixAt(float time)
 {
     time = fmod(time, getMaximumTime());
-    auto position = std::upper_bound(keyframes.begin(), keyframes.end(), time, ScriptsImplementation<T>::compareTimestamp) - 1;
+    auto position = std::upper_bound(keyframes.begin(), keyframes.end(), time) - 1;
 
     time -= position->getTimestamp();
     time /= (position + 1)->getTimestamp() - position->getTimestamp();
