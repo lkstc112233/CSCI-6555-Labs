@@ -53,6 +53,8 @@ int main(int argc, char** argv)
 	MouseCallbackWrapper::registerHandlerCallbacks(window, &mouseHandlers);
 
 	Object3D cube(ModelLoader::loadOffFile(argv[1]));
+	Object3D keyIndicator(ModelLoader::loadOffFile("res/models/smallcube.off"));
+	Object3D pathIndicator(ModelLoader::loadOffFile("res/models/tinycube.off"));
 
 	ShaderProgram shaderProgram{
 		Shader::createVertexShader("res/shaders/simpleShader.vert"),
@@ -61,9 +63,13 @@ int main(int argc, char** argv)
 	{
 		return -4;
 	}
+	ShaderProgram keyframeShader{
+		Shader::createVertexShader("res/shaders/keyShader.vert"),
+		Shader::createFragmentShader("res/shaders/simpleShader.frag")};
 	glm::mat4 projection(1.0f);
 	projection = glm::perspective(glm::radians(45.0f), PROJECTION_RATIO, 0.1f, 100.0f);
 	shaderProgram.setMatrix("projection", projection);
+	keyframeShader.setMatrix("projection", projection);
 
 	Camera camera;
 
@@ -116,10 +122,24 @@ int main(int argc, char** argv)
 		glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-		cube.setTransformMatrix(script->getTranscationMatrixAt(progressBar.getProcess() * script->getMaximumTime()));
-
-		shaderProgram.setMatrix("view", camera.getViewMat());
-		cube.draw(shaderProgram);
+		if (!progressBar.isEditing()) {
+			shaderProgram.setMatrix("view", camera.getViewMat());
+			cube.setTransformMatrix(script->getTranscationMatrixAt(progressBar.getProcess() * script->getMaximumTime()));
+			cube.draw(shaderProgram);
+		} else {
+			keyframeShader.setMatrix("view", camera.getViewMat());
+			auto keys = script->getTimestamps();
+			for (auto iter = keys.begin(); iter < keys.end(); ++iter) {
+				keyframeShader.setValue("interest", 0.0f);
+				keyIndicator.setTransformMatrix(script->getTranscationMatrixAt(*iter));
+				keyIndicator.draw(keyframeShader);
+			}
+			for (float f = 0; f < 1; f += 0.001) {
+				keyframeShader.setValue("interest", 0.0f);
+				pathIndicator.setTransformMatrix(script->getTranscationMatrixAt(f * script->getMaximumTime()));
+				pathIndicator.draw(keyframeShader);
+			}
+		}
 
 		// Draw HDR
 		glClear(GL_DEPTH_BUFFER_BIT);
