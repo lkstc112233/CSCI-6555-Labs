@@ -66,16 +66,27 @@ void ProgressBar::addProcess(float proc) {
 }
 
 void ProgressBar::draw(ShaderProgram& shader) {
-    playedProgressBar.setTransformMatrix(glm::mat3{
-        {process * PROGRESS_BAR_LENGTH, 0, 0},
-        {0, PROGRESS_BAR_HEIGHT ,0},
-        {PROGRESS_BAR_LEFT_BOUND, PROGRESS_BAR_LOWER_BOUND, 1}});
-	playedProgressBar.draw(shader);
-    unplayedProgressBar.setTransformMatrix(glm::mat3{
-        {PROGRESS_BAR_LENGTH - process * PROGRESS_BAR_LENGTH, 0, 0}, 
-        {0, PROGRESS_BAR_HEIGHT ,0}, 
-        { process *  PROGRESS_BAR_LENGTH + PROGRESS_BAR_LEFT_BOUND, PROGRESS_BAR_LOWER_BOUND, 1}});
-	unplayedProgressBar.draw(shader);
+	if (editButton.state) {
+		// Draws a progress bar
+		playedProgressBar.setTransformMatrix(glm::mat3{
+			{process * PROGRESS_BAR_LENGTH, 0, 0},
+			{0, PROGRESS_BAR_HEIGHT ,0},
+			{PROGRESS_BAR_LEFT_BOUND, PROGRESS_BAR_LOWER_BOUND, 1}});
+		playedProgressBar.draw(shader);
+		unplayedProgressBar.setTransformMatrix(glm::mat3{
+			{PROGRESS_BAR_LENGTH - process * PROGRESS_BAR_LENGTH, 0, 0}, 
+			{0, PROGRESS_BAR_HEIGHT ,0}, 
+			{ process *  PROGRESS_BAR_LENGTH + PROGRESS_BAR_LEFT_BOUND, PROGRESS_BAR_LOWER_BOUND, 1}});
+		unplayedProgressBar.draw(shader);
+	} else {
+		// Draws an edit bar, with the unplayed part's color aka light grey.
+		unplayedProgressBar.setTransformMatrix(glm::mat3{
+			{PROGRESS_BAR_LENGTH, 0, 0}, 
+			{0, PROGRESS_BAR_HEIGHT ,0}, 
+			{ PROGRESS_BAR_LEFT_BOUND, PROGRESS_BAR_LOWER_BOUND, 1}});
+		unplayedProgressBar.draw(shader);
+		// Draws keyframes.
+	}
 	playPauseButton.draw(shader);
 	editButton.draw(shader);
 }
