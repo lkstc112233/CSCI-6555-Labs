@@ -18,6 +18,18 @@ public:
       : timestamp(timestampi), x(xi), y(yi), z(zi), orientation(orientationi)
   {
   }
+  void setTimestamp(float timestampi) {
+    timestamp = timestampi;
+  }
+  void moveX(float dx) {
+    x += dx;
+  }
+  void moveY(float dy) {
+    y += dy;
+  }
+  void moveZ(float dz) {
+    z += dz;
+  }
   float getTimestamp() const { return timestamp; }
   glm::mat4 getTranscationMatrix() 
   {
