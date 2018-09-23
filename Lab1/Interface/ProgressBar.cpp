@@ -45,7 +45,7 @@ void ProgressBar::attachControls(KeyHandlerContainer& keyContainer, MouseHandler
 			pressed = true;
 		}
 		if (pressed && (mouseFlags & MOUSE_LEFTBUTTON_HOLD)) {
-			process = glm::clamp(clampedx - PROGRESS_BAR_LEFT_BOUND, 0.0f, PROGRESS_BAR_LENGTH) / PROGRESS_BAR_LENGTH;
+			setProcess(glm::clamp(clampedx - PROGRESS_BAR_LEFT_BOUND, 0.0f, PROGRESS_BAR_LENGTH) / PROGRESS_BAR_LENGTH);
 		}
 		if (!(mouseFlags & MOUSE_LEFTBUTTON_HOLD)) {
 			pressed = false;
