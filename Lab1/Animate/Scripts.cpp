@@ -52,6 +52,11 @@ glm::mat4 ScriptsImplementation<T>::getTranscationMatrixAt(float time)
     return catmullRomInterpolate(time, position - 1).getTranscationMatrix();
 }
 
+template <typename T>
+void ScriptsImplementation<T>::setActiveTimestamp(float timestamp) {
+    keyframes[getActivedKeyframe()].setTimestamp(timestamp);
+    rebuildTimestampIndex();
+}
 
 template <typename T>
 void ScriptsImplementation<T>::rebuildTimestampIndex() {
