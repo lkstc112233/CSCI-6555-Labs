@@ -30,6 +30,7 @@ class ScriptsImplementation : public Scripts
     std::vector<float> timestamps;
     std::vector<Keyframe<T>> keyframes;
     void addKeyframe(const Keyframe<T> keyframe);
+    void rebuildTimestampIndex();
 
   public:
     virtual float getMaximumTime() const;

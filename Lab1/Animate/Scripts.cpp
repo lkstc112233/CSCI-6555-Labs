@@ -52,6 +52,18 @@ glm::mat4 ScriptsImplementation<T>::getTranscationMatrixAt(float time)
     return catmullRomInterpolate(time, position - 1).getTranscationMatrix();
 }
 
+
+template <typename T>
+void ScriptsImplementation<T>::rebuildTimestampIndex() {
+    timestamps.clear();
+    timestamps.resize(keyframes.size());
+    std::transform(
+        keyframes.begin(), 
+        keyframes.end(), 
+        timestamps.begin(), 
+        [](auto frame){ return frame.getTimestamp(); });
+}
+
 std::unique_ptr<Scripts> ScriptsLoader::loadScript(const char *filename)
 {
     class QuaternionScript:public ScriptsImplementation<Quaternion>{};
@@ -90,19 +102,9 @@ std::unique_ptr<Scripts> ScriptsLoader::loadScript(const char *filename)
     }
     if (qcount < ecount)
     {
-        eulerAnglesScripts->timestamps.resize(eulerAnglesScripts->keyframes.size());
-        std::transform(
-            eulerAnglesScripts->keyframes.begin(), 
-            eulerAnglesScripts->keyframes.end(), 
-            eulerAnglesScripts->timestamps.begin(), 
-            [](auto frame){ return frame.getTimestamp(); });
+        eulerAnglesScripts->rebuildTimestampIndex();
         return eulerAnglesScripts;
     }
-    quaternionScripts->timestamps.resize(quaternionScripts->keyframes.size());
-    std::transform(
-        quaternionScripts->keyframes.begin(), 
-        quaternionScripts->keyframes.end(), 
-        quaternionScripts->timestamps.begin(), 
-        [](auto frame){ return frame.getTimestamp(); });
+    quaternionScripts->rebuildTimestampIndex();
     return quaternionScripts;
 }
