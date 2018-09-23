@@ -53,6 +53,11 @@ glm::mat4 ScriptsImplementation<T>::getTranscationMatrixAt(float time)
 }
 
 template <typename T>
+float ScriptsImplementation<T>::getActivedTimestamp() const {
+    return keyframes[getActivedKeyframe()].getTimestamp();
+}
+
+template <typename T>
 void ScriptsImplementation<T>::setActiveTimestamp(float timestamp) {
     keyframes[getActivedKeyframe()].setTimestamp(timestamp);
     rebuildTimestampIndex();

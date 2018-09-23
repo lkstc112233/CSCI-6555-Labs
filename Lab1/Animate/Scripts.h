@@ -19,7 +19,8 @@ class Scripts
     virtual float getMaximumTime() const = 0;
     virtual glm::mat4 getTranscationMatrixAt(float time) = 0;
     void activeKeyframe(int index) {activeKeyframeIndex = index;}
-    int getActivedKeyframe() {return activeKeyframeIndex;}
+    int getActivedKeyframe() const {return activeKeyframeIndex;}
+    virtual float getActivedTimestamp() const = 0;
     virtual void setActiveTimestamp(float timestamp) = 0;
 };
 
@@ -37,6 +38,7 @@ class ScriptsImplementation : public Scripts
     virtual float getMaximumTime() const;
     virtual const std::vector<float>& getTimestamps() const { return timestamps; }
     virtual glm::mat4 getTranscationMatrixAt(float time);
+    virtual float getActivedTimestamp() const;
     virtual void setActiveTimestamp(float timestamp);
 };
 
