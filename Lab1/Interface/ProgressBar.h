@@ -19,10 +19,13 @@ class ProgressBar
     TwoStateButton playPauseButton;
     // For some reason the edit button is here...
     TwoStateButton editButton;
+    float process = 0;
 
   public:
-    float process = 0;
   bool isPlaying() const { return playPauseButton.state; }
+  float getProcess() const { return process; }
+  void setProcess(float process);
+  void addProcess(float process);
     ProgressBar();
     void attachControls(KeyHandlerContainer& keyContainer, MouseHandlerContainer& mouseContainer);
 	void draw(ShaderProgram& shader);

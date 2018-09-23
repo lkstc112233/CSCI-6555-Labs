@@ -107,7 +107,7 @@ int main(int argc, char** argv)
 
 		double thisTime = glfwGetTime();
 		if (progressBar.isPlaying()) {
-			progressBar.process += (thisTime - lastTime) / script->getMaximumTime();
+			progressBar.addProcess((thisTime - lastTime) / script->getMaximumTime());
 		}
 		lastTime = thisTime;
 
@@ -116,7 +116,7 @@ int main(int argc, char** argv)
 		glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-		cube.setTransformMatrix(script->getTranscationMatrixAt(progressBar.process * script->getMaximumTime()));
+		cube.setTransformMatrix(script->getTranscationMatrixAt(progressBar.getProcess() * script->getMaximumTime()));
 
 		shaderProgram.setMatrix("view", camera.getViewMat());
 		cube.draw(shaderProgram);

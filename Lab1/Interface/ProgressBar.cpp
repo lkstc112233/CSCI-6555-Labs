@@ -53,17 +53,25 @@ void ProgressBar::attachControls(KeyHandlerContainer& keyContainer, MouseHandler
 	}); 
 }
 
+void ProgressBar::setProcess(float proc) {
+	process = fmod(proc, 1);
+}
+
+void ProgressBar::addProcess(float proc) {
+	process += proc;
+	process = fmod(process, 1);
+}
+
 void ProgressBar::draw(ShaderProgram& shader) {
-    float timeRate = fmod(process, 1);
     playedProgressBar.setTransformMatrix(glm::mat3{
-        {timeRate * PROGRESS_BAR_LENGTH, 0, 0},
+        {process * PROGRESS_BAR_LENGTH, 0, 0},
         {0, PROGRESS_BAR_HEIGHT ,0},
         {PROGRESS_BAR_LEFT_BOUND, PROGRESS_BAR_LOWER_BOUND, 1}});
 	playedProgressBar.draw(shader);
     unplayedProgressBar.setTransformMatrix(glm::mat3{
-        {PROGRESS_BAR_LENGTH - timeRate * PROGRESS_BAR_LENGTH, 0, 0}, 
+        {PROGRESS_BAR_LENGTH - process * PROGRESS_BAR_LENGTH, 0, 0}, 
         {0, PROGRESS_BAR_HEIGHT ,0}, 
-        { timeRate *  PROGRESS_BAR_LENGTH + PROGRESS_BAR_LEFT_BOUND, PROGRESS_BAR_LOWER_BOUND, 1}});
+        { process *  PROGRESS_BAR_LENGTH + PROGRESS_BAR_LEFT_BOUND, PROGRESS_BAR_LOWER_BOUND, 1}});
 	unplayedProgressBar.draw(shader);
 	playPauseButton.draw(shader);
 	editButton.draw(shader);
