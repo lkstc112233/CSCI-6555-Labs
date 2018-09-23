@@ -20,12 +20,15 @@ const float ProgressBar::PROGRESS_BAR_HEIGHT = 0.033;
 ProgressBar::ProgressBar(const std::unique_ptr<Scripts> &scripti) 
     : playedProgressBar(ModelLoader::getUnitSquareShape())
     , unplayedProgressBar(ModelLoader::getUnitSquareShape())
+    , keyframeObject(ModelLoader::getUnitSquareShape())
     , playPauseButton("res/shapes/pause.shp", "res/shapes/play.shp", -1, -1, 0.1)
     , editButton("res/shapes/hammer.shp", "res/shapes/confirm.shp", -1, 0.9, 0.1, glm::radians(45.0f))
 	, script(scripti)
 {
     playedProgressBar.setColor(glm::vec3(1.0, 0, 0));
     unplayedProgressBar.setColor(glm::vec3(0.9));
+	keyframeObject.setColor(glm::vec3(0.8, 0.8, 0));
+	keyframeObject.setZ(0.1);
 }
 
 void ProgressBar::attachControls(KeyHandlerContainer& keyContainer, MouseHandlerContainer& mouseContainer) {

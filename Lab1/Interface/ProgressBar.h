@@ -20,6 +20,7 @@ class ProgressBar
 	static const float PROGRESS_BAR_HEIGHT;
     Object2D playedProgressBar;
     Object2D unplayedProgressBar;
+    Object2D keyframeObject;
     TwoStateButton playPauseButton;
     // For some reason the edit button is here...
     TwoStateButton editButton;
