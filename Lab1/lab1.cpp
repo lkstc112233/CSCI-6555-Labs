@@ -130,7 +130,7 @@ int main(int argc, char** argv)
 			keyframeShader.setMatrix("view", camera.getViewMat());
 			auto keys = script->getTimestamps();
 			for (auto iter = keys.begin(); iter < keys.end(); ++iter) {
-				if (*iter == keys[progressBar.selectedKeyframe]) {
+				if (*iter == keys[script->getActivedKeyframe()]) {
 					keyframeShader.setValue("interest", 1.0f);
 				} else {
 					keyframeShader.setValue("interest", 0.2f);

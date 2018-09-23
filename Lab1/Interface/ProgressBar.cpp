@@ -69,7 +69,7 @@ void ProgressBar::attachControls(KeyHandlerContainer& keyContainer, MouseHandler
 			for (auto iter = frames.cbegin() + 1; iter < frames.cend() - 1; ++iter) {
 				if (clampedx < PROGRESS_BAR_LEFT_BOUND + 0.005 + *iter * PROGRESS_BAR_LENGTH / script->getMaximumTime()
 				 && clampedx > PROGRESS_BAR_LEFT_BOUND - 0.005 + *iter * PROGRESS_BAR_LENGTH / script->getMaximumTime()) {
-					selectedKeyframe = iter - frames.cbegin();
+					script->activeKeyframe(iter - frames.cbegin());
 				}
 			}
 		}

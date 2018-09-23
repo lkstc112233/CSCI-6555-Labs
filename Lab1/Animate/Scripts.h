@@ -10,12 +10,16 @@
 
 class Scripts
 {
+  protected:
+    int activeKeyframeIndex = 0;
   public:
     virtual ~Scripts(){}
     // Returns a list of timestamps.
     virtual const std::vector<float>& getTimestamps() const = 0;
     virtual float getMaximumTime() const = 0;
     virtual glm::mat4 getTranscationMatrixAt(float time) = 0;
+    void activeKeyframe(int index) {activeKeyframeIndex = index;}
+    int getActivedKeyframe() {return activeKeyframeIndex;}
 };
 
 template <typename T>
