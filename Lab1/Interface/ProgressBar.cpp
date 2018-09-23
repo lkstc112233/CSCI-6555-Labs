@@ -28,7 +28,7 @@ ProgressBar::ProgressBar(const std::unique_ptr<Scripts> &scripti)
     playedProgressBar.setColor(glm::vec3(1.0, 0, 0));
     unplayedProgressBar.setColor(glm::vec3(0.9));
 	keyframeObject.setColor(glm::vec3(0.8, 0.8, 0));
-	keyframeObject.setZ(0.1);
+	keyframeObject.setZ(-0.1);
 }
 
 void ProgressBar::attachControls(KeyHandlerContainer& keyContainer, MouseHandlerContainer& mouseContainer) {
