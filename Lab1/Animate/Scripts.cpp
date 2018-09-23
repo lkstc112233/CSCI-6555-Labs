@@ -90,7 +90,19 @@ std::unique_ptr<Scripts> ScriptsLoader::loadScript(const char *filename)
     }
     if (qcount < ecount)
     {
+        eulerAnglesScripts->timestamps.resize(eulerAnglesScripts->keyframes.size());
+        std::transform(
+            eulerAnglesScripts->keyframes.begin(), 
+            eulerAnglesScripts->keyframes.end(), 
+            eulerAnglesScripts->timestamps.begin(), 
+            [](auto frame){ return frame.getTimestamp(); });
         return eulerAnglesScripts;
     }
+    quaternionScripts->timestamps.resize(quaternionScripts->keyframes.size());
+    std::transform(
+        quaternionScripts->keyframes.begin(), 
+        quaternionScripts->keyframes.end(), 
+        quaternionScripts->timestamps.begin(), 
+        [](auto frame){ return frame.getTimestamp(); });
     return quaternionScripts;
 }

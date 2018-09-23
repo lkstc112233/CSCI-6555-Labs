@@ -12,6 +12,8 @@ class Scripts
 {
   public:
     virtual ~Scripts(){}
+    // Returns a list of timestamps.
+    virtual const std::vector<float>& getTimestamps() const = 0;
     virtual float getMaximumTime() const = 0;
     virtual glm::mat4 getTranscationMatrixAt(float time) = 0;
 };
@@ -21,11 +23,13 @@ class ScriptsImplementation : public Scripts
 {
   private:
     friend class ScriptsLoader;
+    std::vector<float> timestamps;
     std::vector<Keyframe<T>> keyframes;
     void addKeyframe(const Keyframe<T> keyframe);
 
   public:
     virtual float getMaximumTime() const;
+    virtual const std::vector<float>& getTimestamps() const { return timestamps; }
     virtual glm::mat4 getTranscationMatrixAt(float time);
 };
 
