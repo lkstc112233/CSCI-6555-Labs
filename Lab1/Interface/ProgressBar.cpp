@@ -58,8 +58,7 @@ void ProgressBar::setProcess(float proc) {
 }
 
 void ProgressBar::addProcess(float proc) {
-	process += proc;
-	process = fmod(process, 1);
+	setProcess(process + proc);
 }
 
 void ProgressBar::draw(ShaderProgram& shader) {
