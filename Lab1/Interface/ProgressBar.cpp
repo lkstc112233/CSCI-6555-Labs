@@ -62,6 +62,7 @@ void ProgressBar::attachControls(KeyHandlerContainer& keyContainer, MouseHandler
 		if (editButton.state) {
 			return;
 		}
+		static int draggingKeyframeDefinitionCountdown = -1;
 		if ((mouseFlags & MOUSE_LEFTBUTTON_PRESSED)
 		&& clampedy < PROGRESS_BAR_LOWER_BOUND + 0.02 + PROGRESS_BAR_HEIGHT
 		&& clampedy > PROGRESS_BAR_LOWER_BOUND - 0.02) {
@@ -69,9 +70,25 @@ void ProgressBar::attachControls(KeyHandlerContainer& keyContainer, MouseHandler
 			for (auto iter = frames.cbegin() + 1; iter < frames.cend() - 1; ++iter) {
 				if (clampedx < PROGRESS_BAR_LEFT_BOUND + 0.005 + *iter * PROGRESS_BAR_LENGTH / script->getMaximumTime()
 				 && clampedx > PROGRESS_BAR_LEFT_BOUND - 0.005 + *iter * PROGRESS_BAR_LENGTH / script->getMaximumTime()) {
+					draggingKeyframeDefinitionCountdown = 10;
 					script->activeKeyframe(iter - frames.cbegin());
 				}
 			}
+		}
+		if (mouseFlags & MOUSE_LEFTBUTTON_HOLD) {
+			if (draggingKeyframeDefinitionCountdown) {
+				if (draggingKeyframeDefinitionCountdown > 0) {
+					if (clampedx < PROGRESS_BAR_LEFT_BOUND + 0.005 + script->getActivedTimestamp() * PROGRESS_BAR_LENGTH / script->getMaximumTime()
+					&& clampedx > PROGRESS_BAR_LEFT_BOUND - 0.005 + script->getActivedTimestamp() * PROGRESS_BAR_LENGTH / script->getMaximumTime()) {
+						draggingKeyframeDefinitionCountdown -= 1;
+					}
+				}
+			} else {
+				script->setActiveTimestamp(std::max(0.0f, (clampedx - PROGRESS_BAR_LEFT_BOUND) / PROGRESS_BAR_LENGTH) * script->getMaximumTime());
+			}
+		}
+		if (!(mouseFlags & MOUSE_LEFTBUTTON_HOLD)) {
+			draggingKeyframeDefinitionCountdown = -1;
 		}
 	}); 
 }
