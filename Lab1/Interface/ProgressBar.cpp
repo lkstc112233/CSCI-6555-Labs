@@ -89,6 +89,7 @@ void ProgressBar::attachControls(KeyHandlerContainer& keyContainer, MouseHandler
 		}
 		if (!(mouseFlags & MOUSE_LEFTBUTTON_HOLD)) {
 			draggingKeyframeDefinitionCountdown = -1;
+			script->rearrangeKeyframes();
 		}
 	}); 
 }

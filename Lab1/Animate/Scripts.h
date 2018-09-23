@@ -22,6 +22,7 @@ class Scripts
     int getActivedKeyframe() const {return activeKeyframeIndex;}
     virtual float getActivedTimestamp() const = 0;
     virtual void setActiveTimestamp(float timestamp) = 0;
+    virtual void rearrangeKeyframes() = 0;
 };
 
 template <typename T>
@@ -40,6 +41,7 @@ class ScriptsImplementation : public Scripts
     virtual glm::mat4 getTranscationMatrixAt(float time);
     virtual float getActivedTimestamp() const;
     virtual void setActiveTimestamp(float timestamp);
+    virtual void rearrangeKeyframes();
 };
 
 class ScriptsLoader

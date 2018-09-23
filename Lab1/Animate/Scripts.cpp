@@ -64,6 +64,12 @@ void ScriptsImplementation<T>::setActiveTimestamp(float timestamp) {
 }
 
 template <typename T>
+void ScriptsImplementation<T>::rearrangeKeyframes() {
+    std::sort(keyframes.begin(), keyframes.end(), [](auto &key1, auto &key2){return key1.getTimestamp() < key2.getTimestamp();});
+    rebuildTimestampIndex();
+}
+
+template <typename T>
 void ScriptsImplementation<T>::rebuildTimestampIndex() {
     timestamps.clear();
     timestamps.resize(keyframes.size());
