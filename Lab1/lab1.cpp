@@ -130,7 +130,11 @@ int main(int argc, char** argv)
 			keyframeShader.setMatrix("view", camera.getViewMat());
 			auto keys = script->getTimestamps();
 			for (auto iter = keys.begin(); iter < keys.end(); ++iter) {
-				keyframeShader.setValue("interest", 0.0f);
+				if (*iter == keys[progressBar.selectedKeyframe]) {
+					keyframeShader.setValue("interest", 1.0f);
+				} else {
+					keyframeShader.setValue("interest", 0.2f);
+				}
 				keyIndicator.setTransformMatrix(script->getTranscationMatrixAt(*iter));
 				keyIndicator.draw(keyframeShader);
 			}
