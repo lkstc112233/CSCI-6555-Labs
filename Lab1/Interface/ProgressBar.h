@@ -21,8 +21,8 @@ class ProgressBar
     TwoStateButton editButton;
 
   public:
-  bool isPlaying() { return playPauseButton.state; }
     float process = 0;
+  bool isPlaying() const { return playPauseButton.state; }
     ProgressBar();
     void attachControls(KeyHandlerContainer& keyContainer, MouseHandlerContainer& mouseContainer);
 	void draw(ShaderProgram& shader);
