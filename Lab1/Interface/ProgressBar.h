@@ -3,6 +3,7 @@
 
 #include "../Graphics/Object/Object.h"
 #include "../Graphics/Shaders/Shader.h"
+#include "Utilities/TwoStateButton.h"
 #include "KeyHandler.h"
 #include "MouseHandler.h"
 
@@ -13,15 +14,12 @@ class ProgressBar
 	static const float PROGRESS_BAR_LEFT_BOUND;
 	static const float PROGRESS_BAR_LENGTH;
 	static const float PROGRESS_BAR_HEIGHT;
-    const Model playModel;
-    const Model pauseModel;
     Object2D playedProgressBar;
     Object2D unplayedProgressBar;
-	Object2D play;
-	Object2D pause;
+    TwoStateButton playPauseButton;
 
   public:
-    bool playing = true;
+  bool isPlaying() { return playPauseButton.state; }
     float process = 0;
     ProgressBar();
     void attachControls(KeyHandlerContainer& keyContainer, MouseHandlerContainer& mouseContainer);
