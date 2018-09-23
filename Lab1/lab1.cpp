@@ -106,7 +106,7 @@ int main(int argc, char** argv)
 		mouseHandlers.handle();
 
 		double thisTime = glfwGetTime();
-		if (progressBar.playing) {
+		if (progressBar.isPlaying()) {
 			progressBar.process += (thisTime - lastTime) / script->getMaximumTime();
 		}
 		lastTime = thisTime;
