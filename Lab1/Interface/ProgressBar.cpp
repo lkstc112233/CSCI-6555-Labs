@@ -54,7 +54,9 @@ void ProgressBar::attachControls(KeyHandlerContainer& keyContainer, MouseHandler
 }
 
 void ProgressBar::setProcess(float proc) {
-	process = fmod(proc, 1);
+	if (editButton.state) {
+		process = fmod(proc, 1);
+	}
 }
 
 void ProgressBar::addProcess(float proc) {
