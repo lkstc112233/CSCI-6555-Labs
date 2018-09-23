@@ -29,6 +29,7 @@ class ProgressBar
     float process = 0;
 
   public:
+  int selectedKeyframe = 0;
   bool isPlaying() const { return playPauseButton.state; }
   float getProcess() const { return process; }
   void setProcess(float process);

@@ -56,6 +56,24 @@ void ProgressBar::attachControls(KeyHandlerContainer& keyContainer, MouseHandler
 			pressed = false;
 		}
 	}); 
+    mouseContainer.emplace_handler([=](int mouseFlags, float clampedx, float clampedy) {
+		clampedx /= SCREEN_WIDTH;
+		clampedy /= SCREEN_HEIGHT;
+		if (editButton.state) {
+			return;
+		}
+		if ((mouseFlags & MOUSE_LEFTBUTTON_PRESSED)
+		&& clampedy < PROGRESS_BAR_LOWER_BOUND + 0.02 + PROGRESS_BAR_HEIGHT
+		&& clampedy > PROGRESS_BAR_LOWER_BOUND - 0.02) {
+			const std::vector<float>& frames = script->getTimestamps();
+			for (auto iter = frames.cbegin() + 1; iter < frames.cend() - 1; ++iter) {
+				if (clampedx < PROGRESS_BAR_LEFT_BOUND + 0.005 + *iter * PROGRESS_BAR_LENGTH / script->getMaximumTime()
+				 && clampedx > PROGRESS_BAR_LEFT_BOUND - 0.005 + *iter * PROGRESS_BAR_LENGTH / script->getMaximumTime()) {
+					selectedKeyframe = iter - frames.cbegin();
+				}
+			}
+		}
+	}); 
 }
 
 void ProgressBar::setProcess(float proc) {
