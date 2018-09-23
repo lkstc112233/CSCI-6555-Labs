@@ -33,6 +33,7 @@ void ProgressBar::attachControls(KeyHandlerContainer& keyContainer, MouseHandler
 	keyContainer.emplace_handler(GLFW_KEY_SPACE, [this]() {
 		playPauseButton.state = !playPauseButton.state;
 	}, true);
+	// Process bar process change handler.
     mouseContainer.emplace_handler([=](int mouseFlags, float clampedx, float clampedy) {
 		static bool pressed = false;
 		clampedx /= SCREEN_WIDTH;
