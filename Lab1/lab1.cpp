@@ -97,7 +97,7 @@ int main(int argc, char** argv)
 	});
 
 	double lastTime = glfwGetTime();
-	ProgressBar progressBar;
+	ProgressBar progressBar(script);
 	progressBar.attachControls(keyHandlers, mouseHandlers);
 
 	while (!glfwWindowShouldClose(window))

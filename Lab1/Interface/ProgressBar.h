@@ -1,11 +1,15 @@
 #ifndef INTERFACE_PROGRESSBAR_H
 #define INTERFACE_PROGRESSBAR_H
 
+#include <memory>
+
 #include "../Graphics/Object/Object.h"
 #include "../Graphics/Shaders/Shader.h"
 #include "Utilities/TwoStateButton.h"
 #include "KeyHandler.h"
 #include "MouseHandler.h"
+
+#include "../Animate/Scripts.h"
 
 class ProgressBar
 {
@@ -19,6 +23,8 @@ class ProgressBar
     TwoStateButton playPauseButton;
     // For some reason the edit button is here...
     TwoStateButton editButton;
+    // Again for some reason the script is kept here...
+    const std::unique_ptr<Scripts>& script;
     float process = 0;
 
   public:
@@ -26,7 +32,7 @@ class ProgressBar
   float getProcess() const { return process; }
   void setProcess(float process);
   void addProcess(float process);
-    ProgressBar();
+    ProgressBar(const std::unique_ptr<Scripts> &script);
     void attachControls(KeyHandlerContainer& keyContainer, MouseHandlerContainer& mouseContainer);
 	void draw(ShaderProgram& shader);
 };
