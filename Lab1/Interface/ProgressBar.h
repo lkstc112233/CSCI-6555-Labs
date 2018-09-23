@@ -31,6 +31,7 @@ class ProgressBar
   public:
   int selectedKeyframe = 0;
   bool isPlaying() const { return playPauseButton.state; }
+  bool isEditing() const { return !editButton.state; }
   float getProcess() const { return process; }
   void setProcess(float process);
   void addProcess(float process);
