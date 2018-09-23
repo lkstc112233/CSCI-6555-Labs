@@ -17,6 +17,8 @@ class ProgressBar
     Object2D playedProgressBar;
     Object2D unplayedProgressBar;
     TwoStateButton playPauseButton;
+    // For some reason the edit button is here...
+    TwoStateButton editButton;
 
   public:
   bool isPlaying() { return playPauseButton.state; }

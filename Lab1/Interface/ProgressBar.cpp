@@ -21,6 +21,7 @@ ProgressBar::ProgressBar()
     : playedProgressBar(ModelLoader::getUnitSquareShape())
     , unplayedProgressBar(ModelLoader::getUnitSquareShape())
     , playPauseButton("res/shapes/pause.shp", "res/shapes/play.shp", -1, -1, 0.1)
+    , editButton("res/shapes/hammer.shp", "res/shapes/confirm.shp", -1, 0.9, 0.1, glm::radians(45.0f))
 {
     playedProgressBar.setColor(glm::vec3(1.0, 0, 0));
     unplayedProgressBar.setColor(glm::vec3(0.9));
@@ -28,6 +29,7 @@ ProgressBar::ProgressBar()
 
 void ProgressBar::attachControls(KeyHandlerContainer& keyContainer, MouseHandlerContainer& mouseContainer) {
 	playPauseButton.attachControls(mouseContainer);
+	editButton.attachControls(mouseContainer);
 	keyContainer.emplace_handler(GLFW_KEY_SPACE, [this]() {
 		playPauseButton.state = !playPauseButton.state;
 	}, true);
@@ -64,4 +66,5 @@ void ProgressBar::draw(ShaderProgram& shader) {
         { timeRate *  PROGRESS_BAR_LENGTH + PROGRESS_BAR_LEFT_BOUND, PROGRESS_BAR_LOWER_BOUND, 1}});
 	unplayedProgressBar.draw(shader);
 	playPauseButton.draw(shader);
+	editButton.draw(shader);
 }
