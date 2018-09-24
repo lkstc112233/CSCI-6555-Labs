@@ -64,6 +64,13 @@ void ScriptsImplementation<T>::setActiveTimestamp(float timestamp) {
 }
 
 template <typename T>
+void ScriptsImplementation<T>::moveActiveTimestampBy(glm::vec3 movement) {
+    keyframes[getActivedKeyframe()].moveX(movement.x);
+    keyframes[getActivedKeyframe()].moveY(movement.y);
+    keyframes[getActivedKeyframe()].moveZ(movement.z);
+}
+
+template <typename T>
 void ScriptsImplementation<T>::rearrangeKeyframes() {
     std::sort(keyframes.begin(), keyframes.end(), [](auto &key1, auto &key2){return key1.getTimestamp() < key2.getTimestamp();});
     rebuildTimestampIndex();
