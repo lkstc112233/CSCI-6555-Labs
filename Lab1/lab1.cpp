@@ -107,7 +107,7 @@ int main(int argc, char** argv)
 	ProgressBar progressBar(script);
 	progressBar.attachControls(keyHandlers, mouseHandlers);
 
-	Button switchInterpolation("res/shapes/cursor.shp", -1, -0.1, 0.1);
+	Button switchInterpolation("res/shapes/switch.shp", -1, -0.1, 0.1);
 	switchInterpolation.attachControls(mouseHandlers);
 	switchInterpolation.setCallback([&script](){script->switchInterpolate();});
 
