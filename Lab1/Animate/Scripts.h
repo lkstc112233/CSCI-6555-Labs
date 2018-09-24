@@ -22,7 +22,7 @@ class Scripts
     int getActivedKeyframe() const {return activeKeyframeIndex;}
     virtual float getActivedTimestamp() const = 0;
     virtual void setActiveTimestamp(float timestamp) = 0;
-    virtual void moveActiveTimestampBy(glm::vec3) = 0;
+    virtual void moveActiveKeyframeBy(glm::vec3) = 0;
     virtual void rearrangeKeyframes() = 0;
 };
 
@@ -42,7 +42,7 @@ class ScriptsImplementation : public Scripts
     virtual glm::mat4 getTranscationMatrixAt(float time);
     virtual float getActivedTimestamp() const;
     virtual void setActiveTimestamp(float timestamp);
-    virtual void moveActiveTimestampBy(glm::vec3);
+    virtual void moveActiveKeyframeBy(glm::vec3);
     virtual void rearrangeKeyframes();
 };
 
