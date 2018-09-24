@@ -8,6 +8,7 @@
 #include "MouseHandler.h"
 
 MouseHandlerContainer *MouseCallbackWrapper::handlers = nullptr;
+double MouseCallbackWrapper::yoffset = 0;
 
 void attachCameraControls(KeyHandlerContainer& keyContainer, MouseHandlerContainer& mouseContainer, Camera &camera) {
 	keyContainer.emplace_handler(GLFW_KEY_W, [&camera]() {

@@ -14,19 +14,42 @@ void attachCameraControls(KeyHandlerContainer& keyContainer, MouseHandlerContain
 class MouseCallbackWrapper
 {
   private:
+	constexpr const static double SCROLL_THRESHOLD = 1;
+	constexpr const static double SCROLL_OFFSET_FADING_CONSTANT = 0.997;
 	static MouseHandlerContainer *handlers;
+	static double yoffset;
 
   public:
     static void registerHandlerCallbacks(GLFWwindow *window, MouseHandlerContainer *handler) {
 		handlers = handler;
 		glfwSetCursorPosCallback(window, callback);
 		glfwSetMouseButtonCallback(window, callback);
+		glfwSetScrollCallback(window, callback_scroll);
 	}
 	static void callback(GLFWwindow *window, double x, double y)
 	{
 		if (handlers)
 		{
 			handlers->setPosition(x, y);
+		}
+	}
+	static void callback_scroll(GLFWwindow *window, double diffx, double diffy)
+	{
+		if (yoffset * diffy < 0) {
+			yoffset = 0;
+		}
+		yoffset += diffy;
+		yoffset *= SCROLL_OFFSET_FADING_CONSTANT;
+		if (handlers)
+		{
+			if (yoffset > SCROLL_THRESHOLD)
+			{
+				yoffset -= SCROLL_THRESHOLD;
+				handlers->setScrollUpFlag();
+			} else if (yoffset < -SCROLL_THRESHOLD) {
+				yoffset += SCROLL_THRESHOLD;
+				handlers->setScrollDownFlag();
+			}
 		}
 	}
 	static void callback(GLFWwindow *window, int button, int action, int mods)
