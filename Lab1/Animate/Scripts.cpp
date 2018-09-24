@@ -49,7 +49,11 @@ glm::mat4 ScriptsImplementation<T>::getTranscationMatrixAt(float time)
     time -= position->getTimestamp();
     time /= (position + 1)->getTimestamp() - position->getTimestamp();
 
-    return catmullRomInterpolate(time, position - 1).getTranscationMatrix();
+    if (useCatmullRomInterpolate) {
+        return catmullRomInterpolate(time, position - 1).getTranscationMatrix();
+    } else {
+        return uniformNonrationalBasisSplineInterpolate(time, position - 1).getTranscationMatrix();
+    }
 }
 
 template <typename T>

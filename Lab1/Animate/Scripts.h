@@ -12,6 +12,7 @@ class Scripts
 {
   protected:
     int activeKeyframeIndex = 0;
+    bool useCatmullRomInterpolate = true;
   public:
     virtual ~Scripts(){}
     // Returns a list of timestamps.
@@ -24,6 +25,7 @@ class Scripts
     virtual void setActiveTimestamp(float timestamp) = 0;
     virtual void moveActiveKeyframeBy(glm::vec3) = 0;
     virtual void rearrangeKeyframes() = 0;
+    void switchInterpolate() { useCatmullRomInterpolate = !useCatmullRomInterpolate; }
 };
 
 template <typename T>
