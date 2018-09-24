@@ -19,6 +19,7 @@
 #include "Interface/MouseHandler.h"
 #include "Interface/InterfaceRelatedStuffHolder.hpp"
 #include "Interface/ProgressBar.h"
+#include "Interface/Utilities/Button.h"
 
 #include "Math/Quaternion.h"
 #include "Animate/Keyframe.hpp"
@@ -106,6 +107,10 @@ int main(int argc, char** argv)
 	ProgressBar progressBar(script);
 	progressBar.attachControls(keyHandlers, mouseHandlers);
 
+	Button switchInterpolation("res/shapes/cursor.shp", -1, -0.1, 0.1);
+	switchInterpolation.attachControls(mouseHandlers);
+	switchInterpolation.setCallback([&script](){script->switchInterpolate();});
+
 	while (!glfwWindowShouldClose(window))
 	{
 		keyHandlers.handle();
@@ -148,6 +153,7 @@ int main(int argc, char** argv)
 		// Draw HDR
 		glClear(GL_DEPTH_BUFFER_BIT);
 		progressBar.draw(hudShader);
+		switchInterpolation.draw(hudShader);
 
 		// Draw cursor
 		glClear(GL_DEPTH_BUFFER_BIT);
