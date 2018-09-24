@@ -56,7 +56,7 @@ void ProgressBar::attachControls(KeyHandlerContainer& keyContainer, MouseHandler
 			pressed = false;
 		}
 	}); 
-    mouseContainer.emplace_handler([=](int mouseFlags, float clampedx, float clampedy) {
+    mouseContainer.emplace_handler([=](int mouseFlags, float clampedx, float clampedy, float diffx, float diffy) {
 		clampedx /= SCREEN_WIDTH;
 		clampedy /= SCREEN_HEIGHT;
 		if (editButton.state) {
@@ -82,6 +82,18 @@ void ProgressBar::attachControls(KeyHandlerContainer& keyContainer, MouseHandler
 					&& clampedx > PROGRESS_BAR_LEFT_BOUND - 0.005 + script->getActivedTimestamp() * PROGRESS_BAR_LENGTH / script->getMaximumTime()) {
 						draggingKeyframeDefinitionCountdown -= 1;
 					}
+				} else {
+					// Move keyframe
+					const float rate = 0.005;
+					const float zrate = 50;
+					float zmovement = 0;
+					if (mouseFlags & MOUSE_SCROLLED_UP_PRESSED) {
+						zmovement += rate * zrate;
+					} 
+					if (mouseFlags & MOUSE_SCROLLED_DOWN_PRESSED) {
+						zmovement -= rate * zrate;
+					}
+					script->moveActiveKeyframeBy(glm::vec3(-diffx * rate, -diffy * rate, zmovement));
 				}
 			} else {
 				script->setActiveTimestamp(std::max(0.0f, (clampedx - PROGRESS_BAR_LEFT_BOUND) / PROGRESS_BAR_LENGTH) * script->getMaximumTime());
