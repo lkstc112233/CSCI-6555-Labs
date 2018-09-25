@@ -111,6 +111,10 @@ int main(int argc, char** argv)
 	switchInterpolation.attachControls(mouseHandlers);
 	switchInterpolation.setCallback([&script](){script->switchInterpolate();});
 
+	keyHandlers.emplace_handler(GLFW_KEY_P, [&script](){
+		script = script->switchRotationRepresentation();
+	}, true);
+
 	while (!glfwWindowShouldClose(window))
 	{
 		keyHandlers.handle();
