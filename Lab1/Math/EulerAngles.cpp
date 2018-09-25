@@ -6,7 +6,7 @@
 
 EulerAngles::EulerAngles() : yaw(0), pitch(0), roll(0) {}
 
-EulerAngles::EulerAngles(const Quaternion& angles)
+EulerAngles::EulerAngles(const Quaternion &quat)
 {
     // TODO: initialize.
 }
@@ -55,14 +55,15 @@ EulerAngles EulerAngles::operator-(const EulerAngles &op2) const
     EulerAngles result(*this);
     return result -= op2;
 }
-EulerAngles EulerAngles::operator*(float op2)const
+EulerAngles EulerAngles::operator*(float op2) const
 {
     EulerAngles result(*this);
     return result *= op2;
 }
-EulerAngles operator*(float op1, const EulerAngles &op2) {
-	EulerAngles result(op2);
-	return result *= op1;
+EulerAngles operator*(float op1, const EulerAngles &op2)
+{
+    EulerAngles result(op2);
+    return result *= op1;
 }
 EulerAngles EulerAngles::operator/(float op2) const
 {
@@ -72,8 +73,9 @@ EulerAngles EulerAngles::operator/(float op2) const
 
 // Heads up for myself: matrix in glm is stored in a column major way.
 // So references to element happens as mat[col][row].
-glm::mat3 EulerAngles::getRotationMatrix() {
-	glm::mat3 result(1.0f);
+glm::mat3 EulerAngles::getRotationMatrix()
+{
+    glm::mat3 result(1.0f);
     glm::mat3 rotationX(1.0f);
     rotationX[1][1] = cos(pitch);
     rotationX[1][2] = sin(pitch);
@@ -90,5 +92,5 @@ glm::mat3 EulerAngles::getRotationMatrix() {
     rotationZ[1][0] = -sin(roll);
     rotationZ[1][1] = cos(roll);
     // TODO: form these matrics together.
-	return rotationY * rotationX * rotationZ * result;
+    return rotationY * rotationX * rotationZ * result;
 }
