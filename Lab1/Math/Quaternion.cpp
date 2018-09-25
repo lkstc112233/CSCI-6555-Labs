@@ -101,6 +101,11 @@ Quaternion Quaternion::operator/(float op2) const
     return result /= op2;
 }
 
+Quaternion Quaternion::reciprocal() const
+{
+    return Quaternion(w, -x, -y, -z);
+}
+
 void Quaternion::normalize()
 {
     float d = sqrt(w * w + x * x + y * y + z * z);

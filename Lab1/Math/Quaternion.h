@@ -31,6 +31,8 @@ class Quaternion
     Quaternion operator*(float) const;
     Quaternion operator/(float) const;
 
+    Quaternion reciprocal() const;
+
     void normalize();
 	glm::mat3 getRotationMatrix();
 };
