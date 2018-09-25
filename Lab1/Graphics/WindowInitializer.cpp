@@ -7,7 +7,9 @@
 
 void framebuffer_size_callback(GLFWwindow *window, int width, int height)
 {
-	glViewport(0, 0, width, height);
+	int bufferwidth, bufferheight;
+	glfwGetFramebufferSize(window, &bufferwidth, &bufferheight);
+	glViewport(0, 0, bufferwidth, bufferheight);
 }
 
 GLFWwindow *initializeWindow(const char* title, int width, int height) {
@@ -35,7 +37,9 @@ GLFWwindow *initializeWindow(const char* title, int width, int height) {
 		std::cerr << "GLAD initialize failed" << std::endl;
 		return nullptr;
 	}
-	glViewport(0, 0, width * 2, height * 2);
+	int bufferwidth, bufferheight;
+	glfwGetFramebufferSize(window, &bufferwidth, &bufferheight);
+	glViewport(0, 0, bufferwidth, bufferheight);
 	glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_BLEND);
