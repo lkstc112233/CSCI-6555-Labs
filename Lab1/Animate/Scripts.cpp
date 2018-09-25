@@ -75,6 +75,11 @@ void ScriptsImplementation<T>::moveActiveKeyframeBy(glm::vec3 movement) {
 }
 
 template <typename T>
+void ScriptsImplementation<T>::rotateActiveKeyframeBy(float yaw, float pitch, float roll) {
+    keyframes[getActivedKeyframe()].rotateBy(yaw, pitch, roll);
+}
+
+template <typename T>
 void ScriptsImplementation<T>::rearrangeKeyframes() {
     std::sort(keyframes.begin(), keyframes.end(), [](auto &key1, auto &key2){return key1.getTimestamp() < key2.getTimestamp();});
     rebuildTimestampIndex();

@@ -24,6 +24,7 @@ class Scripts
     virtual float getActivedTimestamp() const = 0;
     virtual void setActiveTimestamp(float timestamp) = 0;
     virtual void moveActiveKeyframeBy(glm::vec3) = 0;
+    virtual void rotateActiveKeyframeBy(float yaw, float pitch, float roll) = 0;
     virtual void rearrangeKeyframes() = 0;
     void switchInterpolate() { useCatmullRomInterpolate = !useCatmullRomInterpolate; }
     virtual std::unique_ptr<Scripts> switchRotationRepresentation() = 0;
@@ -50,6 +51,7 @@ class ScriptsImplementation : public Scripts
     virtual float getActivedTimestamp() const;
     virtual void setActiveTimestamp(float timestamp);
     virtual void moveActiveKeyframeBy(glm::vec3);
+    virtual void rotateActiveKeyframeBy(float yaw, float pitch, float roll);
     virtual void rearrangeKeyframes();
     virtual std::unique_ptr<Scripts> switchRotationRepresentation();
 };

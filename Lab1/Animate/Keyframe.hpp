@@ -37,6 +37,9 @@ public:
   void moveZ(float dz) {
     z += dz;
   }
+  void rotateBy(float yaw, float pitch, float roll) {
+    orientation.rotateBy(yaw, pitch, roll);
+  }
   float getTimestamp() const { return timestamp; }
   glm::mat4 getTranscationMatrix() 
   {

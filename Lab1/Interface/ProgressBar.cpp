@@ -37,6 +37,24 @@ void ProgressBar::attachControls(KeyHandlerContainer& keyContainer, MouseHandler
 	keyContainer.emplace_handler(GLFW_KEY_SPACE, [this]() {
 		playPauseButton.state = !playPauseButton.state;
 	}, true);
+	keyContainer.emplace_handler(GLFW_KEY_Y, [this]() {
+		script->rotateActiveKeyframeBy(0.005, 0, 0);
+	});
+	keyContainer.emplace_handler(GLFW_KEY_H, [this]() {
+		script->rotateActiveKeyframeBy(-0.005, 0, 0);
+	});
+	keyContainer.emplace_handler(GLFW_KEY_U, [this]() {
+		script->rotateActiveKeyframeBy(0, 0.005, 0);
+	});
+	keyContainer.emplace_handler(GLFW_KEY_J, [this]() {
+		script->rotateActiveKeyframeBy(0, -0.005, 0);
+	});
+	keyContainer.emplace_handler(GLFW_KEY_I, [this]() {
+		script->rotateActiveKeyframeBy(0, 0, 0.005);
+	});
+	keyContainer.emplace_handler(GLFW_KEY_K, [this]() {
+		script->rotateActiveKeyframeBy(0, 0, -0.005);
+	});
 	// Process bar process change handler.
     mouseContainer.emplace_handler([=](int mouseFlags, float clampedx, float clampedy) {
 		static bool pressed = false;
