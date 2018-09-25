@@ -91,6 +91,28 @@ void ScriptsImplementation<T>::rebuildTimestampIndex() {
         [](auto frame){ return frame.getTimestamp(); });
 }
 
+template <typename T>
+template <typename U>
+std::unique_ptr<Scripts> ScriptsImplementation<T>::switchRotationRepresentationImplementation() {
+    class ConvertedScript:public ScriptsImplementation<U>{};
+    auto convertedScript = std::make_unique<ConvertedScript>();
+    for (auto& key: keyframes) {
+        convertedScript->addKeyframe(Keyframe<U>(key));
+    }
+    convertedScript->rebuildTimestampIndex();
+    return convertedScript;
+}
+
+template<>
+std::unique_ptr<Scripts> ScriptsImplementation<Quaternion>::switchRotationRepresentation() {
+    return switchRotationRepresentationImplementation<EulerAngles>();
+}
+
+template<>
+std::unique_ptr<Scripts> ScriptsImplementation<EulerAngles>::switchRotationRepresentation() {
+    return switchRotationRepresentationImplementation<Quaternion>();
+}
+
 std::unique_ptr<Scripts> ScriptsLoader::loadScript(const char *filename)
 {
     class QuaternionScript:public ScriptsImplementation<Quaternion>{};

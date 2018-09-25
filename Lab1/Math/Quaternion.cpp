@@ -2,7 +2,15 @@
 
 #include <cmath>
 
+#include "EulerAngles.h"
+
 Quaternion::Quaternion() : w(1), x(0), y(0), z(0) {}
+
+Quaternion::Quaternion(const EulerAngles& angles)
+{
+    // TODO: initialize.
+    normalize();
+}
 
 Quaternion::Quaternion(float wi, float xi, float yi, float zi)
     : w(wi), x(xi), y(yi), z(zi)

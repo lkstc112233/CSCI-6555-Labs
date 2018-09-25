@@ -26,6 +26,7 @@ class Scripts
     virtual void moveActiveKeyframeBy(glm::vec3) = 0;
     virtual void rearrangeKeyframes() = 0;
     void switchInterpolate() { useCatmullRomInterpolate = !useCatmullRomInterpolate; }
+    virtual std::unique_ptr<Scripts> switchRotationRepresentation() = 0;
 };
 
 template <typename T>
@@ -33,10 +34,14 @@ class ScriptsImplementation : public Scripts
 {
   private:
     friend class ScriptsLoader;
+    template <typename AnyKeyframeType>
+    friend class ScriptsImplementation;
     std::vector<float> timestamps;
     std::vector<Keyframe<T>> keyframes;
     void addKeyframe(const Keyframe<T> keyframe);
     void rebuildTimestampIndex();
+    template <typename U>
+    std::unique_ptr<Scripts> switchRotationRepresentationImplementation();
 
   public:
     virtual float getMaximumTime() const;
@@ -46,6 +51,7 @@ class ScriptsImplementation : public Scripts
     virtual void setActiveTimestamp(float timestamp);
     virtual void moveActiveKeyframeBy(glm::vec3);
     virtual void rearrangeKeyframes();
+    virtual std::unique_ptr<Scripts> switchRotationRepresentation();
 };
 
 class ScriptsLoader

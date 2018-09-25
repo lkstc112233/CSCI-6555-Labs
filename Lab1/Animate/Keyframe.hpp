@@ -7,6 +7,8 @@ template <typename Rotation>
 class Keyframe
 {
 private:
+  template<typename AnyRotation>
+  friend class Keyframe;
   float timestamp;
   float x;
   float y;
@@ -16,6 +18,11 @@ private:
 public:
   Keyframe(float timestampi, float xi, float yi, float zi, const Rotation &orientationi)
       : timestamp(timestampi), x(xi), y(yi), z(zi), orientation(orientationi)
+  {
+  }
+  template <typename AnotherRotation>
+  Keyframe(const Keyframe<AnotherRotation>& keyi)
+      : timestamp(keyi.timestamp), x(keyi.x), y(keyi.y), z(keyi.z), orientation(keyi.orientation)
   {
   }
   void setTimestamp(float timestampi) {

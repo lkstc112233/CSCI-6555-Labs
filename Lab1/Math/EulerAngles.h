@@ -3,15 +3,20 @@
 
 #include <glm/glm.hpp>
 
+#include "Quaternion.h"
+
+class Quaternion;
 class EulerAngles
 {
   private:
+    friend class Quaternion;
     float yaw;
     float pitch;
     float roll;
 
   public:
     EulerAngles();
+    EulerAngles(const Quaternion& quat);
     EulerAngles(float yaw, float pitch, float roll);
 
     EulerAngles &operator+=(const EulerAngles &);

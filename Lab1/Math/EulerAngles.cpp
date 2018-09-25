@@ -2,7 +2,14 @@
 
 #include <cmath>
 
+#include "Quaternion.h"
+
 EulerAngles::EulerAngles() : yaw(0), pitch(0), roll(0) {}
+
+EulerAngles::EulerAngles(const Quaternion& angles)
+{
+    // TODO: initialize.
+}
 
 EulerAngles::EulerAngles(float yawi, float pitchi, float rolli)
     : yaw(yawi), pitch(pitchi), roll(rolli)
