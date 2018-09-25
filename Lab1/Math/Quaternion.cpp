@@ -29,6 +29,15 @@ Quaternion::Quaternion(float wi, float xi, float yi, float zi)
     normalize();
 }
 
+void Quaternion::rotateBy(float yaw, float pitch, float roll)
+{
+    EulerAngles rotator(*this);
+    rotator.yaw += yaw;
+    rotator.pitch += pitch;
+    rotator.roll += roll;
+    *this = Quaternion(rotator);
+}
+
 Quaternion &Quaternion::operator+=(const Quaternion &op2)
 {
     w += op2.w;
