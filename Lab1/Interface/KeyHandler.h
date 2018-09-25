@@ -29,7 +29,7 @@ class KeyHandlerContainer
 	GLFWwindow *window;
 
   public:
-	KeyHandlerContainer(GLFWwindow *window);
+	KeyHandlerContainer(GLFWwindow *window, bool registerMouseLock = true);
 	void handle();
 	template <class... Args>
 	void emplace_handler(Args &&... args)

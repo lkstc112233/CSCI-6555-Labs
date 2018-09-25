@@ -10,6 +10,18 @@
 MouseHandlerContainer *MouseCallbackWrapper::handlers = nullptr;
 double MouseCallbackWrapper::yoffset = 0;
 
+void MouseCallbackWrapper::registerMouseTriggerCallback(GLFWwindow *window, KeyHandlerContainer &handler) {
+	handler.emplace_handler(GLFW_KEY_EQUAL, [window](){
+		static bool trigger = false;
+		if (trigger) {
+			glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+		} else {
+			glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+		}
+		trigger = !trigger;
+	}, true);
+}
+
 void attachCameraControls(KeyHandlerContainer& keyContainer, MouseHandlerContainer& mouseContainer, Camera &camera) {
 	keyContainer.emplace_handler(GLFW_KEY_W, [&camera]() {
 		camera.moveForward();

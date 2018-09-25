@@ -2,6 +2,8 @@
 
 #include <glad/glad.h>
 
+#include "InterfaceRelatedStuffHolder.hpp"
+
 KeyHandler::KeyHandler(GLFWwindow *windowi, int keyListeningi, decltype(handleActive) handleri, bool pressOnlyi, decltype(handleInactive) handleInactivei)
 	: window(windowi), keyListening(keyListeningi), handleActive(handleri), handleInactive(handleInactivei), pressOnly(pressOnlyi)
 {
@@ -27,9 +29,12 @@ void KeyHandler::handle()
 	}
 }
 
-KeyHandlerContainer::KeyHandlerContainer(GLFWwindow *windowi)
+KeyHandlerContainer::KeyHandlerContainer(GLFWwindow *windowi, bool registerMouseLock)
 	: window(windowi)
 {
+	if (registerMouseLock) {
+		MouseCallbackWrapper::registerMouseTriggerCallback(window, *this);
+	}
 }
 
 void KeyHandlerContainer::handle() {

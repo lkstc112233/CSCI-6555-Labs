@@ -26,6 +26,7 @@ class MouseCallbackWrapper
 		glfwSetMouseButtonCallback(window, callback);
 		glfwSetScrollCallback(window, callback_scroll);
 	}
+    static void registerMouseTriggerCallback(GLFWwindow *window, KeyHandlerContainer &handler);
 	static void callback(GLFWwindow *window, double x, double y)
 	{
 		if (handlers)
