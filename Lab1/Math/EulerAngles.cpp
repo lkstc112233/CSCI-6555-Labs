@@ -40,6 +40,12 @@ EulerAngles::EulerAngles(float yawi, float pitchi, float rolli)
 {
 }
 
+void EulerAngles::rotateBy(float yawi, float pitchi, float rolli) {
+    yaw += yawi;
+    pitch += pitchi;
+    roll += rolli;
+}
+
 EulerAngles &EulerAngles::operator+=(const EulerAngles &op2)
 {
     yaw += op2.yaw;

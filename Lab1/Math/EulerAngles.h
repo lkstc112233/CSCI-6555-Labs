@@ -19,6 +19,8 @@ class EulerAngles
     EulerAngles(const Quaternion& quat);
     EulerAngles(float yaw, float pitch, float roll);
 
+    void rotateBy(float yaw, float pitch, float roll);
+
     EulerAngles &operator+=(const EulerAngles &);
     EulerAngles &operator-=(const EulerAngles &);
     EulerAngles &operator*=(float);
