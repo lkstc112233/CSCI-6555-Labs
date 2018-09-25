@@ -8,7 +8,18 @@ Quaternion::Quaternion() : w(1), x(0), y(0), z(0) {}
 
 Quaternion::Quaternion(const EulerAngles &angles)
 {
-    // TODO: initialize.
+    float c1 = cos(angles.yaw / 2);
+    float c2 = cos(angles.roll / 2);
+    float c3 = cos(angles.pitch / 2);
+    float s1 = sin(angles.yaw / 2);
+    float s2 = sin(angles.roll / 2);
+    float s3 = sin(angles.pitch / 2);
+
+    w = c1 * c2 * c3 - s1 * s2 * s3;
+    x = s1 * s2 * c3 + c1 * c2 * s3;
+    y = s1 * c2 * c3 + c1 * s2 * s3;
+    z = c1 * s2 * c3 - s1 * c2 * s3;
+
     normalize();
 }
 
@@ -74,14 +85,15 @@ Quaternion Quaternion::operator*(const Quaternion &op2) const
     Quaternion result(*this);
     return result *= op2;
 }
-Quaternion Quaternion::operator*(float op2)const
+Quaternion Quaternion::operator*(float op2) const
 {
     Quaternion result(*this);
     return result *= op2;
 }
-Quaternion operator*(float op1, const Quaternion &op2) {
-	Quaternion result(op2);
-	return result *= op1;
+Quaternion operator*(float op1, const Quaternion &op2)
+{
+    Quaternion result(op2);
+    return result *= op1;
 }
 Quaternion Quaternion::operator/(float op2) const
 {
