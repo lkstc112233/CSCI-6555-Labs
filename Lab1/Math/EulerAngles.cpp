@@ -8,7 +8,31 @@ EulerAngles::EulerAngles() : yaw(0), pitch(0), roll(0) {}
 
 EulerAngles::EulerAngles(const Quaternion &quat)
 {
-    // TODO: initialize.
+    auto q = quat;
+    q.normalize();
+    // For some reason asin(1) returns nan. I will check that explictly here.
+    float sinroll = 2 * q.x * q.y + 2 * q.z * q.w;
+    roll = asin(sinroll);
+    if (std::isnan(roll)) {
+        roll = sinroll > 0 ? M_PI_2 : -M_PI_2;
+    }
+    if (q.x * q.y + q.z * q.w == 0.5)
+    {
+        // North pole
+        yaw = 2 * atan2(q.x, q.w);
+        pitch = 0;
+    }
+    else if (q.x * q.y + q.z * q.w == -0.5)
+    {
+        // South pole
+        yaw = -2 * atan2(q.x, q.w);
+        pitch = 0;
+    }
+    else
+    {
+        yaw = atan2(2 * q.y * q.w - 2 * q.x * q.z, 1 - 2 * q.y * q.y - 2 * q.z * q.z);
+        pitch = atan2(2 * q.x * q.w - 2 * q.y * q.z, 1 - 2 * q.x * q.x - 2 * q.z * q.z);
+    }
 }
 
 EulerAngles::EulerAngles(float yawi, float pitchi, float rolli)
