@@ -92,6 +92,12 @@ void ProgressBar::attachControls(KeyHandlerContainer& keyContainer, MouseHandler
 					script->activeKeyframe(iter - frames.cbegin());
 				}
 			}
+			if (draggingKeyframeDefinitionCountdown != 10) {
+				if (clampedx < PROGRESS_BAR_LEFT_BOUND + PROGRESS_BAR_LENGTH && clampedx > PROGRESS_BAR_LEFT_BOUND) {
+					draggingKeyframeDefinitionCountdown = 10;
+					script->addKeyframeAt((clampedx - PROGRESS_BAR_LEFT_BOUND) / PROGRESS_BAR_LENGTH * script->getMaximumTime());
+				}
+			}
 		}
 		if (mouseFlags & MOUSE_LEFTBUTTON_HOLD) {
 			if (draggingKeyframeDefinitionCountdown) {
