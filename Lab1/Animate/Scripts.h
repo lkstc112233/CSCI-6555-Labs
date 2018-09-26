@@ -18,7 +18,9 @@ class Scripts
     // Returns a list of timestamps.
     virtual const std::vector<float>& getTimestamps() const = 0;
     virtual float getMaximumTime() const = 0;
+    virtual float getMaximumId() const = 0;
     virtual glm::mat4 getTranscationMatrixAt(float time) = 0;
+    virtual glm::mat4 getTranscationMatrixOf(int i) = 0;
     void activeKeyframe(int index) {activeKeyframeIndex = index;}
     int getActivedKeyframe() const {return activeKeyframeIndex;}
     virtual float getActivedTimestamp() const = 0;
@@ -46,8 +48,10 @@ class ScriptsImplementation : public Scripts
 
   public:
     virtual float getMaximumTime() const;
+    virtual float getMaximumId() const { return keyframes.size(); }
     virtual const std::vector<float>& getTimestamps() const { return timestamps; }
     virtual glm::mat4 getTranscationMatrixAt(float time);
+    virtual glm::mat4 getTranscationMatrixOf(int i) { return keyframes[i].getTranscationMatrix(); }
     virtual float getActivedTimestamp() const;
     virtual void setActiveTimestamp(float timestamp);
     virtual void moveActiveKeyframeBy(glm::vec3);
