@@ -111,9 +111,9 @@ int main(int argc, char** argv)
 	switchInterpolation.attachControls(mouseHandlers);
 	switchInterpolation.setCallback([&script](){script->switchInterpolate();});
 
-	keyHandlers.emplace_handler(GLFW_KEY_P, [&script](){
-		script = script->switchRotationRepresentation();
-	}, true);
+	Button switchRotation("res/shapes/switch.shp", 0.9, -0.1, 0.1, glm::radians(90.0f));
+	switchRotation.attachControls(mouseHandlers);
+	switchRotation.setCallback([&script](){script = script->switchRotationRepresentation();});
 
 	while (!glfwWindowShouldClose(window))
 	{
@@ -164,6 +164,7 @@ int main(int argc, char** argv)
 		glClear(GL_DEPTH_BUFFER_BIT);
 		progressBar.draw(hudShader);
 		switchInterpolation.draw(hudShader);
+		switchRotation.draw(hudShader);
 
 		// Draw cursor
 		glClear(GL_DEPTH_BUFFER_BIT);
