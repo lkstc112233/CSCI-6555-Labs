@@ -138,11 +138,7 @@ int main(int argc, char** argv)
 		} else {
 			keyframeShader.setMatrix("view", camera.getViewMat());
 			for (int iter = 0; iter < script->getMaximumId(); ++iter) {
-				if (iter == script->getActivedKeyframe()) {
-					keyframeShader.setValue("interest", 1.0f);
-				} else {
-					keyframeShader.setValue("interest", 0.2f);
-				}
+				keyframeShader.setValue("interest", iter == script->getActivedKeyframe()? 1.0f: 0.2f);
 				keyIndicator.setTransformMatrix(script->getTranscationMatrixOf(iter));
 				keyIndicator.draw(keyframeShader);
 			}
