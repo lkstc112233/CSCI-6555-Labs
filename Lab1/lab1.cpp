@@ -147,6 +147,18 @@ int main(int argc, char** argv)
 				pathIndicator.setTransformMatrix(script->getTranscationMatrixAt(f * script->getMaximumTime()));
 				pathIndicator.draw(keyframeShader);
 			}
+			static int drawObjectCountdown = 0;
+			if (drawObjectCountdown > 100) {
+				shaderProgram.setMatrix("view", camera.getViewMat());
+				cube.setOpacity(0.4);
+				cube.setTransformMatrix(script->getTranscationMatrixOf(script->getActivedKeyframe()));
+				cube.draw(shaderProgram);
+				cube.setOpacity(1);
+				if (drawObjectCountdown > 200) {
+					drawObjectCountdown = 0;
+				}
+			}
+			drawObjectCountdown += 1;
 		}
 
 		// Draw HDR
