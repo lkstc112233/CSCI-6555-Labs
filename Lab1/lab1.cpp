@@ -137,14 +137,13 @@ int main(int argc, char** argv)
 			cube.draw(shaderProgram);
 		} else {
 			keyframeShader.setMatrix("view", camera.getViewMat());
-			auto keys = script->getTimestamps();
-			for (auto iter = keys.begin(); iter < keys.end(); ++iter) {
-				if (*iter == keys[script->getActivedKeyframe()]) {
+			for (int iter = 0; iter < script->getMaximumId(); ++iter) {
+				if (iter == script->getActivedKeyframe()) {
 					keyframeShader.setValue("interest", 1.0f);
 				} else {
 					keyframeShader.setValue("interest", 0.2f);
 				}
-				keyIndicator.setTransformMatrix(script->getTranscationMatrixAt(*iter));
+				keyIndicator.setTransformMatrix(script->getTranscationMatrixOf(iter));
 				keyIndicator.draw(keyframeShader);
 			}
 			for (float f = 0; f < 1; f += 0.001) {
