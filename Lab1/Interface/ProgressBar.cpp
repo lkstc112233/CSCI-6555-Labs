@@ -81,10 +81,10 @@ void ProgressBar::attachControls(KeyHandlerContainer& keyContainer, MouseHandler
 			return;
 		}
 		static int draggingKeyframeDefinitionCountdown = -1;
+		const std::vector<float>& frames = script->getTimestamps();
 		if ((mouseFlags & MOUSE_LEFTBUTTON_PRESSED)
 		&& clampedy < PROGRESS_BAR_LOWER_BOUND + 0.02 + PROGRESS_BAR_HEIGHT
 		&& clampedy > PROGRESS_BAR_LOWER_BOUND - 0.02) {
-			const std::vector<float>& frames = script->getTimestamps();
 			for (auto iter = frames.cbegin() + 1; iter < frames.cend() - 1; ++iter) {
 				if (clampedx < PROGRESS_BAR_LEFT_BOUND + 0.005 + *iter * PROGRESS_BAR_LENGTH / script->getMaximumTime()
 				 && clampedx > PROGRESS_BAR_LEFT_BOUND - 0.005 + *iter * PROGRESS_BAR_LENGTH / script->getMaximumTime()) {
@@ -96,6 +96,17 @@ void ProgressBar::attachControls(KeyHandlerContainer& keyContainer, MouseHandler
 				if (clampedx < PROGRESS_BAR_LEFT_BOUND + PROGRESS_BAR_LENGTH && clampedx > PROGRESS_BAR_LEFT_BOUND) {
 					draggingKeyframeDefinitionCountdown = 10;
 					script->addKeyframeAt((clampedx - PROGRESS_BAR_LEFT_BOUND) / PROGRESS_BAR_LENGTH * script->getMaximumTime());
+				}
+			}
+		}
+		if ((mouseFlags & MOUSE_RIGHTBUTTON_PRESSED)
+		&& clampedy < PROGRESS_BAR_LOWER_BOUND + 0.02 + PROGRESS_BAR_HEIGHT
+		&& clampedy > PROGRESS_BAR_LOWER_BOUND - 0.02) {
+			for (auto iter = frames.cbegin() + 1; iter < frames.cend() - 1; ++iter) {
+				if (clampedx < PROGRESS_BAR_LEFT_BOUND + 0.005 + *iter * PROGRESS_BAR_LENGTH / script->getMaximumTime()
+				 && clampedx > PROGRESS_BAR_LEFT_BOUND - 0.005 + *iter * PROGRESS_BAR_LENGTH / script->getMaximumTime()) {
+					draggingKeyframeDefinitionCountdown = -1;
+					script->removeKeyframeOf(iter - frames.cbegin());
 				}
 			}
 		}
