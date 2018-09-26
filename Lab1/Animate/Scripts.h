@@ -23,6 +23,8 @@ class Scripts
     virtual glm::mat4 getTranscationMatrixOf(int i) = 0;
     void activeKeyframe(int index) {activeKeyframeIndex = index;}
     int getActivedKeyframe() const {return activeKeyframeIndex;}
+    virtual void addKeyframeAt(float time) = 0;
+    virtual void removeKeyframeOf(int index) = 0;
     virtual float getActivedTimestamp() const = 0;
     virtual void setActiveTimestamp(float timestamp) = 0;
     virtual void moveActiveKeyframeBy(glm::vec3) = 0;
@@ -53,6 +55,8 @@ class ScriptsImplementation : public Scripts
     virtual glm::mat4 getTranscationMatrixAt(float time);
     virtual glm::mat4 getTranscationMatrixOf(int i) { return keyframes[i].getTranscationMatrix(); }
     virtual float getActivedTimestamp() const;
+    virtual void addKeyframeAt(float time);
+    virtual void removeKeyframeOf(int index);
     virtual void setActiveTimestamp(float timestamp);
     virtual void moveActiveKeyframeBy(glm::vec3);
     virtual void rotateActiveKeyframeBy(float yaw, float pitch, float roll);

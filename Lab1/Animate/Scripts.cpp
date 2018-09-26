@@ -62,6 +62,23 @@ float ScriptsImplementation<T>::getActivedTimestamp() const {
 }
 
 template <typename T>
+void ScriptsImplementation<T>::addKeyframeAt(float time) {
+    // For now we add the keyframe at where it's supposed to be, 
+    // but no orientation, to reduce workload.
+    auto transform = getTranscationMatrixAt(time);
+    addKeyframe(Keyframe<T>(time, transform[3][0], transform[3][1], transform[3][2], T()));
+    rearrangeKeyframes();
+    activeKeyframeIndex = find(timestamps.begin(), timestamps.end(), time) - timestamps.begin();
+}
+
+template <typename T>
+void ScriptsImplementation<T>::removeKeyframeOf(int index) {
+    keyframes.erase(keyframes.begin() + index);
+    rebuildTimestampIndex();
+    activeKeyframeIndex = std::min(activeKeyframeIndex, int(keyframes.size()) - 1);
+}
+
+template <typename T>
 void ScriptsImplementation<T>::setActiveTimestamp(float timestamp) {
     keyframes[getActivedKeyframe()].setTimestamp(timestamp);
     rebuildTimestampIndex();
