@@ -12,7 +12,6 @@
 
 #include <glm/glm.hpp>
 
-
 ProgressBar::ProgressBar(const std::unique_ptr<Scripts> &scripti) 
     : playedProgressBar(ModelLoader::getUnitSquareShape())
     , unplayedProgressBar(ModelLoader::getUnitSquareShape())
