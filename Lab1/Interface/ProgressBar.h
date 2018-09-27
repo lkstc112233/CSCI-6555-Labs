@@ -11,6 +11,9 @@
 
 #include "../Animate/Scripts.h"
 
+/**
+ * A class holding editing operations such as keyframe operations, and playing operations.
+ */
 class ProgressBar
 {
   private:

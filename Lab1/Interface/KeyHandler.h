@@ -7,6 +7,9 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
+/**
+ * A class managing keyboard operations.
+ */
 class KeyHandler
 {
   private:

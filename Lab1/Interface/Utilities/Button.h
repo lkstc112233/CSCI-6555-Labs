@@ -7,6 +7,9 @@
 #include "../KeyHandler.h"
 #include "../MouseHandler.h"
 
+/**
+ * Manages a button on screen.
+ */
 class Button {
 private:
     const Model model;

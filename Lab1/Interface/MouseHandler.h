@@ -14,6 +14,9 @@ enum MouseConstants
     MOUSE_SCROLLED_DOWN_PRESSED = 32,
 };
 
+/**
+ * A class managing mouse operations.
+ */
 class MouseHandler
 {
   private:
