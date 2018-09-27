@@ -14,10 +14,10 @@
 class ProgressBar
 {
   private:
-	static const float PROGRESS_BAR_LOWER_BOUND;
-	static const float PROGRESS_BAR_LEFT_BOUND;
-	static const float PROGRESS_BAR_LENGTH;
-	static const float PROGRESS_BAR_HEIGHT;
+    constexpr static const float PROGRESS_BAR_LOWER_BOUND = -0.967;
+    constexpr static const float PROGRESS_BAR_LEFT_BOUND = -0.867;
+    constexpr static const float PROGRESS_BAR_LENGTH = 1.833;
+    constexpr static const float PROGRESS_BAR_HEIGHT = 0.033;
     Object2D playedProgressBar;
     Object2D unplayedProgressBar;
     Object2D keyframeObject;

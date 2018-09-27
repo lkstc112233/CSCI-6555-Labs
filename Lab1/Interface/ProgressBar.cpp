@@ -12,10 +12,6 @@
 
 #include <glm/glm.hpp>
 
-const float ProgressBar::PROGRESS_BAR_LOWER_BOUND = -0.967;
-const float ProgressBar::PROGRESS_BAR_LEFT_BOUND = -0.867;
-const float ProgressBar::PROGRESS_BAR_LENGTH = 1.833;
-const float ProgressBar::PROGRESS_BAR_HEIGHT = 0.033;
 
 ProgressBar::ProgressBar(const std::unique_ptr<Scripts> &scripti) 
     : playedProgressBar(ModelLoader::getUnitSquareShape())
