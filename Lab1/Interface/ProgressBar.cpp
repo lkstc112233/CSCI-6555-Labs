@@ -1,5 +1,7 @@
 #include "ProgressBar.h"
 
+#include <algorithm>
+
 #include <glad/glad.h>
 
 #include "../Graphics/WindowInitializer.h"
@@ -81,16 +83,15 @@ void ProgressBar::attachControls(KeyHandlerContainer& keyContainer, MouseHandler
 			return clampedy < PROGRESS_BAR_LOWER_BOUND + KEYFRAME_INDICATOR_HEIGHT_DIFF + PROGRESS_BAR_HEIGHT
 				&& clampedy > PROGRESS_BAR_LOWER_BOUND - KEYFRAME_INDICATOR_HEIGHT_DIFF;
 		};
-		auto inKeyframeWidthRange = [this] (auto clampedx, auto keyframeTimestamp) {
+		auto inKeyframeWidthRange = [this, clampedx] (auto keyframeTimestamp) {
 			return clampedx < PROGRESS_BAR_LEFT_BOUND + KEYFRAME_INDICATOR_WIDTH_HALFED + keyframeTimestamp * PROGRESS_BAR_LENGTH / script->getMaximumTime()
 				&& clampedx > PROGRESS_BAR_LEFT_BOUND - KEYFRAME_INDICATOR_WIDTH_HALFED + keyframeTimestamp * PROGRESS_BAR_LENGTH / script->getMaximumTime();
 		};
 		if ((mouseFlags & MOUSE_LEFTBUTTON_PRESSED) && inKeyframeHeightRange(clampedy)) {
-			for (auto iter = frames.cbegin() + 1; iter < frames.cend() - 1; ++iter) {
-				if (inKeyframeWidthRange(clampedx, *iter)) {
-					draggingKeyframeDefinitionCountdown = 10;
-					script->activeKeyframe(iter - frames.cbegin());
-				}
+			auto target = std::find_if(frames.cbegin() + 1, frames.cend() - 1, inKeyframeWidthRange);
+			if (target != frames.cend() - 1) {
+				draggingKeyframeDefinitionCountdown = 10;
+				script->activeKeyframe(target - frames.cbegin());
 			}
 			if (draggingKeyframeDefinitionCountdown != 10) {
 				if (clampedx < PROGRESS_BAR_LEFT_BOUND + PROGRESS_BAR_LENGTH && clampedx > PROGRESS_BAR_LEFT_BOUND) {
@@ -100,11 +101,10 @@ void ProgressBar::attachControls(KeyHandlerContainer& keyContainer, MouseHandler
 			}
 		}
 		if ((mouseFlags & MOUSE_RIGHTBUTTON_PRESSED) && inKeyframeHeightRange(clampedy)) {
-			for (auto iter = frames.cbegin() + 1; iter < frames.cend() - 1; ++iter) {
-				if (inKeyframeWidthRange(clampedx, *iter)) {
-					draggingKeyframeDefinitionCountdown = -1;
-					script->removeKeyframeOf(iter - frames.cbegin());
-				}
+			auto target = std::find_if(frames.cbegin() + 1, frames.cend() - 1, inKeyframeWidthRange);
+			if (target != frames.cend() - 1) {
+				draggingKeyframeDefinitionCountdown = 10;
+				script->activeKeyframe(target - frames.cbegin());
 			}
 		}
 		if (mouseFlags & MOUSE_LEFTBUTTON_HOLD) {
