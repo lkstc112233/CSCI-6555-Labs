@@ -11,11 +11,7 @@ MAIN_OBJS = $(MAIN_SRCS:.cpp=.o)
 DEPS = dependencies.dep
 
 .PHONY: all
-all: testWindow lab1
-
-testWindow: mainWindow.o glad.o $(OBJS)
-	@echo Making testWindow.
-	@$(CXX) $^ $(LINK_FLAGS) -o $@
+all: lab1
 
 lab1: lab1.o glad.o $(OBJS)
 	@echo Making lab1.
@@ -32,4 +28,4 @@ glad.o: glad.c
 .PHONY: clean
 clean:
 	find . -type f -name '*.o' -delete
-	rm -f lab1 testWindow dependencies.dep
+	rm -f lab1 dependencies.dep
