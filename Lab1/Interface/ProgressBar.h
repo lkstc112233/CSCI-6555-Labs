@@ -14,6 +14,8 @@
 class ProgressBar
 {
   private:
+    constexpr static const float KEYFRAME_INDICATOR_HEIGHT_DIFF = 0.02;
+    constexpr static const float KEYFRAME_INDICATOR_WIDTH_HALFED = 0.005;
     constexpr static const float PROGRESS_BAR_LOWER_BOUND = -0.967;
     constexpr static const float PROGRESS_BAR_LEFT_BOUND = -0.867;
     constexpr static const float PROGRESS_BAR_LENGTH = 1.833;
