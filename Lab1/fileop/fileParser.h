@@ -3,6 +3,9 @@
 
 #include <fstream>
 
+/**
+ * A parser used to parse script. Equiped with ability to parse numbers and characters.
+ */
 class FileParser
 {
 private:

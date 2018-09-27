@@ -6,6 +6,9 @@
 
 #include "../Shaders/Shader.h"
 
+/**
+ * Manages a model, including VAO, VBO, and (if appliable) EBO.
+ */
 class Model
 {
 private:

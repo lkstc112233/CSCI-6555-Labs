@@ -4,6 +4,11 @@
 #include <glm/glm.hpp>
 #include "../Models/Model.h"
 
+/**
+ * Manages how a model is drawn on screen.
+ * Including transcation, rotation, opacity and (if applicable) color.
+ */ 
+
 class Object3D
 {
   private:

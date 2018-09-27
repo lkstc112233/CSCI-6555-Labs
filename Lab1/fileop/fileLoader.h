@@ -3,6 +3,10 @@
 
 #include <iostream>
 
+/**
+ * A class loads and holds a file as text into a char array.
+ * Specially designed for loading shader.
+ */
 class FileLoader
 {
 private:

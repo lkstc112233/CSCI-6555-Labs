@@ -4,6 +4,9 @@
 #include <initializer_list>
 #include <glm/glm.hpp>
 
+/**
+ * A class holding a compiled shader program.
+ */
 class Shader
 {
   private:
@@ -27,6 +30,8 @@ class Shader
 };
 
 /**
+ * A shader program, containing vertex/geomentory/fragment shaders, and has a set of functions 
+ * managing uniform variables.
  * Usage: ShaderProgram program{shaders...};
  * */
 class ShaderProgram
