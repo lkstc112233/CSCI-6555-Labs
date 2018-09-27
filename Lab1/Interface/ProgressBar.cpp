@@ -171,9 +171,9 @@ void ProgressBar::draw(ShaderProgram& shader) {
 		const std::vector<float>& frames = script->getTimestamps();
 		for (auto iter = frames.cbegin() + 1; iter < frames.cend() - 1; ++iter) {
 			keyframeObject.setTransformMatrix(glm::mat3{
-				{0.01, 0, 0}, 
-				{0, PROGRESS_BAR_HEIGHT + 0.04 ,0}, 
-				{ PROGRESS_BAR_LEFT_BOUND - 0.005 + *iter * PROGRESS_BAR_LENGTH / script->getMaximumTime(), PROGRESS_BAR_LOWER_BOUND - 0.02, 1}});
+				{KEYFRAME_INDICATOR_WIDTH_HALFED * 2, 0, 0}, 
+				{0, PROGRESS_BAR_HEIGHT + KEYFRAME_INDICATOR_HEIGHT_DIFF * 2 ,0}, 
+				{ PROGRESS_BAR_LEFT_BOUND - KEYFRAME_INDICATOR_WIDTH_HALFED + *iter * PROGRESS_BAR_LENGTH / script->getMaximumTime(), PROGRESS_BAR_LOWER_BOUND - KEYFRAME_INDICATOR_HEIGHT_DIFF, 1}});
 			keyframeObject.draw(shader);
 		}
 	}
