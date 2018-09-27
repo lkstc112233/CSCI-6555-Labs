@@ -6,6 +6,7 @@
 
 Quaternion::Quaternion() : w(1), x(0), y(0), z(0) {}
 
+// Convertation from EulerAngles to Quaternion.
 Quaternion::Quaternion(const EulerAngles &angles)
 {
     float c1 = cos(angles.yaw / 2);

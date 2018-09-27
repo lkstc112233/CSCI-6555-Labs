@@ -6,6 +6,7 @@
 
 EulerAngles::EulerAngles() : yaw(0), pitch(0), roll(0) {}
 
+// Convertation from Quaternion to EulerAngles.
 EulerAngles::EulerAngles(const Quaternion &quat)
 {
     auto q = quat;
