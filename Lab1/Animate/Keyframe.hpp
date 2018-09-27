@@ -3,6 +3,10 @@
 
 #include <glm/glm.hpp>
 
+/** 
+ * A template class for keyframe. It handles the data we interest in in one place. 
+ * Rotation is designed to has two types: Quaternion and Eulerangle.
+ */
 template <typename Rotation>
 class Keyframe
 {
@@ -37,10 +41,15 @@ public:
   void moveZ(float dz) {
     z += dz;
   }
+  // Rotates the keyframe by given angles. 
   void rotateBy(float yaw, float pitch, float roll) {
     orientation.rotateBy(yaw, pitch, roll);
   }
   float getTimestamp() const { return timestamp; }
+  /**
+   * Returns the transcation matrix of the keyframe. Including rotation, scale(Not implemented), 
+   * and transcations.
+   */ 
   glm::mat4 getTranscationMatrix() 
   {
     glm::mat4 result(orientation.getRotationMatrix());
@@ -50,6 +59,8 @@ public:
     result[3][3] = 1.0f;
     return result;
   }
+
+  // Math operations designed to ease interpolation.
   Keyframe<Rotation> operator+(const Keyframe<Rotation>& op2) const {
     Keyframe<Rotation> result(*this);
     result.x += op2.x;

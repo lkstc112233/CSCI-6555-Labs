@@ -30,6 +30,9 @@ T simpleLinearInterpolate(float t, const T& val1, const T& val2) {
     return linearInterpolate(t, val1, val2, linearM);
 }
 
+/**
+ * Further cubic interpolate can simply pass the coresponding M into this function.
+ */
 template<typename T>
 T cubicInterpolate(float t, const T& val1, const T& val2, const T& val3, const T& val4, const float M[4][4]) {
     /*  T                       M                 G

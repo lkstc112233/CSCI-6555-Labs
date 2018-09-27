@@ -8,6 +8,10 @@
 
 #include "Keyframe.hpp"
 
+/**
+ * A class holding a movie script. Considering there're two types of orientation, this is 
+ * a base class holding all interested operations.
+ */
 class Scripts
 {
   protected:
@@ -34,6 +38,12 @@ class Scripts
     virtual std::unique_ptr<Scripts> switchRotationRepresentation() = 0;
 };
 
+/**
+ * Since the two types of scripts are so alike, I can implement it as a template to handle any required 
+ * operations in an alike way.
+ * 
+ * Most function here are self-explaintory so they don't need to be commented.
+ */
 template <typename T>
 class ScriptsImplementation : public Scripts
 {
@@ -43,6 +53,7 @@ class ScriptsImplementation : public Scripts
     friend class ScriptsImplementation;
     std::vector<float> timestamps;
     std::vector<Keyframe<T>> keyframes;
+    // Function used by the loader to add a keyframe to the script.
     void addKeyframe(const Keyframe<T> keyframe);
     void rebuildTimestampIndex();
     template <typename U>
@@ -64,6 +75,9 @@ class ScriptsImplementation : public Scripts
     virtual std::unique_ptr<Scripts> switchRotationRepresentation();
 };
 
+/**
+ * A class to load script file from disk.
+ */
 class ScriptsLoader
 {
   public:

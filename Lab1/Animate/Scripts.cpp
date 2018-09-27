@@ -146,6 +146,7 @@ std::unique_ptr<Scripts> ScriptsLoader::loadScript(const char *filename)
     int qcount = 0;
     int ecount = 0;
 
+    // Load until end of control points
     while (parser.isValid())
     {
         if (!parser.expect('('))
@@ -171,6 +172,7 @@ std::unique_ptr<Scripts> ScriptsLoader::loadScript(const char *filename)
             EulerAngles(glm::radians(data[4]), glm::radians(data[5]), glm::radians(data[6]))));
         }
     }
+    // Return whether one is more.
     if (qcount < ecount)
     {
         eulerAnglesScripts->rebuildTimestampIndex();
