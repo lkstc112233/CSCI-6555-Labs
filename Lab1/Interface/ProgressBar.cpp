@@ -104,7 +104,7 @@ void ProgressBar::attachControls(KeyHandlerContainer& keyContainer, MouseHandler
 			auto target = std::find_if(frames.cbegin() + 1, frames.cend() - 1, inKeyframeWidthRange);
 			if (target != frames.cend() - 1) {
 				draggingKeyframeDefinitionCountdown = 10;
-				script->activeKeyframe(target - frames.cbegin());
+				script->removeKeyframeOf(target - frames.cbegin());
 			}
 		}
 		if (mouseFlags & MOUSE_LEFTBUTTON_HOLD) {
