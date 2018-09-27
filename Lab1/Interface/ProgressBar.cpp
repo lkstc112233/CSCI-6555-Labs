@@ -110,8 +110,7 @@ void ProgressBar::attachControls(KeyHandlerContainer& keyContainer, MouseHandler
 		if (mouseFlags & MOUSE_LEFTBUTTON_HOLD) {
 			if (draggingKeyframeDefinitionCountdown) {
 				if (draggingKeyframeDefinitionCountdown > 0) {
-					if (clampedx < PROGRESS_BAR_LEFT_BOUND + KEYFRAME_INDICATOR_WIDTH_HALFED + script->getActivedTimestamp() * PROGRESS_BAR_LENGTH / script->getMaximumTime()
-					&& clampedx > PROGRESS_BAR_LEFT_BOUND - KEYFRAME_INDICATOR_WIDTH_HALFED + script->getActivedTimestamp() * PROGRESS_BAR_LENGTH / script->getMaximumTime()) {
+					if (inKeyframeWidthRange(script->getActivedTimestamp())) {
 						draggingKeyframeDefinitionCountdown -= 1;
 					}
 				} else {
