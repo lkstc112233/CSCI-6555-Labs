@@ -1,8 +1,8 @@
 Keyframe.o: Animate/Keyframe.cpp Animate/Keyframe.h \
  Animate/../Math/Quaternion.h
 Scripts.o: Animate/Scripts.cpp Animate/Scripts.h Animate/Keyframe.h \
- Animate/../Math/Quaternion.h Animate/Interpolate.hpp \
- Animate/../fileop/fileParser.h
+ Animate/../Math/Quaternion.h Animate/../fileop/fileParser.h \
+ Animate/../Math/Interpolate.hpp
 WindowInitializer.o: Graphics/WindowInitializer.cpp \
  Graphics/WindowInitializer.h
 InterfaceRelatedStuffHolder.o: Interface/InterfaceRelatedStuffHolder.cpp \
@@ -70,5 +70,4 @@ lab2.o: lab2.cpp Graphics/WindowInitializer.h Graphics/Shaders/Shader.h \
  Interface/Utilities/../MouseHandler.h Interface/../Animate/Scripts.h \
  Interface/../Animate/Keyframe.h \
  Interface/../Animate/../Math/Quaternion.h Interface/Utilities/Button.h \
- Math/Quaternion.h Animate/Keyframe.h Animate/Interpolate.hpp \
- Animate/Scripts.h
+ Math/Quaternion.h Animate/Keyframe.h Animate/Scripts.h

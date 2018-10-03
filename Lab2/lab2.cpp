@@ -23,7 +23,6 @@
 
 #include "Math/Quaternion.h"
 #include "Animate/Keyframe.h"
-#include "Animate/Interpolate.hpp"
 #include "Animate/Scripts.h"
 
 const float PROJECTION_RATIO = float(SCREEN_WIDTH) / SCREEN_HEIGHT;

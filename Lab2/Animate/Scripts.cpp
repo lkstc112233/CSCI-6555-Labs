@@ -8,9 +8,9 @@
 #include <glm/glm.hpp>
 
 #include "Keyframe.h"
-#include "Interpolate.hpp"
 #include "../fileop/fileParser.h"
 #include "../Math/Quaternion.h"
+#include "../Math/Interpolate.hpp"
 
 static bool operator<(const Keyframe &frame1, const Keyframe &frame2)
 {
