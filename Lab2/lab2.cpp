@@ -22,7 +22,7 @@
 #include "Interface/Utilities/Button.h"
 
 #include "Math/Quaternion.h"
-#include "Animate/Keyframe.hpp"
+#include "Animate/Keyframe.h"
 #include "Animate/Interpolate.hpp"
 #include "Animate/Scripts.h"
 
@@ -39,7 +39,7 @@ int main(int argc, char** argv)
 		return -1;
 	}
 
-	auto script = ScriptsLoader::loadScript(argv[2]);
+	auto script = Scripts::loadScript(argv[2]);
 
 	GLFWwindow *window = initializeWindow("Lab1");
 	if (!window) {
@@ -109,11 +109,7 @@ int main(int argc, char** argv)
 
 	Button switchInterpolation("res/shapes/switch.shp", -1, -0.1, 0.1);
 	switchInterpolation.attachControls(mouseHandlers);
-	switchInterpolation.setCallback([&script](){script->switchInterpolate();});
-
-	Button switchRotation("res/shapes/switch.shp", 0.9, -0.1, 0.1, glm::radians(90.0f));
-	switchRotation.attachControls(mouseHandlers);
-	switchRotation.setCallback([&script](){script = script->switchRotationRepresentation();});
+	switchInterpolation.setCallback([&script](){script.switchInterpolate();});
 
 	while (!glfwWindowShouldClose(window))
 	{
@@ -122,7 +118,7 @@ int main(int argc, char** argv)
 
 		double thisTime = glfwGetTime();
 		if (progressBar.isPlaying()) {
-			progressBar.addProcess((thisTime - lastTime) / script->getMaximumTime());
+			progressBar.addProcess((thisTime - lastTime) / script.getMaximumTime());
 		}
 		lastTime = thisTime;
 
@@ -133,25 +129,25 @@ int main(int argc, char** argv)
 
 		if (!progressBar.isEditing()) {
 			shaderProgram.setMatrix("view", camera.getViewMat());
-			cube.setTransformMatrix(script->getTranscationMatrixAt(progressBar.getProcess() * script->getMaximumTime()));
+			cube.setTransformMatrix(script.getTranscationMatrixAt(progressBar.getProcess() * script.getMaximumTime()));
 			cube.draw(shaderProgram);
 		} else {
 			keyframeShader.setMatrix("view", camera.getViewMat());
-			for (int iter = 0; iter < script->getMaximumId(); ++iter) {
-				keyframeShader.setValue("interest", iter == script->getActivedKeyframe()? 1.0f: 0.2f);
-				keyIndicator.setTransformMatrix(script->getTranscationMatrixOf(iter));
+			for (int iter = 0; iter < script.getMaximumId(); ++iter) {
+				keyframeShader.setValue("interest", iter == script.getActivedKeyframe()? 1.0f: 0.2f);
+				keyIndicator.setTransformMatrix(script.getTranscationMatrixOf(iter));
 				keyIndicator.draw(keyframeShader);
 			}
 			for (float f = 0; f < 1; f += 0.001) {
 				keyframeShader.setValue("interest", 0.0f);
-				pathIndicator.setTransformMatrix(script->getTranscationMatrixAt(f * script->getMaximumTime()));
+				pathIndicator.setTransformMatrix(script.getTranscationMatrixAt(f * script.getMaximumTime()));
 				pathIndicator.draw(keyframeShader);
 			}
 			static double countdownLast = glfwGetTime();
 			if (glfwGetTime() - countdownLast > 1) {
 				shaderProgram.setMatrix("view", camera.getViewMat());
 				cube.setOpacity(0.4);
-				cube.setTransformMatrix(script->getTranscationMatrixOf(script->getActivedKeyframe()));
+				cube.setTransformMatrix(script.getTranscationMatrixOf(script.getActivedKeyframe()));
 				cube.draw(shaderProgram);
 				cube.setOpacity(1);
 				if (glfwGetTime() - countdownLast > 2) {
@@ -164,7 +160,6 @@ int main(int argc, char** argv)
 		glClear(GL_DEPTH_BUFFER_BIT);
 		progressBar.draw(hudShader);
 		switchInterpolation.draw(hudShader);
-		switchRotation.draw(hudShader);
 
 		// Draw cursor
 		glClear(GL_DEPTH_BUFFER_BIT);

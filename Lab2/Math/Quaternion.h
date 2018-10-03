@@ -2,13 +2,10 @@
 #define MATH_QUATERNION_H
 
 #include <glm/glm.hpp>
-#include "EulerAngles.h"
 
-class EulerAngles;
 class Quaternion
 {
   private:
-    friend class EulerAngles;
     float w;
     float x;
     float y;
@@ -16,7 +13,6 @@ class Quaternion
 
   public:
     Quaternion();
-    Quaternion(const EulerAngles& eulerAngles);
     Quaternion(float w, float x, float y, float z);
     
     void rotateBy(float yaw, float pitch, float roll);

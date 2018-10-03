@@ -1,7 +1,8 @@
-Scripts.o: Animate/Scripts.cpp Animate/Scripts.h Animate/Keyframe.hpp \
- Animate/Interpolate.hpp Animate/../fileop/fileParser.h \
- Animate/../Math/Quaternion.h Animate/../Math/EulerAngles.h \
- Animate/../Math/Quaternion.h Animate/../Math/EulerAngles.h
+Keyframe.o: Animate/Keyframe.cpp Animate/Keyframe.h \
+ Animate/../Math/Quaternion.h
+Scripts.o: Animate/Scripts.cpp Animate/Scripts.h Animate/Keyframe.h \
+ Animate/../Math/Quaternion.h Animate/Interpolate.hpp \
+ Animate/../fileop/fileParser.h
 WindowInitializer.o: Graphics/WindowInitializer.cpp \
  Graphics/WindowInitializer.h
 InterfaceRelatedStuffHolder.o: Interface/InterfaceRelatedStuffHolder.cpp \
@@ -21,12 +22,12 @@ ProgressBar.o: Interface/ProgressBar.cpp Interface/ProgressBar.h \
  Interface/Utilities/../KeyHandler.h \
  Interface/Utilities/../MouseHandler.h Interface/KeyHandler.h \
  Interface/MouseHandler.h Interface/../Animate/Scripts.h \
- Interface/../Animate/Keyframe.hpp \
+ Interface/../Animate/Keyframe.h \
+ Interface/../Animate/../Math/Quaternion.h \
  Interface/../Graphics/WindowInitializer.h \
  Interface/../Graphics/Models/Model.h
 stb_image.o: Libraries/stb_image.cpp Libraries/stb_image.h
-EulerAngles.o: Math/EulerAngles.cpp Math/EulerAngles.h Math/Quaternion.h
-Quaternion.o: Math/Quaternion.cpp Math/Quaternion.h Math/EulerAngles.h
+Quaternion.o: Math/Quaternion.cpp Math/Quaternion.h
 fileLoader.o: fileop/fileLoader.cpp fileop/fileLoader.h
 fileParser.o: fileop/fileParser.cpp fileop/fileParser.h
 Camera.o: Graphics/Camera/Camera.cpp Graphics/Camera/Camera.h
@@ -67,6 +68,7 @@ lab2.o: lab2.cpp Graphics/WindowInitializer.h Graphics/Shaders/Shader.h \
  Interface/Utilities/../../Graphics/Object/Object.h \
  Interface/Utilities/../KeyHandler.h \
  Interface/Utilities/../MouseHandler.h Interface/../Animate/Scripts.h \
- Interface/../Animate/Keyframe.hpp Interface/Utilities/Button.h \
- Math/Quaternion.h Math/EulerAngles.h Math/Quaternion.h \
- Animate/Keyframe.hpp Animate/Interpolate.hpp Animate/Scripts.h
+ Interface/../Animate/Keyframe.h \
+ Interface/../Animate/../Math/Quaternion.h Interface/Utilities/Button.h \
+ Math/Quaternion.h Animate/Keyframe.h Animate/Interpolate.hpp \
+ Animate/Scripts.h

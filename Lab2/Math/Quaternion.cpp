@@ -2,27 +2,7 @@
 
 #include <cmath>
 
-#include "EulerAngles.h"
-
 Quaternion::Quaternion() : w(1), x(0), y(0), z(0) {}
-
-// Convertation from EulerAngles to Quaternion.
-Quaternion::Quaternion(const EulerAngles &angles)
-{
-    float c1 = cos(angles.yaw / 2);
-    float c2 = cos(angles.roll / 2);
-    float c3 = cos(angles.pitch / 2);
-    float s1 = sin(angles.yaw / 2);
-    float s2 = sin(angles.roll / 2);
-    float s3 = sin(angles.pitch / 2);
-
-    w = c1 * c2 * c3 - s1 * s2 * s3;
-    x = s1 * s2 * c3 + c1 * c2 * s3;
-    y = s1 * c2 * c3 + c1 * s2 * s3;
-    z = c1 * s2 * c3 - s1 * c2 * s3;
-
-    normalize();
-}
 
 Quaternion::Quaternion(float wi, float xi, float yi, float zi)
     : w(wi), x(xi), y(yi), z(zi)
@@ -32,11 +12,11 @@ Quaternion::Quaternion(float wi, float xi, float yi, float zi)
 
 void Quaternion::rotateBy(float yaw, float pitch, float roll)
 {
-    EulerAngles rotator(*this);
-    rotator.yaw += yaw;
-    rotator.pitch += pitch;
-    rotator.roll += roll;
-    *this = Quaternion(rotator);
+    // EulerAngles rotator(*this);
+    // rotator.yaw += yaw;
+    // rotator.pitch += pitch;
+    // rotator.roll += roll;
+    // *this = Quaternion(rotator);
 }
 
 Quaternion &Quaternion::operator+=(const Quaternion &op2)
