@@ -43,7 +43,7 @@ glm::mat4 Keyframe::getTranscationMatrix()
     result[3][0] = x;
     result[3][1] = y;
     result[3][2] = z;
-    result[3][3] = 1.0f;
+    result[3][3] = 1.0F;
     return result;
 }
 

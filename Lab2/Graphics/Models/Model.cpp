@@ -189,7 +189,6 @@ const Model& ModelLoader::getUnitSquareShape()
 	unitSquareShape->valid = true;
 	unitSquareShape->dimensions = 2;
     unitSquareShape->indicesSize = sizeof(UNIT_SQUARE_INDICES) /  sizeof(unsigned);
-	int indicesCount = 1;
 
 	glBindVertexArray(unitSquareShape->VAO);
 	glBindBuffer(GL_ARRAY_BUFFER, unitSquareShape->VBO);

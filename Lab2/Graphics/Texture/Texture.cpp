@@ -9,7 +9,9 @@
 
 Texture2D::Texture2D(const char *filename)
 {
-    int width, height, notused;
+    int width;
+    int height;
+    int notused;
     stbi_set_flip_vertically_on_load(true);  
     unsigned char *loadedTextureData = stbi_load(filename, &width, &height, &notused, 0);
     glGenTextures(1, &id);

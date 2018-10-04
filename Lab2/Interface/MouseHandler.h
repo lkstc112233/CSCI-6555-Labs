@@ -23,9 +23,9 @@ class MouseHandler
 	  std::function<void(int mouseFlags, float clampedx, float clampedy, float diffx, float diffy)> handleEvent;
 	  friend class MouseHandlerContainer;
   public:
-	  MouseHandler(std::function<void(int mouseFlags, float clampedx, float clampedy, float diffx, float diffy)> handleEvent);
-	  MouseHandler(std::function<void(int mouseFlags, float clampedx, float clampedy)> handleEvent);
-	  MouseHandler(std::function<void(int mouseFlags)> handleEvent);
+	  explicit MouseHandler(std::function<void(int mouseFlags, float clampedx, float clampedy, float diffx, float diffy)> handleEvent);
+	  explicit MouseHandler(std::function<void(int mouseFlags, float clampedx, float clampedy)> handleEvent);
+	  explicit MouseHandler(std::function<void(int mouseFlags)> handleEvent);
 };
 
 class MouseHandlerContainer {

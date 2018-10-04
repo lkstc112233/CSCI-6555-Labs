@@ -49,7 +49,7 @@ void attachCameraControls(KeyHandlerContainer& keyContainer, MouseHandlerContain
 	}, true);
 	mouseContainer.emplace_handler([&camera](int mouseFlags, float, float, float diffx, float diffy) {
 		if (mouseFlags & MOUSE_RIGHTBUTTON_HOLD) {
-			float sensitivity = 0.005f;
+			float sensitivity = 0.005F;
 			diffx *= sensitivity;
 			diffy *= sensitivity;
 

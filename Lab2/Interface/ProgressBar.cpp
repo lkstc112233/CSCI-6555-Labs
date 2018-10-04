@@ -19,7 +19,7 @@ ProgressBar::ProgressBar(Scripts &scripti)
     , unplayedProgressBar(ModelLoader::getUnitSquareShape())
     , keyframeObject(ModelLoader::getUnitSquareShape())
     , playPauseButton("res/shapes/pause.shp", "res/shapes/play.shp", -1, -1, 0.1)
-    , editButton("res/shapes/hammer.shp", "res/shapes/confirm.shp", -1, 0.9, 0.1, glm::radians(45.0f))
+    , editButton("res/shapes/hammer.shp", "res/shapes/confirm.shp", -1, 0.9, 0.1, glm::radians(45.0F))
 	, script(scripti)
 {
     playedProgressBar.setColor(glm::vec3(1.0, 0, 0));
@@ -53,7 +53,7 @@ void ProgressBar::attachControls(KeyHandlerContainer& keyContainer, MouseHandler
 		script.rotateActiveKeyframeBy(0, 0, -0.005);
 	});
 	// Process bar process change handler.
-    mouseContainer.emplace_handler([=](int mouseFlags, float clampedx, float clampedy) {
+    mouseContainer.emplace_handler([this](int mouseFlags, float clampedx, float clampedy) {
 		static bool pressed = false;
 		clampedx /= SCREEN_WIDTH;
 		clampedy /= SCREEN_HEIGHT;
@@ -65,13 +65,13 @@ void ProgressBar::attachControls(KeyHandlerContainer& keyContainer, MouseHandler
 			pressed = true;
 		}
 		if (pressed && (mouseFlags & MOUSE_LEFTBUTTON_HOLD)) {
-			setProcess(glm::clamp(clampedx - PROGRESS_BAR_LEFT_BOUND, 0.0f, PROGRESS_BAR_LENGTH) / PROGRESS_BAR_LENGTH);
+			setProcess(glm::clamp(clampedx - PROGRESS_BAR_LEFT_BOUND, 0.0F, PROGRESS_BAR_LENGTH) / PROGRESS_BAR_LENGTH);
 		}
 		if (!(mouseFlags & MOUSE_LEFTBUTTON_HOLD)) {
 			pressed = false;
 		}
 	}); 
-    mouseContainer.emplace_handler([=](int mouseFlags, float clampedx, float clampedy, float diffx, float diffy) {
+    mouseContainer.emplace_handler([this](int mouseFlags, float clampedx, float clampedy, float diffx, float diffy) {
 		clampedx /= SCREEN_WIDTH;
 		clampedy /= SCREEN_HEIGHT;
 		if (editButton.state) {
@@ -93,11 +93,9 @@ void ProgressBar::attachControls(KeyHandlerContainer& keyContainer, MouseHandler
 				draggingKeyframeDefinitionCountdown = 10;
 				script.activeKeyframe(target - frames.cbegin());
 			}
-			if (draggingKeyframeDefinitionCountdown != 10) {
-				if (clampedx < PROGRESS_BAR_LEFT_BOUND + PROGRESS_BAR_LENGTH && clampedx > PROGRESS_BAR_LEFT_BOUND) {
-					draggingKeyframeDefinitionCountdown = 10;
-					script.addKeyframeAt((clampedx - PROGRESS_BAR_LEFT_BOUND) / PROGRESS_BAR_LENGTH * script.getMaximumTime());
-				}
+			if (draggingKeyframeDefinitionCountdown != 10 && clampedx < PROGRESS_BAR_LEFT_BOUND + PROGRESS_BAR_LENGTH && clampedx > PROGRESS_BAR_LEFT_BOUND) {
+				draggingKeyframeDefinitionCountdown = 10;
+				script.addKeyframeAt((clampedx - PROGRESS_BAR_LEFT_BOUND) / PROGRESS_BAR_LENGTH * script.getMaximumTime());
 			}
 		}
 		if ((mouseFlags & MOUSE_RIGHTBUTTON_PRESSED) && inKeyframeHeightRange(clampedy)) {
@@ -127,7 +125,7 @@ void ProgressBar::attachControls(KeyHandlerContainer& keyContainer, MouseHandler
 					script.moveActiveKeyframeBy(glm::vec3(-diffx * rate, -diffy * rate, zmovement));
 				}
 			} else {
-				script.setActiveTimestamp(std::max(0.0f, (clampedx - PROGRESS_BAR_LEFT_BOUND) / PROGRESS_BAR_LENGTH) * script.getMaximumTime());
+				script.setActiveTimestamp(std::max(0.0F, (clampedx - PROGRESS_BAR_LEFT_BOUND) / PROGRESS_BAR_LENGTH) * script.getMaximumTime());
 			}
 		}
 		if (!(mouseFlags & MOUSE_LEFTBUTTON_HOLD)) {

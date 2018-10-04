@@ -41,7 +41,7 @@ class ShaderProgram
     bool valid = true;
 
   public:
-    ShaderProgram(std::initializer_list<Shader> list);
+    explicit ShaderProgram(std::initializer_list<Shader> list);
     int getProgramId() const { return programId; }
     bool isValid() const { return valid; }
     void setValue(const char* key, int i0);

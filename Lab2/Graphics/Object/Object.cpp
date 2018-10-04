@@ -3,7 +3,7 @@
 #include <glm/glm.hpp>
 
 Object3D::Object3D(const Model &modeli)
-    : model(modeli), transform(1.0f)
+    : model(modeli), transform(1.0F)
 {
 	if (modeli.getDimensions() != 3) {
 		throw "INCAPABLE_DIMENSION";
@@ -25,7 +25,7 @@ void Object3D::draw(ShaderProgram& shader) {
 }
 
 Object2D::Object2D(const Model &modeli)
-    : model(modeli), transform(1.0f), color(1.0f), z(0)
+    : model(modeli), transform(1.0F), color(1.0F), z(0)
 {
 	if (modeli.getDimensions() != 2) {
 		throw "INCAPABLE_DIMENSION";

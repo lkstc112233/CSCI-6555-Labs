@@ -45,13 +45,13 @@ void Camera::moveDown(float distance) {
 }
 
 void Camera::turnYaw(float yaw) {
-    glm::mat4 turn(1.0f);
+    glm::mat4 turn(1.0F);
     turn = glm::rotate(turn, yaw, glm::vec3(0, 1, 0));
     auto newFront = turn * glm::vec4(front, 1.0);
     front = glm::normalize(glm::vec3(newFront));
 }
 void Camera::turnPitch(float pitch) {
-    glm::mat4 turn(1.0f);
+    glm::mat4 turn(1.0F);
     turn = glm::rotate(turn, pitch, glm::normalize(glm::cross(front, up)));
     auto newFront = turn * glm::vec4(front, 1.0);
     // if

@@ -18,7 +18,9 @@ private:
   unsigned *indices = nullptr;
   int indicesSize = 0;
   bool valid = false;
-  unsigned VAO = 0, VBO = 0, EBO = 0;
+  unsigned VAO = 0;
+  unsigned VBO = 0;
+  unsigned EBO = 0;
   Model();
   Model(const Model &) = delete;
   Model &operator=(const Model &) = delete;

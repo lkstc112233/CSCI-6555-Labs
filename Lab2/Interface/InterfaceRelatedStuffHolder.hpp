@@ -9,7 +9,7 @@
 #include "KeyHandler.h"
 #include "../Graphics/Camera/Camera.h"
 
-void attachCameraControls(KeyHandlerContainer& keyContainer, MouseHandlerContainer& mouseContainer, Camera &camera);
+void attachCameraControls(KeyHandlerContainer &keyContainer, MouseHandlerContainer &mouseContainer, Camera &camera);
 
 class MouseCallbackWrapper
 {
@@ -20,23 +20,25 @@ class MouseCallbackWrapper
 	static double yoffset;
 
   public:
-    static void registerHandlerCallbacks(GLFWwindow *window, MouseHandlerContainer *handler) {
+	static void registerHandlerCallbacks(GLFWwindow *window, MouseHandlerContainer *handler)
+	{
 		handlers = handler;
 		glfwSetCursorPosCallback(window, callback);
 		glfwSetMouseButtonCallback(window, callback);
 		glfwSetScrollCallback(window, callback_scroll);
 	}
-    static void registerMouseTriggerCallback(GLFWwindow *window, KeyHandlerContainer &handler);
-	static void callback(GLFWwindow *window, double x, double y)
+	static void registerMouseTriggerCallback(GLFWwindow *window, KeyHandlerContainer &handler);
+	static void callback(GLFWwindow *, double x, double y)
 	{
 		if (handlers)
 		{
 			handlers->setPosition(x, y);
 		}
 	}
-	static void callback_scroll(GLFWwindow *window, double diffx, double diffy)
+	static void callback_scroll(GLFWwindow *, double, double diffy)
 	{
-		if (yoffset * diffy < 0) {
+		if (yoffset * diffy < 0)
+		{
 			yoffset = 0;
 		}
 		yoffset += diffy;
@@ -47,19 +49,20 @@ class MouseCallbackWrapper
 			{
 				yoffset -= SCROLL_THRESHOLD;
 				handlers->setScrollUpFlag();
-			} else if (yoffset < -SCROLL_THRESHOLD) {
+			}
+			else if (yoffset < -SCROLL_THRESHOLD)
+			{
 				yoffset += SCROLL_THRESHOLD;
 				handlers->setScrollDownFlag();
 			}
 		}
 	}
-	static void callback(GLFWwindow *window, int button, int action, int mods)
+	static void callback(GLFWwindow *, int button, int action, int)
 	{
 		if (handlers)
 		{
-			switch (button)
+			if (button == GLFW_MOUSE_BUTTON_LEFT)
 			{
-			case GLFW_MOUSE_BUTTON_LEFT:
 				if (action == GLFW_PRESS)
 				{
 					handlers->leftPress();
@@ -68,8 +71,9 @@ class MouseCallbackWrapper
 				{
 					handlers->resetLeftHoldFlag();
 				}
-				break;
-			case GLFW_MOUSE_BUTTON_RIGHT:
+			}
+			else if (button == GLFW_MOUSE_BUTTON_RIGHT)
+			{
 				if (action == GLFW_PRESS)
 				{
 					handlers->rightPress();
@@ -78,7 +82,6 @@ class MouseCallbackWrapper
 				{
 					handlers->resetRightHoldFlag();
 				}
-				break;
 			}
 		}
 	}
