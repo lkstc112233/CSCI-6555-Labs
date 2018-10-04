@@ -37,3 +37,7 @@ testWindow
 .vs/
 .vscode/
 Lab1/dependencies.dep
+
+#SonarQube
+bw-output/
+.scannerwork/
