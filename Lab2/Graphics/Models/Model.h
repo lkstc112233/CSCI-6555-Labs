@@ -1,17 +1,16 @@
 #ifndef GRAPHICS_MODELS_MODEL_H
 #define GRAPHICS_MODELS_MODEL_H
 
-#include <memory>
 #include <glm/glm.hpp>
+#include <memory>
 
 #include "../Shaders/Shader.h"
 
 /**
  * Manages a model, including VAO, VBO, and (if appliable) EBO.
  */
-class Model
-{
-private:
+class Model {
+ private:
   friend class ModelLoader;
   float *vertexes = nullptr;
   int dimensions = 0;
@@ -25,7 +24,7 @@ private:
   Model(const Model &) = delete;
   Model &operator=(const Model &) = delete;
 
-public:
+ public:
   ~Model();
   Model(Model &&);
   void draw(ShaderProgram &shader) const;
@@ -33,14 +32,14 @@ public:
   bool isValid() const { return valid; }
 };
 
-class ModelLoader
-{
-private:
+class ModelLoader {
+ private:
   static std::unique_ptr<Model> unitSquareShape;
-public:
-  static const Model& getUnitSquareShape();
+
+ public:
+  static const Model &getUnitSquareShape();
   static Model loadOffFile(const char *filename);
   static Model loadShpFile(const char *filename);
 };
 
-#endif // GRAPHICS_MODELS_MODEL_H
+#endif  // GRAPHICS_MODELS_MODEL_H

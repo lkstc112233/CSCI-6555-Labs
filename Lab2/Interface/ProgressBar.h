@@ -5,18 +5,18 @@
 
 #include "../Graphics/Object/Object.h"
 #include "../Graphics/Shaders/Shader.h"
-#include "Utilities/TwoStateButton.h"
 #include "KeyHandler.h"
 #include "MouseHandler.h"
+#include "Utilities/TwoStateButton.h"
 
 #include "../Animate/Scripts.h"
 
 /**
- * A class holding editing operations such as keyframe operations, and playing operations.
+ * A class holding editing operations such as keyframe operations, and playing
+ * operations.
  */
-class ProgressBar
-{
-private:
+class ProgressBar {
+ private:
   constexpr static const float KEYFRAME_INDICATOR_HEIGHT_DIFF = 0.02;
   constexpr static const float KEYFRAME_INDICATOR_WIDTH_HALFED = 0.005;
   constexpr static const float PROGRESS_BAR_LOWER_BOUND = -0.967;
@@ -33,15 +33,16 @@ private:
   Scripts &script;
   float process = 0;
 
-public:
+ public:
   bool isPlaying() const { return playPauseButton.state; }
   bool isEditing() const { return !editButton.state; }
   float getProcess() const { return process; }
   void setProcess(float process);
   void addProcess(float process);
   ProgressBar(Scripts &script);
-  void attachControls(KeyHandlerContainer &keyContainer, MouseHandlerContainer &mouseContainer);
+  void attachControls(KeyHandlerContainer &keyContainer,
+                      MouseHandlerContainer &mouseContainer);
   void draw(ShaderProgram &shader);
 };
 
-#endif // INTERFACE_PROGRESSBAR_H
+#endif  // INTERFACE_PROGRESSBAR_H
