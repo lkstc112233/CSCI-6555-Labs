@@ -1,9 +1,11 @@
 #ifndef INTERFACE_INTERFACERELATEDSTUFFHOLDER_HPP
 #define INTERFACE_INTERFACERELATEDSTUFFHOLDER_HPP
 
-#include <GLFW/glfw3.h>
-#include <glad/glad.h>
 #include <functional>
+
+#include <glad/glad.h>
+
+#include <GLFW/glfw3.h>
 
 #include "../Graphics/Camera/Camera.h"
 #include "KeyHandler.h"

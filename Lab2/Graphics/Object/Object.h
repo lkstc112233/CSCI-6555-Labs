@@ -2,6 +2,7 @@
 #define GRAPHICS_OBJECT_OBJECT_H
 
 #include <glm/glm.hpp>
+#include "../../Math/Quaternion.h"
 #include "../Models/Model.h"
 
 /**
@@ -12,12 +13,24 @@
 class Object3D {
  private:
   const Model& model;
-  glm::mat4 transform;
+  float centerX = 0;
+  float centerY = 0;
+  float centerZ = 0;
+  Quaternion orientation;
+  float transformX = 0;
+  float transformY = 0;
+  float transformZ = 0;
   float opacity = 1.0;
 
  public:
   explicit Object3D(const Model& model);
-  void setTransformMatrix(const glm::mat4& transform);
+  void setCenterX(float cx) { centerX = cx; }
+  void setCenterY(float cy) { centerY = cy; }
+  void setCenterZ(float cz) { centerZ = cz; }
+  void setTransformX(float tx) { transformX = tx; }
+  void setTransformY(float ty) { transformY = ty; }
+  void setTransformZ(float tz) { transformZ = tz; }
+  void setOrientation(Quaternion q) { orientation = q; }
   void setOpacity(float opacity);
   void draw(ShaderProgram& shader);
 };

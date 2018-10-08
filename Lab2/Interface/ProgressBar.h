@@ -27,15 +27,12 @@ class ProgressBar {
   Object2D unplayedProgressBar;
   Object2D keyframeObject;
   TwoStateButton playPauseButton;
-  // For some reason the edit button is here...
-  TwoStateButton editButton;
   // Again for some reason the script is kept here...
   Scripts &script;
   float process = 0;
 
  public:
   bool isPlaying() const { return playPauseButton.state; }
-  bool isEditing() const { return !editButton.state; }
   float getProcess() const { return process; }
   void setProcess(float process);
   void addProcess(float process);

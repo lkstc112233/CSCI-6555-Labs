@@ -2,19 +2,21 @@
 
 #include <glm/glm.hpp>
 
-Object3D::Object3D(const Model& modeli) : model(modeli), transform(1.0F) {
+Object3D::Object3D(const Model& modeli) : model(modeli) {
   if (modeli.getDimensions() != 3) {
     throw "INCAPABLE_DIMENSION";
   }
 }
 
-void Object3D::setTransformMatrix(const glm::mat4& transformi) {
-  transform = transformi;
-}
-
 void Object3D::setOpacity(float opacityi) { opacity = opacityi; }
 
 void Object3D::draw(ShaderProgram& shader) {
+  glm::mat4 transform(orientation.getRotationMatrix());
+  transform[3][0] = transformX;
+  transform[3][1] = transformY;
+  transform[3][2] = transformZ;
+  transform[3][3] = 1.0F;
+
   shader.setMatrix("transform", transform);
   shader.setValue("opacity", opacity);
   model.draw(shader);

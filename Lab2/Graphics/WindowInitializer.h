@@ -1,8 +1,9 @@
 #ifndef GRAPHICS_WINDOWINITIALIZER_H
 #define GRAPHICS_WINDOWINITIALIZER_H
 
-#include <GLFW/glfw3.h>
 #include <glad/glad.h>
+
+#include <GLFW/glfw3.h>
 
 const int SCREEN_WIDTH = 800;
 const int SCREEN_HEIGHT = 600;

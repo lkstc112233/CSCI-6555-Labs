@@ -4,8 +4,9 @@
 #include <functional>
 #include <vector>
 
-#include <GLFW/glfw3.h>
 #include <glad/glad.h>
+
+#include <GLFW/glfw3.h>
 
 /**
  * A class managing keyboard operations.
