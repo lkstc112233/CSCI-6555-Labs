@@ -13,10 +13,10 @@ class Entity {
   std::map<std::string, std::shared_ptr<Object3D>> objects;
 
  public:
-  Entity();
+  Entity() {}
   template <class... Args>
   void addObject(std::string name, Args&&... args) {
-    objects[name] = std::make_shared(args...);
+    objects[name] = std::make_shared<Object3D>(args...);
   }
   std::shared_ptr<Object3D> getObject(std::string name) {
     return objects[name];
