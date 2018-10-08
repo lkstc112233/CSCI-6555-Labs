@@ -8,16 +8,34 @@ Object3D::Object3D(const Model& modeli) : model(modeli) {
   }
 }
 
+void Object3D::setParent(const std::shared_ptr<Object3D>& parenti) {
+  parent = parenti;
+}
+
 void Object3D::setOpacity(float opacityi) { opacity = opacityi; }
 
-void Object3D::draw(ShaderProgram& shader) {
-  glm::mat4 transform(orientation.getRotationMatrix());
+glm::mat4 Object3D::getTransformationMatrix() {
+  glm::mat4 center(1.0F);
+  center[3][0] = -centerX;
+  center[3][1] = -centerY;
+  center[3][2] = -centerZ;
+  glm::mat4 rotate(orientation.getRotationMatrix());
+  rotate[3][3] = 1.0F;
+  glm::mat4 transform(1.0F);
   transform[3][0] = transformX;
   transform[3][1] = transformY;
   transform[3][2] = transformZ;
   transform[3][3] = 1.0F;
+  glm::mat4 parentTransform(1.0F);
+  auto usingParent = parent.lock();
+  if (usingParent) {
+    parentTransform = usingParent->getTransformationMatrix();
+  }
+  return parentTransform * transform * rotate * center;
+}
 
-  shader.setMatrix("transform", transform);
+void Object3D::draw(ShaderProgram& shader) {
+  shader.setMatrix("transform", getTransformationMatrix());
   shader.setValue("opacity", opacity);
   model.draw(shader);
 }

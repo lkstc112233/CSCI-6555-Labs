@@ -1,6 +1,8 @@
 #ifndef GRAPHICS_OBJECT_OBJECT_H
 #define GRAPHICS_OBJECT_OBJECT_H
 
+#include <memory>
+
 #include <glm/glm.hpp>
 #include "../../Math/Quaternion.h"
 #include "../Models/Model.h"
@@ -12,6 +14,7 @@
 
 class Object3D {
  private:
+  std::weak_ptr<Object3D> parent;
   const Model& model;
   float centerX = 0;
   float centerY = 0;
@@ -21,9 +24,11 @@ class Object3D {
   float transformY = 0;
   float transformZ = 0;
   float opacity = 1.0;
+  glm::mat4 getTransformationMatrix();
 
  public:
   explicit Object3D(const Model& model);
+  void setParent(const std::shared_ptr<Object3D>& parent);
   void setCenterX(float cx) { centerX = cx; }
   void setCenterY(float cy) { centerY = cy; }
   void setCenterZ(float cz) { centerZ = cz; }
