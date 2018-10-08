@@ -11,6 +11,7 @@
 #include "../Math/Quaternion.h"
 #include "../fileop/fileParser.h"
 #include "Keyframe.hpp"
+#include "Timeline.hpp"
 
 Scripts::Scripts(Scripts &&another)
     : timestamps(std::move(another.timestamps)),
