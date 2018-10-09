@@ -10,6 +10,7 @@
 #include <glm/gtc/matrix_transform.hpp>
 
 #include "Graphics/Camera/Camera.h"
+#include "Graphics/Entity/Entity.h"
 #include "Graphics/Models/Model.h"
 #include "Graphics/Object/Object.h"
 #include "Graphics/Shaders/Shader.h"
@@ -50,9 +51,8 @@ int main(int argc, char** argv) {
                                       windowHeight);
   MouseCallbackWrapper::registerHandlerCallbacks(window, &mouseHandlers);
 
-  Object3D cube(ModelLoader::loadOffFile(argv[1]));
-  Object3D keyIndicator(ModelLoader::loadOffFile("res/models/smallcube.off"));
-  Object3D pathIndicator(ModelLoader::loadOffFile("res/models/tinycube.off"));
+  Entity entity;
+  entity.addObject("object", ModelLoader::loadOffFile(argv[1]));
 
   ShaderProgram shaderProgram{
       Shader::createVertexShader("res/shaders/simpleShader.vert"),
@@ -121,11 +121,13 @@ int main(int argc, char** argv) {
 
     shaderProgram.setMatrix("view", camera.getViewMat());
     float currentTime = progressBar.getProcess() * script.getMaximumTime();
-    cube.setTransformX(script.getXAt(currentTime));
-    cube.setTransformY(script.getYAt(currentTime));
-    cube.setTransformZ(script.getZAt(currentTime));
-    cube.setOrientation(script.getOrientationAt(currentTime));
-    cube.draw(shaderProgram);
+    auto& obj = *entity.getObject("object");
+    obj.setTransformX(script.getXAt(currentTime));
+    obj.setTransformY(script.getYAt(currentTime));
+    obj.setTransformZ(script.getZAt(currentTime));
+    obj.setOrientation(script.getOrientationAt(currentTime));
+
+    entity.draw(shaderProgram);
 
     // Draw HDR
     glClear(GL_DEPTH_BUFFER_BIT);
