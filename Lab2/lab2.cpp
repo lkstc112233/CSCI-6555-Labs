@@ -53,6 +53,14 @@ int main(int argc, char** argv) {
 
   Entity entity;
   entity.addObject("object", ModelLoader::loadOffFile(argv[1]));
+  entity.addChild("object", "cube",
+                  ModelLoader::loadOffFile("res/models/cube.off"));
+  {
+    auto& cube = *entity.getObject("cube");
+    cube.setTransformX(3);
+    cube.setTransformY(3);
+    cube.setTransformZ(3);
+  }
 
   ShaderProgram shaderProgram{
       Shader::createVertexShader("res/shaders/simpleShader.vert"),
@@ -127,6 +135,11 @@ int main(int argc, char** argv) {
     obj.setTransformZ(script.getZAt(currentTime));
     obj.setOrientation(script.getOrientationAt(currentTime));
 
+    auto& cube = *entity.getObject("cube");
+    float cubeAngle = currentTime;
+    cube.setOrientation(Quaternion(cos(cubeAngle / 2), sin(cubeAngle / 2) * 1,
+                                   sin(cubeAngle / 2) * 1,
+                                   sin(cubeAngle / 2) * 1));
     entity.draw(shaderProgram);
 
     // Draw HDR
