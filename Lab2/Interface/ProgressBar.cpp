@@ -14,13 +14,12 @@
 
 #include <glm/glm.hpp>
 
-ProgressBar::ProgressBar(Scripts &scripti)
+ProgressBar::ProgressBar()
     : playedProgressBar(ModelLoader::getUnitSquareShape()),
       unplayedProgressBar(ModelLoader::getUnitSquareShape()),
       keyframeObject(ModelLoader::getUnitSquareShape()),
       playPauseButton("res/shapes/pause.shp", "res/shapes/play.shp", -1, -1,
-                      0.1),
-      script(scripti) {
+                      0.1) {
   playedProgressBar.setColor(glm::vec3(1.0, 0, 0));
   unplayedProgressBar.setColor(glm::vec3(0.9));
   keyframeObject.setColor(glm::vec3(0.8, 0.8, 0));

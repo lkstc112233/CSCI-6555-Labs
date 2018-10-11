@@ -27,8 +27,6 @@ class ProgressBar {
   Object2D unplayedProgressBar;
   Object2D keyframeObject;
   TwoStateButton playPauseButton;
-  // Again for some reason the script is kept here...
-  Scripts &script;
   float process = 0;
 
  public:
@@ -36,7 +34,7 @@ class ProgressBar {
   float getProcess() const { return process; }
   void setProcess(float process);
   void addProcess(float process);
-  ProgressBar(Scripts &script);
+  ProgressBar();
   void attachControls(KeyHandlerContainer &keyContainer,
                       MouseHandlerContainer &mouseContainer);
   void draw(ShaderProgram &shader);
