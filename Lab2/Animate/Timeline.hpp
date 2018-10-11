@@ -44,7 +44,7 @@ class Timeline {
   }
   float getMaximumId() const { return keyframes.size(); }
   const std::vector<float> &getTimestamps() const { return timestamps; }
-  T getDataAt(float time) {
+  T getDataAt(float time) const {
     time = fmod(time, getMaximumTime());
     auto position = std::upper_bound(keyframes.begin(), keyframes.end(), time,
                                      [](float val, const Keyframe<T> &frame) {
@@ -57,7 +57,7 @@ class Timeline {
 
     return catmullRomInterpolate(time, position - 1).getData();
   }
-  T getDataOf(int i) { return keyframes[i]; }
+  T getDataOf(int i) const { return keyframes[i]; }
   void rearrangeKeyframes() {
     std::sort(keyframes.begin(), keyframes.end(), [](auto &key1, auto &key2) {
       return key1.getTimestamp() < key2.getTimestamp();
