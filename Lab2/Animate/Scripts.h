@@ -19,6 +19,7 @@ class Scripts {
   std::vector<float> timestamps;
   std::map<std::string, Timeline<float>> loadedFloatTimelines;
   std::map<std::string, Timeline<Quaternion>> loadedQuaternionTimelines;
+  float maximumTime = 0;
 
  public:
   Timeline<float> getFloatTimeline(std::string name);
@@ -31,7 +32,7 @@ class Scripts {
  public:
   Scripts(Scripts &&anotherScript);
   static Scripts loadScript(const char *filename);
-  float getMaximumTime() const;
+  float getMaximumTime() const { return maximumTime; }
   const std::vector<float> &getTimestamps() const { return timestamps; }
   float getXAt(float time) { return xLine.getDataAt(time); }
   float getYAt(float time) { return yLine.getDataAt(time); }

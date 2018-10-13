@@ -32,11 +32,6 @@ Timeline<Quaternion> Scripts::getQuaternionTimeline(std::string name) {
   return loadedQuaternionTimelines[name];
 }
 
-float Scripts::getMaximumTime() const {
-  return std::max({xLine.getMaximumTime(), yLine.getMaximumTime(),
-                   zLine.getMaximumTime(), orientationLine.getMaximumTime()});
-}
-
 Scripts Scripts::loadScript(const char *filename) {
   Scripts loadedScript;
   FileParser parser(filename);
@@ -66,5 +61,9 @@ Scripts Scripts::loadScript(const char *filename) {
     }
   }
   loadedScript.rearrangeKeyframes();
+  loadedScript.maximumTime = std::max(
+      {loadedScript.xLine.getMaximumTime(), loadedScript.yLine.getMaximumTime(),
+       loadedScript.zLine.getMaximumTime(),
+       loadedScript.orientationLine.getMaximumTime()});
   return loadedScript;
 }
