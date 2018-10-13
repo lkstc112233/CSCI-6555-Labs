@@ -2,12 +2,19 @@
 #define GRAPHICS_OBJECT_OBJECT_H
 
 #include <memory>
+#include <string>
 #include <vector>
 
 #include <glm/glm.hpp>
 #include "../../Animate/Timeline.hpp"
 #include "../../Math/Quaternion.h"
 #include "../Models/Model.h"
+
+#define SET_TRANSFORM_MANAGER_IMPLEMENTATION(type, propertyName, functionName) \
+  void functionName(Timeline<type>&& line) {                                   \
+    managers.emplace_back(std::make_unique<ManagerTimeline<type>>(             \
+        propertyName, std::move(line)));                                       \
+  }
 
 /**
  * Manages how a model is drawn on screen.
@@ -33,6 +40,11 @@ class Object3D {
   explicit Object3D(const Model& model);
   void setParent(const std::shared_ptr<Object3D>& parent);
   void updateManagers(float time);
+  SET_TRANSFORM_MANAGER_IMPLEMENTATION(float, transformX, setTransformXManager);
+  SET_TRANSFORM_MANAGER_IMPLEMENTATION(float, transformY, setTransformYManager);
+  SET_TRANSFORM_MANAGER_IMPLEMENTATION(float, transformZ, setTransformZManager);
+  SET_TRANSFORM_MANAGER_IMPLEMENTATION(Quaternion, orientation,
+                                       setOrientationManager);
   void setCenterX(float cx) { centerX = cx; }
   void setCenterY(float cy) { centerY = cy; }
   void setCenterZ(float cz) { centerZ = cz; }
@@ -43,6 +55,8 @@ class Object3D {
   void setOpacity(float opacity);
   void draw(ShaderProgram& shader);
 };
+
+#undef SET_TRANSFORM_MANAGER_IMPLEMENTATION
 
 class Object2D {
  private:
