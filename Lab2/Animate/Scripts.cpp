@@ -2,7 +2,9 @@
 
 #include <algorithm>
 #include <iostream>
+#include <map>
 #include <memory>
+#include <string>
 #include <vector>
 
 #include <glm/glm.hpp>
@@ -15,10 +17,20 @@
 
 Scripts::Scripts(Scripts &&another)
     : timestamps(std::move(another.timestamps)),
+      loadedFloatTimelines(std::move(another.loadedFloatTimelines)),
+      loadedQuaternionTimelines(std::move(another.loadedQuaternionTimelines)),
       xLine(std::move(another.xLine)),
       yLine(std::move(another.yLine)),
       zLine(std::move(another.zLine)),
       orientationLine(std::move(another.orientationLine)) {}
+
+Timeline<float> Scripts::getFloatTimeline(std::string name) {
+  return loadedFloatTimelines[name];
+}
+
+Timeline<Quaternion> Scripts::getQuaternionTimeline(std::string name) {
+  return loadedQuaternionTimelines[name];
+}
 
 float Scripts::getMaximumTime() const {
   return std::max({xLine.getMaximumTime(), yLine.getMaximumTime(),

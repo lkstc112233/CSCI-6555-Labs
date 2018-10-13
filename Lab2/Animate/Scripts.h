@@ -1,6 +1,8 @@
 #ifndef ANIMATE_SCRIPTS_H
 #define ANIMATE_SCRIPTS_H
 
+#include <map>
+#include <string>
 #include <vector>
 
 #include <glm/glm.hpp>
@@ -15,6 +17,12 @@ class Scripts {
  private:
   Scripts() {}
   std::vector<float> timestamps;
+  std::map<std::string, Timeline<float>> loadedFloatTimelines;
+  std::map<std::string, Timeline<Quaternion>> loadedQuaternionTimelines;
+
+ public:
+  Timeline<float> getFloatTimeline(std::string name);
+  Timeline<Quaternion> getQuaternionTimeline(std::string name);
   Timeline<float> xLine;
   Timeline<float> yLine;
   Timeline<float> zLine;
