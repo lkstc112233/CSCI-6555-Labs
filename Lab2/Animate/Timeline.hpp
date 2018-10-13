@@ -68,4 +68,18 @@ class Timeline {
   }
 };
 
+template <typename T>
+class ManagerTimeline {
+ private:
+  Timeline<T> timeline;
+  T &managing;
+
+ public:
+  ManagerTimeline(T &managingi, Timeline<T> &&timelinei)
+      : managing(managingi), timeline(std::move(timelinei)) {}
+  ManagerTimeline(ManagerTimeline &&another)
+      : timeline(std::move(another.timeline)), managing(another.managing) {}
+  void handleDataAt(float time) { managing = timeline.getDataAt(time); }
+};
+
 #endif  // ANIMATE_TIMELINE_HPP
