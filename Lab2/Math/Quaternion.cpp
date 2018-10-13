@@ -3,6 +3,8 @@
 #include <cmath>
 
 Quaternion::Quaternion() : w(1), x(0), y(0), z(0) {}
+Quaternion::Quaternion(const Quaternion &another)
+    : w(another.w), x(another.x), y(another.y), z(another.z) {}
 
 Quaternion::Quaternion(float wi, float xi, float yi, float zi)
     : w(wi), x(xi), y(yi), z(zi) {

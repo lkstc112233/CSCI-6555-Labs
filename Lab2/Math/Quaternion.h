@@ -12,6 +12,7 @@ class Quaternion {
 
  public:
   Quaternion();
+  Quaternion(const Quaternion &another);
   Quaternion(float w, float x, float y, float z);
 
   void rotateBy(float yaw, float pitch, float roll);
