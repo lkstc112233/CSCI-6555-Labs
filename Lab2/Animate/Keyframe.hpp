@@ -15,6 +15,8 @@ class Keyframe {
  public:
   Keyframe(float timestampi, const Interpolatable &datai)
       : timestamp(timestampi), data(datai) {}
+  Keyframe(const Keyframe<Interpolatable> &another)
+      : timestamp(another.timestamp), data(another.data) {}
   float getTimestamp() const { return timestamp; }
   void setTimestamp(float timestampi) { timestamp = timestampi; }
   void setData(Interpolatable datai) { datai = data; }
