@@ -33,6 +33,8 @@ class Timeline {
         keyframe);
   }
   Timeline() {}
+  Timeline(const Timeline &another)
+      : timestamps(another.timestamps), keyframes(another.keyframes) {}
   Timeline(Timeline &&another)
       : timestamps(std::move(another.timestamps)),
         keyframes(std::move(another.keyframes)) {}
