@@ -68,8 +68,13 @@ class Timeline {
   }
 };
 
+class ManagedTimelineInterface {
+ public:
+  virtual void handleDataAt(float time) {}
+};
+
 template <typename T>
-class ManagerTimeline {
+class ManagerTimeline : public ManagedTimelineInterface {
  private:
   Timeline<T> timeline;
   T &managing;
@@ -79,7 +84,7 @@ class ManagerTimeline {
       : managing(managingi), timeline(std::move(timelinei)) {}
   ManagerTimeline(ManagerTimeline &&another)
       : timeline(std::move(another.timeline)), managing(another.managing) {}
-  void handleDataAt(float time) { managing = timeline.getDataAt(time); }
+  virtual void handleDataAt(float time) { managing = timeline.getDataAt(time); }
 };
 
 #endif  // ANIMATE_TIMELINE_HPP
