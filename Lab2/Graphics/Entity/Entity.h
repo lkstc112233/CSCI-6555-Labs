@@ -26,6 +26,7 @@ class Entity {
   std::shared_ptr<Object3D> getObject(std::string name) {
     return objects[name];
   }
+  void updateManagers(float time);
   void draw(ShaderProgram& shader);
 };
 
