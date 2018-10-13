@@ -25,6 +25,7 @@
 
 #include "Animate/Keyframe.hpp"
 #include "Animate/Scripts.h"
+#include "Animate/Timeline.hpp"
 #include "Math/Quaternion.h"
 
 const float PROJECTION_RATIO = float(SCREEN_WIDTH) / SCREEN_HEIGHT;
@@ -60,6 +61,13 @@ int main(int argc, char** argv) {
     cube.setTransformX(3);
     cube.setTransformY(3);
     cube.setTransformZ(3);
+  }
+  {
+    auto object = entity.getObject("object");
+    object->setTransformXManager(std::move(script.xLine));
+    object->setTransformYManager(std::move(script.yLine));
+    object->setTransformZManager(std::move(script.zLine));
+    object->setOrientationManager(std::move(script.orientationLine));
   }
 
   ShaderProgram shaderProgram{
@@ -129,17 +137,13 @@ int main(int argc, char** argv) {
 
     shaderProgram.setMatrix("view", camera.getViewMat());
     float currentTime = progressBar.getProcess() * script.getMaximumTime();
-    auto& obj = *entity.getObject("object");
-    obj.setTransformX(script.getXAt(currentTime));
-    obj.setTransformY(script.getYAt(currentTime));
-    obj.setTransformZ(script.getZAt(currentTime));
-    obj.setOrientation(script.getOrientationAt(currentTime));
 
     auto& cube = *entity.getObject("cube");
     float cubeAngle = currentTime;
     cube.setOrientation(Quaternion(cos(cubeAngle / 2), sin(cubeAngle / 2) * 1,
                                    sin(cubeAngle / 2) * 1,
                                    sin(cubeAngle / 2) * 1));
+    entity.updateManagers(currentTime);
     entity.draw(shaderProgram);
 
     // Draw HDR
