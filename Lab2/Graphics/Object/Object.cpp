@@ -1,6 +1,10 @@
 #include "Object.h"
 
+#include <memory>
+
 #include <glm/glm.hpp>
+
+#include "../../Animate/Timeline.hpp"
 
 Object3D::Object3D(const Model& modeli) : model(modeli) {
   if (modeli.getDimensions() != 3) {
@@ -10,6 +14,12 @@ Object3D::Object3D(const Model& modeli) : model(modeli) {
 
 void Object3D::setParent(const std::shared_ptr<Object3D>& parenti) {
   parent = parenti;
+}
+
+void Object3D::updateManagers(float time) {
+  for (auto& m : managers) {
+    m->handleDataAt(time);
+  }
 }
 
 void Object3D::setOpacity(float opacityi) { opacity = opacityi; }

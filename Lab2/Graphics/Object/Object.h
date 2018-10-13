@@ -2,8 +2,10 @@
 #define GRAPHICS_OBJECT_OBJECT_H
 
 #include <memory>
+#include <vector>
 
 #include <glm/glm.hpp>
+#include "../../Animate/Timeline.hpp"
 #include "../../Math/Quaternion.h"
 #include "../Models/Model.h"
 
@@ -25,10 +27,12 @@ class Object3D {
   float transformZ = 0;
   float opacity = 1.0;
   glm::mat4 getTransformationMatrix();
+  std::vector<std::unique_ptr<ManagedTimelineInterface>> managers;
 
  public:
   explicit Object3D(const Model& model);
   void setParent(const std::shared_ptr<Object3D>& parent);
+  void updateManagers(float time);
   void setCenterX(float cx) { centerX = cx; }
   void setCenterY(float cy) { centerY = cy; }
   void setCenterZ(float cz) { centerZ = cz; }
