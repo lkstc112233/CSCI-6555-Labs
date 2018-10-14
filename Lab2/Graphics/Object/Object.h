@@ -28,6 +28,9 @@ class Object3D {
   float centerX = 0;
   float centerY = 0;
   float centerZ = 0;
+  float scaleX = 1.0;
+  float scaleY = 1.0;
+  float scaleZ = 1.0;
   Quaternion orientation;
   float transformX = 0;
   float transformY = 0;
@@ -48,6 +51,9 @@ class Object3D {
   void setCenterX(float cx) { centerX = cx; }
   void setCenterY(float cy) { centerY = cy; }
   void setCenterZ(float cz) { centerZ = cz; }
+  void setScaleX(float sx) { scaleX = sx; }
+  void setScaleY(float sy) { scaleY = sy; }
+  void setScaleZ(float sz) { scaleZ = sz; }
   void setTransformX(float tx) { transformX = tx; }
   void setTransformY(float ty) { transformY = ty; }
   void setTransformZ(float tz) { transformZ = tz; }

@@ -25,6 +25,10 @@ void Object3D::updateManagers(float time) {
 void Object3D::setOpacity(float opacityi) { opacity = opacityi; }
 
 glm::mat4 Object3D::getTransformationMatrix() {
+  glm::mat4 scale(1.0F);
+  scale[0][0] = scaleX;
+  scale[1][1] = scaleY;
+  scale[2][2] = scaleZ;
   glm::mat4 center(1.0F);
   center[3][0] = -centerX;
   center[3][1] = -centerY;
@@ -41,7 +45,7 @@ glm::mat4 Object3D::getTransformationMatrix() {
   if (usingParent) {
     parentTransform = usingParent->getTransformationMatrix();
   }
-  return parentTransform * transform * rotate * center;
+  return parentTransform * transform * rotate * center * scale;
 }
 
 void Object3D::draw(ShaderProgram& shader) {
