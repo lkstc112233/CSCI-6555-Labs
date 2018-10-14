@@ -51,6 +51,11 @@ class Object3D {
   void setCenterX(float cx) { centerX = cx; }
   void setCenterY(float cy) { centerY = cy; }
   void setCenterZ(float cz) { centerZ = cz; }
+  void setScale(float s) {
+    setScaleX(s);
+    setScaleY(s);
+    setScaleZ(s);
+  }
   void setScaleX(float sx) { scaleX = sx; }
   void setScaleY(float sy) { scaleY = sy; }
   void setScaleZ(float sz) { scaleZ = sz; }
