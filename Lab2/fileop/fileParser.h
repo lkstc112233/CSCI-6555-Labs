@@ -24,7 +24,7 @@ class FileParser {
   // Returns how many element is successfully parsed.
   // if succeed parsing every element requested, sets the
   // coresponding pointer to the loaded values.
-  // if failed, returns false, and fill the pointer as much as possible.
+  // if failed, fills the pointer as much as possible.
   // after that, the file pointer will point to as far as it can reach.
 
   int tryParseFloat(float *pointer, int count = 1);
