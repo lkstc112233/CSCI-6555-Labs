@@ -24,28 +24,16 @@ class Scripts {
  public:
   Timeline<float> getFloatTimeline(std::string name);
   Timeline<Quaternion> getQuaternionTimeline(std::string name);
-  Timeline<float> xLine;
-  Timeline<float> yLine;
-  Timeline<float> zLine;
-  Timeline<Quaternion> orientationLine;
-
- public:
   Scripts(Scripts &&anotherScript);
   static Scripts loadScript(const char *filename);
   float getMaximumTime() const { return maximumTime; }
   const std::vector<float> &getTimestamps() const { return timestamps; }
-  float getXAt(float time) { return xLine.getDataAt(time); }
-  float getYAt(float time) { return yLine.getDataAt(time); }
-  float getZAt(float time) { return zLine.getDataAt(time); }
-  Quaternion getOrientationAt(float time) {
-    return orientationLine.getDataAt(time);
-  }
   float getActivedTimestamp() const;
   void rearrangeKeyframes() {
-    xLine.rearrangeKeyframes();
-    yLine.rearrangeKeyframes();
-    zLine.rearrangeKeyframes();
-    orientationLine.rearrangeKeyframes();
+    for_each(loadedFloatTimelines.begin(), loadedFloatTimelines.end(),
+             [](auto &i) { i.second.rearrangeKeyframes(); });
+    for_each(loadedQuaternionTimelines.begin(), loadedQuaternionTimelines.end(),
+             [](auto &i) { i.second.rearrangeKeyframes(); });
   }
 };
 

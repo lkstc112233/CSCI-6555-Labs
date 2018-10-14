@@ -18,11 +18,7 @@
 Scripts::Scripts(Scripts &&another)
     : timestamps(std::move(another.timestamps)),
       loadedFloatTimelines(std::move(another.loadedFloatTimelines)),
-      loadedQuaternionTimelines(std::move(another.loadedQuaternionTimelines)),
-      xLine(std::move(another.xLine)),
-      yLine(std::move(another.yLine)),
-      zLine(std::move(another.zLine)),
-      orientationLine(std::move(another.orientationLine)) {}
+      loadedQuaternionTimelines(std::move(another.loadedQuaternionTimelines)) {}
 
 Timeline<float> Scripts::getFloatTimeline(std::string name) {
   return loadedFloatTimelines[name];
@@ -32,38 +28,133 @@ Timeline<Quaternion> Scripts::getQuaternionTimeline(std::string name) {
   return loadedQuaternionTimelines[name];
 }
 
-Scripts Scripts::loadScript(const char *filename) {
-  Scripts loadedScript;
-  FileParser parser(filename);
+template <typename T>
+static constexpr int loadCount() {
+  return 1;
+}
+
+template <>
+constexpr int loadCount<Quaternion>() {
+  return 4;
+}
+
+template <typename T>
+static T readType(float *pointer) {
+  return T();
+}
+
+template <>
+float readType<float>(float *pointer) {
+  return *pointer;
+}
+template <>
+Quaternion readType<Quaternion>(float *pointer) {
+  return Quaternion(pointer[0], pointer[1], pointer[2], pointer[3]);
+}
+
+// Loads a script.
+template <typename T>
+static std::vector<Timeline<T>> loadTimeline(FileParser &parser,
+                                             int count = 1) {
+  int floatingCount = count * loadCount<T>() + 1;
+  std::vector<Timeline<T>> result(count);
 
   // Load until end of control points
   while (parser.isValid()) {
     if (!parser.expect('(')) {
       break;
     }
-    float data[8];
-    int loaded = parser.tryParseFloat(data, 8);
+    float data[floatingCount];
+    int loaded = parser.tryParseFloat(data, floatingCount);
     if (!parser.expect(')')) {
-      std::cerr << "ScriptsLoader: Warning: Error happened parsing the script: "
-                << filename << std::endl;
+      std::cerr << "ScriptsLoader: Warning: Error happened parsing the script."
+                << std::endl
+                << "\t:Missing )" << std::endl;
       break;
     }
-    if (loaded == 8) {
-      loadedScript.xLine.addKeyframe(Keyframe<float>(data[0], data[1]));
-      loadedScript.yLine.addKeyframe(Keyframe<float>(data[0], data[2]));
-      loadedScript.zLine.addKeyframe(Keyframe<float>(data[0], data[3]));
-      loadedScript.orientationLine.addKeyframe(Keyframe<Quaternion>(
-          data[0], Quaternion(data[4], data[5], data[6], data[7])));
+    if (loaded == floatingCount) {
+      float timestamp = data[0];
+      auto pointer = data + 1;
+      for (int i = 0; i < count; ++i) {
+        result[i].addKeyframe(Keyframe<T>(timestamp, readType<T>(pointer)));
+        pointer += loadCount<T>();
+      }
     } else {
-      std::cerr << "ScriptsLoader: Warning: Error happened parsing the script: "
-                << filename << std::endl;
+      std::cerr << "ScriptsLoader: Warning: Error happened parsing the script."
+                << std::endl
+                << "\t:Dismatching count: expecting " << floatingCount
+                << std::endl;
       break;
     }
   }
+  return result;
+}
+
+Scripts Scripts::loadScript(const char *filename) {
+  Scripts loadedScript;
+  FileParser parser(filename);
+
+  // @ command parameters
+  std::string name;
+  char type;
+  int defaultCount = 0;
+
+  // Expect an @ command
+  while (parser.isValid()) {
+    while (parser.expect('@')) {
+      auto command = parser.parseString();
+      if (command == "name") {
+        name = parser.parseString();
+      } else if (command == "type") {
+        type = parser.parseString()[0];
+      }
+    }
+    if (name == "") {
+      name = "default_" + std::to_string(defaultCount++);
+    }
+    switch (type) {
+      case 'f':
+        loadedScript.loadedFloatTimelines.emplace(
+            name, std::move(loadTimeline<float>(parser)[0]));
+        break;
+      case 'p': {
+        auto timeline = loadTimeline<float>(parser, 3);
+        loadedScript.loadedFloatTimelines.emplace("x" + name,
+                                                  std::move(timeline[0]));
+        loadedScript.loadedFloatTimelines.emplace("y" + name,
+                                                  std::move(timeline[1]));
+        loadedScript.loadedFloatTimelines.emplace("z" + name,
+                                                  std::move(timeline[2]));
+      } break;
+      case 'q':
+        loadedScript.loadedQuaternionTimelines.emplace(
+            name, std::move(loadTimeline<Quaternion>(parser)[0]));
+        break;
+      default:
+        std::cerr
+            << "ScriptsLoader: Warning: Error happened parsing the script."
+            << std::endl
+            << "\t:Unexpected type" << std::endl;
+        break;
+    }
+    name = "";
+  }
+
   loadedScript.rearrangeKeyframes();
-  loadedScript.maximumTime = std::max(
-      {loadedScript.xLine.getMaximumTime(), loadedScript.yLine.getMaximumTime(),
-       loadedScript.zLine.getMaximumTime(),
-       loadedScript.orientationLine.getMaximumTime()});
+  loadedScript.maximumTime =
+      std::max({std::max_element(loadedScript.loadedFloatTimelines.begin(),
+                                 loadedScript.loadedFloatTimelines.end(),
+                                 [](const auto &i1, const auto &i2) {
+                                   return i1.second.getMaximumTime() <
+                                          i2.second.getMaximumTime();
+                                 })
+                    ->second.getMaximumTime(),
+                std::max_element(loadedScript.loadedQuaternionTimelines.begin(),
+                                 loadedScript.loadedQuaternionTimelines.end(),
+                                 [](const auto &i1, const auto &i2) {
+                                   return i1.second.getMaximumTime() <
+                                          i2.second.getMaximumTime();
+                                 })
+                    ->second.getMaximumTime()});
   return loadedScript;
 }

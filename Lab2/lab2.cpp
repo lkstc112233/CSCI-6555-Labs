@@ -64,10 +64,10 @@ int main(int argc, char** argv) {
   }
   {
     auto object = entity.getObject("object");
-    object->setTransformXManager(std::move(script.xLine));
-    object->setTransformYManager(std::move(script.yLine));
-    object->setTransformZManager(std::move(script.zLine));
-    object->setOrientationManager(std::move(script.orientationLine));
+    object->setTransformXManager(script.getFloatTimeline("xPos"));
+    object->setTransformYManager(script.getFloatTimeline("yPos"));
+    object->setTransformZManager(script.getFloatTimeline("zPos"));
+    object->setOrientationManager(script.getQuaternionTimeline("orientation"));
   }
 
   ShaderProgram shaderProgram{
