@@ -2,6 +2,7 @@
 #define FILEOP_FILE_PARSER_H
 
 #include <fstream>
+#include <string>
 
 /**
  * A parser used to parse script. Equiped with ability to parse numbers and
@@ -19,6 +20,9 @@ class FileParser {
   ~FileParser();
 
   bool isValid() { return valid; }
+
+  // Parses a string. If failed (Probably meets an EOF), returns "".
+  std::string parseString();
 
   // for try parse: tries to parse something,
   // Returns how many element is successfully parsed.

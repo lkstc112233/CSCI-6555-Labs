@@ -3,6 +3,7 @@
 #include <algorithm>
 #include <fstream>
 #include <limits>
+#include <string>
 #include <vector>
 
 FileParser::FileParser(const char *filename) : file(filename) {
@@ -12,6 +13,16 @@ FileParser::FileParser(const char *filename) : file(filename) {
 }
 
 FileParser::~FileParser() { file.close(); }
+
+std::string FileParser::parseString() {
+  std::string result;
+
+  // Skip comments
+  restoreFromBad();
+
+  file >> result;
+  return result;
+}
 
 void FileParser::restoreFromBad() {
   if (file.eof()) {
