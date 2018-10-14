@@ -58,6 +58,7 @@ int main(int argc, char** argv) {
                   ModelLoader::loadOffFile("res/models/cube.off"));
   {
     auto& cube = *entity.getObject("cube");
+    cube.setScale(0.5);
     cube.setTransformX(3);
     cube.setTransformY(3);
     cube.setTransformZ(3);
