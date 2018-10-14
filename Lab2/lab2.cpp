@@ -53,22 +53,52 @@ int main(int argc, char** argv) {
   MouseCallbackWrapper::registerHandlerCallbacks(window, &mouseHandlers);
 
   Entity entity;
-  entity.addObject("object", ModelLoader::loadOffFile(argv[1]));
-  entity.addChild("object", "cube",
+  // Build a human-model
+  entity.addObject("pelvis", ModelLoader::loadOffFile("res/models/cube.off"));
+  entity.addChild("pelvis", "thigh-left",
+                  ModelLoader::loadOffFile("res/models/cube.off"));
+  entity.addChild("pelvis", "thigh-right",
+                  ModelLoader::loadOffFile("res/models/cube.off"));
+  entity.addChild("thigh-left", "calf-left",
+                  ModelLoader::loadOffFile("res/models/cube.off"));
+  entity.addChild("thigh-right", "calf-right",
                   ModelLoader::loadOffFile("res/models/cube.off"));
   {
-    auto& cube = *entity.getObject("cube");
-    cube.setScale(0.5);
-    cube.setTransformX(3);
-    cube.setTransformY(3);
-    cube.setTransformZ(3);
+    auto pelvis = entity.getObject("pelvis");
+    pelvis->setScaleY(10);
+    pelvis->setCenterY(-9);
+    pelvis->setTransformXManager(script.getFloatTimeline("xPos"));
+    pelvis->setTransformYManager(script.getFloatTimeline("yPos"));
+    pelvis->setTransformZManager(script.getFloatTimeline("zPos"));
   }
   {
-    auto object = entity.getObject("object");
-    object->setTransformXManager(script.getFloatTimeline("xPos"));
-    object->setTransformYManager(script.getFloatTimeline("yPos"));
-    object->setTransformZManager(script.getFloatTimeline("zPos"));
-    object->setOrientationManager(script.getQuaternionTimeline("orientation"));
+    auto thigh = entity.getObject("thigh-left");
+    thigh->setScaleY(5);
+    thigh->setCenterY(5);
+    thigh->setTransformX(2);
+    thigh->setTransformY(-8);
+    thigh->setOrientationManager(script.getQuaternionTimeline("legSwing"));
+  }
+  {
+    auto thigh = entity.getObject("thigh-right");
+    thigh->setScaleY(5);
+    thigh->setCenterY(5);
+    thigh->setTransformX(-2);
+    thigh->setTransformY(-8);
+    thigh->setOrientationManager(script.getQuaternionTimeline("legSwing"));
+  }
+  {
+    auto calf = entity.getObject("calf-left");
+    calf->setScaleY(5);
+    calf->setCenterY(5);
+    calf->setTransformY(-6);
+  }
+  {
+    auto calf = entity.getObject("calf-right");
+    calf->setScaleY(5);
+    calf->setCenterY(5);
+    calf->setTransformY(-6);
+    calf->setOrientationManager(script.getQuaternionTimeline("legSwing"));
   }
 
   ShaderProgram shaderProgram{
@@ -82,7 +112,7 @@ int main(int argc, char** argv) {
       Shader::createFragmentShader("res/shaders/simpleShader.frag")};
   glm::mat4 projection(1.0f);
   projection =
-      glm::perspective(glm::radians(45.0f), PROJECTION_RATIO, 0.1f, 100.0f);
+      glm::perspective(glm::radians(45.0f), PROJECTION_RATIO, 0.1f, 1000.0f);
   shaderProgram.setMatrix("projection", projection);
   keyframeShader.setMatrix("projection", projection);
 
@@ -139,11 +169,6 @@ int main(int argc, char** argv) {
     shaderProgram.setMatrix("view", camera.getViewMat());
     float currentTime = progressBar.getProcess() * script.getMaximumTime();
 
-    auto& cube = *entity.getObject("cube");
-    float cubeAngle = currentTime;
-    cube.setOrientation(Quaternion(cos(cubeAngle / 2), sin(cubeAngle / 2) * 1,
-                                   sin(cubeAngle / 2) * 1,
-                                   sin(cubeAngle / 2) * 1));
     entity.updateManagers(currentTime);
     entity.draw(shaderProgram);
 
