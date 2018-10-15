@@ -39,7 +39,7 @@ int main(int argc, char** argv) {
 
   auto script = Scripts::loadScript(argv[2]);
 
-  GLFWwindow* window = initializeWindow("Lab1");
+  GLFWwindow* window = initializeWindow("Lab2");
   if (!window) {
     return -1;
   }
