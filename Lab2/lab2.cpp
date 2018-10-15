@@ -101,14 +101,10 @@ int main(int argc, char** argv) {
   if (!shaderProgram.isValid()) {
     return -4;
   }
-  ShaderProgram keyframeShader{
-      Shader::createVertexShader("res/shaders/keyShader.vert"),
-      Shader::createFragmentShader("res/shaders/simpleShader.frag")};
   glm::mat4 projection(1.0f);
   projection =
       glm::perspective(glm::radians(45.0f), PROJECTION_RATIO, 0.1f, 1000.0f);
   shaderProgram.setMatrix("projection", projection);
-  keyframeShader.setMatrix("projection", projection);
 
   Camera camera;
 
