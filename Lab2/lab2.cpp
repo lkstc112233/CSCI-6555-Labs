@@ -31,7 +31,7 @@
 const float PROJECTION_RATIO = float(SCREEN_WIDTH) / SCREEN_HEIGHT;
 
 int main(int argc, char** argv) {
-  auto script = Scripts::loadScript("lab2.keys");
+  auto script = Scripts::loadScript("res/scripts/lab2.keys");
 
   GLFWwindow* window = initializeWindow("Lab2");
   if (!window) {
