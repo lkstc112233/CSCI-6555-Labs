@@ -10,11 +10,12 @@
 #include "../../Math/Quaternion.h"
 #include "../Models/Model.h"
 
-#define SET_TRANSFORM_MANAGER_IMPLEMENTATION(type, propertyName, functionName) \
-  void functionName(Timeline<type>&& line, float offset = 0) {                 \
-    managers.emplace_back(std::make_unique<ManagerTimeline<type>>(             \
-        propertyName, std::move(line), offset));                               \
-  }
+#define HANDLE_PROPERTY_IMPLEMENTATION(type, propertyName, functionName) \
+  void functionName##Manager(Timeline<type>&& line, float offset = 0) {  \
+    managers.emplace_back(std::make_unique<ManagerTimeline<type>>(       \
+        propertyName, std::move(line), offset));                         \
+  }                                                                      \
+  void functionName(type propertyValue) { propertyName = propertyValue; }
 
 /**
  * Manages how a model is drawn on screen.
@@ -43,11 +44,10 @@ class Object3D {
   explicit Object3D(const Model& model);
   void setParent(const std::shared_ptr<Object3D>& parent);
   void updateManagers(float time);
-  SET_TRANSFORM_MANAGER_IMPLEMENTATION(float, transformX, setTransformXManager);
-  SET_TRANSFORM_MANAGER_IMPLEMENTATION(float, transformY, setTransformYManager);
-  SET_TRANSFORM_MANAGER_IMPLEMENTATION(float, transformZ, setTransformZManager);
-  SET_TRANSFORM_MANAGER_IMPLEMENTATION(Quaternion, orientation,
-                                       setOrientationManager);
+  HANDLE_PROPERTY_IMPLEMENTATION(float, transformX, setTransformX);
+  HANDLE_PROPERTY_IMPLEMENTATION(float, transformY, setTransformY);
+  HANDLE_PROPERTY_IMPLEMENTATION(float, transformZ, setTransformZ);
+  HANDLE_PROPERTY_IMPLEMENTATION(Quaternion, orientation, setOrientation);
   void setCenterX(float cx) { centerX = cx; }
   void setCenterY(float cy) { centerY = cy; }
   void setCenterZ(float cz) { centerZ = cz; }
@@ -59,10 +59,6 @@ class Object3D {
   void setScaleX(float sx) { scaleX = sx; }
   void setScaleY(float sy) { scaleY = sy; }
   void setScaleZ(float sz) { scaleZ = sz; }
-  void setTransformX(float tx) { transformX = tx; }
-  void setTransformY(float ty) { transformY = ty; }
-  void setTransformZ(float tz) { transformZ = tz; }
-  void setOrientation(Quaternion q) { orientation = q; }
   void setOpacity(float opacity);
   void draw(ShaderProgram& shader);
 };
