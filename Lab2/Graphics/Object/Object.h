@@ -11,9 +11,9 @@
 #include "../Models/Model.h"
 
 #define SET_TRANSFORM_MANAGER_IMPLEMENTATION(type, propertyName, functionName) \
-  void functionName(Timeline<type>&& line) {                                   \
+  void functionName(Timeline<type>&& line, float offset = 0) {                 \
     managers.emplace_back(std::make_unique<ManagerTimeline<type>>(             \
-        propertyName, std::move(line)));                                       \
+        propertyName, std::move(line), offset));                               \
   }
 
 /**

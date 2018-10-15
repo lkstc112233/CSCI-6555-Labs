@@ -71,7 +71,7 @@ int main(int argc, char** argv) {
     thigh->setCenterY(5);
     thigh->setTransformX(2);
     thigh->setTransformY(-8);
-    thigh->setOrientationManager(script.getQuaternionTimeline("legSwing"));
+    thigh->setOrientationManager(script.getQuaternionTimeline("legSwing"), 2);
   }
   {
     auto thigh = entity.getObject("thigh-right");

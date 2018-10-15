@@ -78,13 +78,18 @@ class ManagerTimeline : public ManagedTimelineInterface {
  private:
   Timeline<T> timeline;
   T &managing;
+  float offset;
 
  public:
-  ManagerTimeline(T &managingi, Timeline<T> &&timelinei)
-      : managing(managingi), timeline(std::move(timelinei)) {}
+  ManagerTimeline(T &managingi, Timeline<T> &&timelinei, float offseti = 0)
+      : managing(managingi), timeline(std::move(timelinei)), offset(offseti) {}
   ManagerTimeline(ManagerTimeline &&another)
-      : timeline(std::move(another.timeline)), managing(another.managing) {}
-  virtual void handleDataAt(float time) { managing = timeline.getDataAt(time); }
+      : timeline(std::move(another.timeline)),
+        managing(another.managing),
+        offset(another.offset) {}
+  virtual void handleDataAt(float time) {
+    managing = timeline.getDataAt(time + offset);
+  }
 };
 
 #endif  // ANIMATE_TIMELINE_HPP
