@@ -72,6 +72,7 @@ class Timeline {
 
 class ManagedTimelineInterface {
  public:
+  virtual void setRate(float rate) {}
   virtual void handleDataAt(float time) {}
 };
 
@@ -100,6 +101,7 @@ class ManagerTimeline : public ManagedTimelineInterface {
         managing(another.managing),
         offset(another.offset),
         rate(another.rate) {}
+  virtual void setRate(float ratei) { rate = ratei; }
   virtual void handleDataAt(float time) {
     // TODO: handle rate.
     managing = timelines[0].getDataAt(time + offset);
