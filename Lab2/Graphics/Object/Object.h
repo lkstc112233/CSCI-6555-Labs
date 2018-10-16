@@ -22,7 +22,10 @@
     managers.emplace(#propertyName, std::make_unique<ManagerTimeline<type>>( \
                                         propertyName, lines, offset));       \
   }                                                                          \
-  void functionName(type propertyValue) { propertyName = propertyValue; }
+  void functionName(type propertyValue) { propertyName = propertyValue; }    \
+  void functionName##ManagerRate(float rate) {                               \
+    managers[#propertyName]->setRate(rate);                                  \
+  }
 
 /**
  * Manages how a model is drawn on screen.
