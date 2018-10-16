@@ -2,6 +2,7 @@
 #define ANIMATE_TIMELINE_HPP
 
 #include <algorithm>
+#include <initializer_list>
 #include <vector>
 
 #include "Keyframe.hpp"
@@ -77,19 +78,31 @@ class ManagedTimelineInterface {
 template <typename T>
 class ManagerTimeline : public ManagedTimelineInterface {
  private:
-  Timeline<T> timeline;
+  std::vector<Timeline<T>> timelines;
   T &managing;
+  float rate;
   float offset;
 
  public:
   ManagerTimeline(T &managingi, Timeline<T> &&timelinei, float offseti = 0)
-      : managing(managingi), timeline(std::move(timelinei)), offset(offseti) {}
+      : managing(managingi), offset(offseti), rate(0) {
+    timelines.emplace_back(std::move(timelinei));
+  }
+  ManagerTimeline(T &managingi, std::initializer_list<Timeline<T>> list,
+                  float offseti = 0)
+      : managing(managingi), offset(offseti), rate(0) {
+    for (auto &elem : list) {
+      timelines.emplace_back(std::move(elem));
+    }
+  }
   ManagerTimeline(ManagerTimeline &&another)
-      : timeline(std::move(another.timeline)),
+      : timelines(std::move(another.timelines)),
         managing(another.managing),
-        offset(another.offset) {}
+        offset(another.offset),
+        rate(another.rate) {}
   virtual void handleDataAt(float time) {
-    managing = timeline.getDataAt(time + offset);
+    // TODO: handle rate.
+    managing = timelines[0].getDataAt(time + offset);
   }
 };
 
