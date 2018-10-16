@@ -83,6 +83,10 @@ class ManagerTimeline : public ManagedTimelineInterface {
   T &managing;
   float rate;
   float offset;
+  float getDataAt(float time) {
+    // TODO: handle rate.
+    return timelines[0].getDataAt(time + offset);
+  }
 
  public:
   ManagerTimeline(T &managingi, Timeline<T> &&timelinei, float offseti = 0)
@@ -102,10 +106,7 @@ class ManagerTimeline : public ManagedTimelineInterface {
         offset(another.offset),
         rate(another.rate) {}
   virtual void setRate(float ratei) { rate = ratei; }
-  virtual void handleDataAt(float time) {
-    // TODO: handle rate.
-    managing = timelines[0].getDataAt(time + offset);
-  }
+  virtual void handleDataAt(float time) { managing = getDataAt(time); }
 };
 
 #endif  // ANIMATE_TIMELINE_HPP
