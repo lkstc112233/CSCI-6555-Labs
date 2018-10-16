@@ -71,11 +71,8 @@ int main(int argc, char** argv) {
     thigh->setCenterY(5);
     thigh->setTransformX(2);
     thigh->setTransformY(-8);
-    thigh->setOrientationManager(
-        {script.getQuaternionTimeline("legSwing"),
-         script.getQuaternionTimeline("legSwingRunning")},
-        2);
-    thigh->setOrientationManagerRate(0.5);
+    thigh->setOrientationManager(script.getQuaternionTimeline("thigh-walking"),
+                                 2);
   }
   {
     auto thigh = entity.getObject("thigh-right");
@@ -83,21 +80,22 @@ int main(int argc, char** argv) {
     thigh->setCenterY(5);
     thigh->setTransformX(-2);
     thigh->setTransformY(-8);
-    thigh->setOrientationManager(
-        script.getQuaternionTimeline("legSwingRunning"));
+    thigh->setOrientationManager(script.getQuaternionTimeline("thigh-walking"));
   }
   {
     auto calf = entity.getObject("calf-left");
     calf->setScaleY(5);
     calf->setCenterY(5);
     calf->setTransformY(-6);
+    calf->setOrientationManager(script.getQuaternionTimeline("calf-walking"),
+                                2);
   }
   {
     auto calf = entity.getObject("calf-right");
     calf->setScaleY(5);
     calf->setCenterY(5);
     calf->setTransformY(-6);
-    calf->setOrientationManager(script.getQuaternionTimeline("legSwing"));
+    calf->setOrientationManager(script.getQuaternionTimeline("calf-walking"));
   }
 
   ShaderProgram shaderProgram{
