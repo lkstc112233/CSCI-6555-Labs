@@ -71,7 +71,11 @@ int main(int argc, char** argv) {
     thigh->setCenterY(5);
     thigh->setTransformX(2);
     thigh->setTransformY(-8);
-    thigh->setOrientationManager(script.getQuaternionTimeline("legSwing"), 2);
+    thigh->setOrientationManager(
+        {script.getQuaternionTimeline("legSwing"),
+         script.getQuaternionTimeline("legSwingRunning")},
+        2);
+    thigh->setOrientationManagerRate(0.5);
   }
   {
     auto thigh = entity.getObject("thigh-right");
@@ -79,7 +83,8 @@ int main(int argc, char** argv) {
     thigh->setCenterY(5);
     thigh->setTransformX(-2);
     thigh->setTransformY(-8);
-    thigh->setOrientationManager(script.getQuaternionTimeline("legSwing"));
+    thigh->setOrientationManager(
+        script.getQuaternionTimeline("legSwingRunning"));
   }
   {
     auto calf = entity.getObject("calf-left");
