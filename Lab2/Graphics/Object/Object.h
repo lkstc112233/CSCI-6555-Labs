@@ -1,6 +1,7 @@
 #ifndef GRAPHICS_OBJECT_OBJECT_H
 #define GRAPHICS_OBJECT_OBJECT_H
 
+#include <initializer_list>
 #include <map>
 #include <memory>
 #include <string>
@@ -10,12 +11,17 @@
 #include "../../Math/Quaternion.h"
 #include "../Models/Model.h"
 
-#define HANDLE_PROPERTY_IMPLEMENTATION(type, propertyName, functionName) \
-  void functionName##Manager(Timeline<type>&& line, float offset = 0) {  \
-    managers.emplace(#propertyName,                                      \
-                     std::make_unique<ManagerTimeline<type>>(            \
-                         propertyName, std::move(line), offset));        \
-  }                                                                      \
+#define HANDLE_PROPERTY_IMPLEMENTATION(type, propertyName, functionName)     \
+  void functionName##Manager(Timeline<type>&& line, float offset = 0) {      \
+    managers.emplace(#propertyName,                                          \
+                     std::make_unique<ManagerTimeline<type>>(                \
+                         propertyName, std::move(line), offset));            \
+  }                                                                          \
+  void functionName##Manager(std::initializer_list<Timeline<type>> lines,    \
+                             float offset = 0) {                             \
+    managers.emplace(#propertyName, std::make_unique<ManagerTimeline<type>>( \
+                                        propertyName, lines, offset));       \
+  }                                                                          \
   void functionName(type propertyValue) { propertyName = propertyValue; }
 
 /**
