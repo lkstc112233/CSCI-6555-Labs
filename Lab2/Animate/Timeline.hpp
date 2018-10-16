@@ -2,6 +2,7 @@
 #define ANIMATE_TIMELINE_HPP
 
 #include <algorithm>
+#include <vector>
 
 #include "Keyframe.hpp"
 
