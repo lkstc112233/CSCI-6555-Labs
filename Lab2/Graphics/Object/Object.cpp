@@ -18,7 +18,7 @@ void Object3D::setParent(const std::shared_ptr<Object3D>& parenti) {
 
 void Object3D::updateManagers(float time) {
   for (auto& m : managers) {
-    m->handleDataAt(time);
+    m.second->handleDataAt(time);
   }
 }
 

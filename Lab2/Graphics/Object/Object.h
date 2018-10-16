@@ -1,9 +1,9 @@
 #ifndef GRAPHICS_OBJECT_OBJECT_H
 #define GRAPHICS_OBJECT_OBJECT_H
 
+#include <map>
 #include <memory>
 #include <string>
-#include <vector>
 
 #include <glm/glm.hpp>
 #include "../../Animate/Timeline.hpp"
@@ -12,8 +12,9 @@
 
 #define HANDLE_PROPERTY_IMPLEMENTATION(type, propertyName, functionName) \
   void functionName##Manager(Timeline<type>&& line, float offset = 0) {  \
-    managers.emplace_back(std::make_unique<ManagerTimeline<type>>(       \
-        propertyName, std::move(line), offset));                         \
+    managers.emplace(#propertyName,                                      \
+                     std::make_unique<ManagerTimeline<type>>(            \
+                         propertyName, std::move(line), offset));        \
   }                                                                      \
   void functionName(type propertyValue) { propertyName = propertyValue; }
 
@@ -38,7 +39,7 @@ class Object3D {
   float transformZ = 0;
   float opacity = 1.0;
   glm::mat4 getTransformationMatrix();
-  std::vector<std::unique_ptr<ManagedTimelineInterface>> managers;
+  std::map<std::string, std::unique_ptr<ManagedTimelineInterface>> managers;
 
  public:
   explicit Object3D(const Model& model);
