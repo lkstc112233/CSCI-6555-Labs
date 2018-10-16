@@ -83,9 +83,19 @@ class ManagerTimeline : public ManagedTimelineInterface {
   T &managing;
   float rate;
   float offset;
-  float getDataAt(float time) {
-    // TODO: handle rate.
-    return timelines[0].getDataAt(time + offset);
+  T getDataAt(float time) {
+    if (rate < 0) {
+      return timelines.front().getDataAt(time + offset);
+    }
+    if (rate >= timelines.size() - 1) {
+      return timelines.back().getDataAt(time + offset);
+    }
+    // Linear interpolate
+    int base = floor(rate);
+    float t = rate - base;
+    return simpleLinearInterpolate(
+        t, timelines[base].getDataAt(time + offset),
+        timelines[base + 1].getDataAt(time + offset));
   }
 
  public:
