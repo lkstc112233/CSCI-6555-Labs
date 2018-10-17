@@ -49,6 +49,8 @@ int main(int argc, char** argv) {
   Entity entity;
   // Build a human-model
   entity.addObject("pelvis", ModelLoader::loadOffFile("res/models/cube.off"));
+  entity.addChild("pelvis", "chest",
+                  ModelLoader::loadOffFile("res/models/cube.off"));
   entity.addChild("pelvis", "thigh-left",
                   ModelLoader::loadOffFile("res/models/cube.off"));
   entity.addChild("pelvis", "thigh-right",
@@ -57,10 +59,18 @@ int main(int argc, char** argv) {
                   ModelLoader::loadOffFile("res/models/cube.off"));
   entity.addChild("thigh-right", "calf-right",
                   ModelLoader::loadOffFile("res/models/cube.off"));
+  entity.addChild("chest", "upper-arm-left",
+                  ModelLoader::loadOffFile("res/models/cube.off"));
+  entity.addChild("chest", "upper-arm-right",
+                  ModelLoader::loadOffFile("res/models/cube.off"));
+  entity.addChild("upper-arm-left", "fore-arm-left",
+                  ModelLoader::loadOffFile("res/models/cube.off"));
+  entity.addChild("upper-arm-right", "fore-arm-right",
+                  ModelLoader::loadOffFile("res/models/cube.off"));
   {
     auto pelvis = entity.getObject("pelvis");
-    pelvis->setScaleY(10);
-    pelvis->setCenterY(-9);
+    pelvis->setScaleY(6);
+    pelvis->setCenterY(-2);
     pelvis->setTransformXManager(script.getFloatTimeline("xPos"));
     pelvis->setTransformYManager(script.getFloatTimeline("yPos"));
     pelvis->setTransformZManager(script.getFloatTimeline("zPos"));
@@ -70,7 +80,7 @@ int main(int argc, char** argv) {
     thigh->setScaleY(5);
     thigh->setCenterY(5);
     thigh->setTransformX(2);
-    thigh->setTransformY(-8);
+    thigh->setTransformY(-4);
     thigh->setOrientationManager(script.getQuaternionTimeline("thigh-walking"),
                                  2);
   }
@@ -79,7 +89,7 @@ int main(int argc, char** argv) {
     thigh->setScaleY(5);
     thigh->setCenterY(5);
     thigh->setTransformX(-2);
-    thigh->setTransformY(-8);
+    thigh->setTransformY(-4);
     thigh->setOrientationManager(script.getQuaternionTimeline("thigh-walking"));
   }
   {
@@ -96,6 +106,38 @@ int main(int argc, char** argv) {
     calf->setCenterY(5);
     calf->setTransformY(-6);
     calf->setOrientationManager(script.getQuaternionTimeline("calf-walking"));
+  }
+  {
+    auto chest = entity.getObject("chest");
+    chest->setScaleY(9);
+    chest->setCenterY(-9);
+    chest->setTransformY(8);
+  }
+  {
+    auto arm = entity.getObject("upper-arm-left");
+    arm->setScaleY(5);
+    arm->setCenterY(5);
+    arm->setTransformX(2);
+    arm->setTransformY(4);
+  }
+  {
+    auto arm = entity.getObject("upper-arm-right");
+    arm->setScaleY(5);
+    arm->setCenterY(5);
+    arm->setTransformX(-2);
+    arm->setTransformY(4);
+  }
+  {
+    auto arm = entity.getObject("fore-arm-left");
+    arm->setScaleY(5);
+    arm->setCenterY(5);
+    arm->setTransformY(-6);
+  }
+  {
+    auto arm = entity.getObject("fore-arm-right");
+    arm->setScaleY(5);
+    arm->setCenterY(5);
+    arm->setTransformY(-6);
   }
 
   ShaderProgram shaderProgram{
