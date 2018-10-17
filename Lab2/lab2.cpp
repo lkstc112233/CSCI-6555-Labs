@@ -129,7 +129,7 @@ int main(int argc, char** argv) {
     arm->setTransformX(-2);
     arm->setTransformY(4);
     arm->setOrientationManager(
-        script.getQuaternionTimeline("upper-arm-walking"));
+        script.getQuaternionTimeline("upper-arm-waving"));
   }
   {
     auto arm = entity.getObject("fore-arm-left");
@@ -144,8 +144,7 @@ int main(int argc, char** argv) {
     arm->setScaleY(5);
     arm->setCenterY(5);
     arm->setTransformY(-6);
-    arm->setOrientationManager(
-        script.getQuaternionTimeline("fore-arm-walking"));
+    arm->setOrientationManager(script.getQuaternionTimeline("fore-arm-waving"));
   }
 
   ShaderProgram shaderProgram{
