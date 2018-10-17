@@ -74,6 +74,7 @@ int main(int argc, char** argv) {
     pelvis->setTransformXManager(script.getFloatTimeline("xPos"));
     pelvis->setTransformYManager(script.getFloatTimeline("yPos"));
     pelvis->setTransformZManager(script.getFloatTimeline("zPos"));
+    pelvis->setOrientationManager(script.getQuaternionTimeline("orientation"));
   }
   {
     auto thigh = entity.getObject("thigh-left");
@@ -148,6 +149,15 @@ int main(int argc, char** argv) {
     arm->setOrientationManager(
         {script.getQuaternionTimeline("fore-arm-walking"),
          script.getQuaternionTimeline("fore-arm-waving")});
+  }
+
+  Entity park;
+  park.addObject("ground", ModelLoader::loadOffFile("res/models/surface.off"));
+  {
+    auto surface = park.getObject("ground");
+    surface->setOrientation(Quaternion(0.7071068, 0.7071068, 0, 0));
+    surface->setScale(100);
+    surface->setTransformY(-20);
   }
 
   ShaderProgram shaderProgram{
@@ -244,6 +254,7 @@ int main(int argc, char** argv) {
 
     entity.updateManagers(currentTime);
     entity.draw(shaderProgram);
+    park.draw(shaderProgram);
 
     // Draw HDR
     glClear(GL_DEPTH_BUFFER_BIT);
