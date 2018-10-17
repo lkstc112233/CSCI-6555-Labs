@@ -169,6 +169,34 @@ int main(int argc, char** argv) {
 
   keyHandlers.emplace_handler(
       GLFW_KEY_ESCAPE, [window]() { glfwSetWindowShouldClose(window, true); });
+  {
+    auto upperArm = entity.getObject("upper-arm-right");
+    auto foreArm = entity.getObject("fore-arm-right");
+    auto rate = std::make_shared<float>(0);
+    auto updateArmPosition = [upperArm, foreArm](float rate) {
+      upperArm->setOrientationManagerRate(rate);
+      foreArm->setOrientationManagerRate(rate);
+    };
+    constexpr float ARM_WAVE_CHANGE_RATE = 0.005;
+    keyHandlers.emplace_handler(GLFW_KEY_1,
+                                [rate, updateArmPosition]() {
+                                  if (*rate < 1) {
+                                    *rate += ARM_WAVE_CHANGE_RATE;
+                                  } else {
+                                    *rate = 1;
+                                  }
+                                  updateArmPosition(*rate);
+                                },
+                                false,
+                                [rate, updateArmPosition]() {
+                                  if (*rate > 0) {
+                                    *rate -= ARM_WAVE_CHANGE_RATE;
+                                  } else {
+                                    *rate = 0;
+                                  }
+                                  updateArmPosition(*rate);
+                                });
+  }
 
   ShaderProgram hudShader{
       Shader::createVertexShader("res/shaders/2DShader.vert"),
