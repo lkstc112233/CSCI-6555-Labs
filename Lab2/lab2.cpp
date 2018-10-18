@@ -2,6 +2,7 @@
 #include <cassert>
 #include <cmath>
 #include <iostream>
+#include <random>
 
 #include <glad/glad.h>
 
@@ -156,8 +157,37 @@ int main(int argc, char** argv) {
   {
     auto surface = park.getObject("ground");
     surface->setOrientation(Quaternion(0.7071068, 0.7071068, 0, 0));
-    surface->setScale(100);
+    surface->setScale(300);
     surface->setTransformY(-20);
+  }
+  // Generate objects in park
+  const Model parkModelList[] = {
+      ModelLoader::loadOffFile("res/models/biplane.off"),
+      ModelLoader::loadOffFile("res/models/cow.off"),
+      ModelLoader::loadOffFile("res/models/teapot.off")};
+  {
+    std::default_random_engine randomGenerator;
+    std::uniform_int_distribution<int> idDistribution(0, 2);
+    std::uniform_real_distribution<float> scaleDistribution(1.0, 7.0);
+    std::uniform_real_distribution<float> quaternionDistribution(-M_PI, M_PI);
+    std::uniform_real_distribution<float> transformDistribution(-200, 200);
+    std::uniform_real_distribution<float> floatingDistribution(-200, -20);
+    for (int i = 0; i < 100; ++i) {
+      std::string name = "decoration" + std::to_string(i);
+      park.addChild("ground", name,
+                    parkModelList[idDistribution(randomGenerator)]);
+      auto object = park.getObject(name);
+      object->setScale(scaleDistribution(randomGenerator));
+      Quaternion randomAngle(quaternionDistribution(randomGenerator),
+                             quaternionDistribution(randomGenerator),
+                             quaternionDistribution(randomGenerator),
+                             quaternionDistribution(randomGenerator));
+      randomAngle.normalize();
+      object->setOrientation(randomAngle);
+      object->setTransformX(transformDistribution(randomGenerator));
+      object->setTransformY(transformDistribution(randomGenerator));
+      object->setTransformZ(floatingDistribution(randomGenerator));
+    }
   }
 
   ShaderProgram shaderProgram{
