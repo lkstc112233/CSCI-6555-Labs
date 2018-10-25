@@ -1,5 +1,4 @@
-CXX = g++-8
-CXXFLAGS = -I/usr/local/include
+CXXFLAGS = -std=c++17 
 LINK_FLAGS = -L/usr/local/lib -lglfw
 # SRCS = $(wildcard *.cpp) $(wildcard **/*.cpp)
 SRCS = $(wildcard **/*.cpp) $(wildcard **/**/*.cpp)
