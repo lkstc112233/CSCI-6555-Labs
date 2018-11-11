@@ -16,6 +16,7 @@
 #include "Graphics/Shaders/Shader.h"
 #include "Graphics/Texture/Texture.h"
 #include "Graphics/WindowInitializer.h"
+#include "Physics/World.h"
 
 #include "Interface/InterfaceRelatedStuffHolder.hpp"
 #include "Interface/KeyHandler.h"
@@ -31,8 +32,6 @@
 const float PROJECTION_RATIO = float(SCREEN_WIDTH) / SCREEN_HEIGHT;
 
 int main(int argc, char** argv) {
-  auto script = Scripts::loadScript("res/scripts/lab2.keys");
-
   GLFWwindow* window = initializeWindow("Lab3");
   if (!window) {
     return -1;
@@ -47,108 +46,11 @@ int main(int argc, char** argv) {
   MouseCallbackWrapper::registerHandlerCallbacks(window, &mouseHandlers);
 
   Entity entity;
-  // Build a human-model
-  entity.addObject("pelvis", ModelLoader::loadOffFile("res/models/cube.off"));
-  entity.addChild("pelvis", "chest",
-                  ModelLoader::loadOffFile("res/models/cube.off"));
-  entity.addChild("pelvis", "thigh-left",
-                  ModelLoader::loadOffFile("res/models/cube.off"));
-  entity.addChild("pelvis", "thigh-right",
-                  ModelLoader::loadOffFile("res/models/cube.off"));
-  entity.addChild("thigh-left", "calf-left",
-                  ModelLoader::loadOffFile("res/models/cube.off"));
-  entity.addChild("thigh-right", "calf-right",
-                  ModelLoader::loadOffFile("res/models/cube.off"));
-  entity.addChild("chest", "upper-arm-left",
-                  ModelLoader::loadOffFile("res/models/cube.off"));
-  entity.addChild("chest", "upper-arm-right",
-                  ModelLoader::loadOffFile("res/models/cube.off"));
-  entity.addChild("upper-arm-left", "fore-arm-left",
-                  ModelLoader::loadOffFile("res/models/cube.off"));
-  entity.addChild("upper-arm-right", "fore-arm-right",
-                  ModelLoader::loadOffFile("res/models/cube.off"));
-  {
-    auto pelvis = entity.getObject("pelvis");
-    pelvis->setScaleY(6);
-    pelvis->setCenterY(-2);
-    pelvis->setTransformXManager(script.getFloatTimeline("xPos"));
-    pelvis->setTransformYManager(script.getFloatTimeline("yPos"));
-    pelvis->setTransformZManager(script.getFloatTimeline("zPos"));
-  }
-  {
-    auto thigh = entity.getObject("thigh-left");
-    thigh->setScaleY(5);
-    thigh->setCenterY(5);
-    thigh->setTransformX(2);
-    thigh->setTransformY(-4);
-    thigh->setOrientationManager(script.getQuaternionTimeline("thigh-walking"),
-                                 2);
-  }
-  {
-    auto thigh = entity.getObject("thigh-right");
-    thigh->setScaleY(5);
-    thigh->setCenterY(5);
-    thigh->setTransformX(-2);
-    thigh->setTransformY(-4);
-    thigh->setOrientationManager(script.getQuaternionTimeline("thigh-walking"));
-  }
-  {
-    auto calf = entity.getObject("calf-left");
-    calf->setScaleY(5);
-    calf->setCenterY(5);
-    calf->setTransformY(-6);
-    calf->setOrientationManager(script.getQuaternionTimeline("calf-walking"),
-                                2);
-  }
-  {
-    auto calf = entity.getObject("calf-right");
-    calf->setScaleY(5);
-    calf->setCenterY(5);
-    calf->setTransformY(-6);
-    calf->setOrientationManager(script.getQuaternionTimeline("calf-walking"));
-  }
-  {
-    auto chest = entity.getObject("chest");
-    chest->setScaleY(9);
-    chest->setCenterY(-9);
-    chest->setTransformY(8);
-  }
-  {
-    auto arm = entity.getObject("upper-arm-left");
-    arm->setScaleY(5);
-    arm->setCenterY(5);
-    arm->setTransformX(2);
-    arm->setTransformY(4);
-    arm->setOrientationManager(
-        script.getQuaternionTimeline("upper-arm-walking"), 2);
-  }
-  {
-    auto arm = entity.getObject("upper-arm-right");
-    arm->setScaleY(5);
-    arm->setCenterY(5);
-    arm->setTransformX(-2);
-    arm->setTransformY(4);
-    arm->setOrientationManager(
-        {script.getQuaternionTimeline("upper-arm-walking"),
-         script.getQuaternionTimeline("upper-arm-waving")});
-  }
-  {
-    auto arm = entity.getObject("fore-arm-left");
-    arm->setScaleY(5);
-    arm->setCenterY(5);
-    arm->setTransformY(-6);
-    arm->setOrientationManager(script.getQuaternionTimeline("fore-arm-walking"),
-                               2);
-  }
-  {
-    auto arm = entity.getObject("fore-arm-right");
-    arm->setScaleY(5);
-    arm->setCenterY(5);
-    arm->setTransformY(-6);
-    arm->setOrientationManager(
-        {script.getQuaternionTimeline("fore-arm-walking"),
-         script.getQuaternionTimeline("fore-arm-waving")});
-  }
+  // Build a ball-model
+  entity.addObject("ball1", ModelLoader::loadOffFile("res/models/ball.off"));
+
+  World world;
+  world.emplaceControllers(entity);
 
   ShaderProgram shaderProgram{
       Shader::createVertexShader("res/shaders/simpleShader.vert"),
@@ -169,34 +71,6 @@ int main(int argc, char** argv) {
 
   keyHandlers.emplace_handler(
       GLFW_KEY_ESCAPE, [window]() { glfwSetWindowShouldClose(window, true); });
-  {
-    auto upperArm = entity.getObject("upper-arm-right");
-    auto foreArm = entity.getObject("fore-arm-right");
-    auto rate = std::make_shared<float>(0);
-    auto updateArmPosition = [upperArm, foreArm](float rate) {
-      upperArm->setOrientationManagerRate(rate);
-      foreArm->setOrientationManagerRate(rate);
-    };
-    constexpr float ARM_WAVE_CHANGE_RATE = 0.005;
-    keyHandlers.emplace_handler(GLFW_KEY_1,
-                                [rate, updateArmPosition]() {
-                                  if (*rate < 1) {
-                                    *rate += ARM_WAVE_CHANGE_RATE;
-                                  } else {
-                                    *rate = 1;
-                                  }
-                                  updateArmPosition(*rate);
-                                },
-                                false,
-                                [rate, updateArmPosition]() {
-                                  if (*rate > 0) {
-                                    *rate -= ARM_WAVE_CHANGE_RATE;
-                                  } else {
-                                    *rate = 0;
-                                  }
-                                  updateArmPosition(*rate);
-                                });
-  }
 
   ShaderProgram hudShader{
       Shader::createVertexShader("res/shaders/2DShader.vert"),
@@ -221,17 +95,12 @@ int main(int argc, char** argv) {
       });
 
   double lastTime = glfwGetTime();
-  ProgressBar progressBar;
-  progressBar.attachControls(keyHandlers, mouseHandlers);
 
   while (!glfwWindowShouldClose(window)) {
     keyHandlers.handle();
     mouseHandlers.handle();
 
     double thisTime = glfwGetTime();
-    if (progressBar.isPlaying()) {
-      progressBar.addProcess((thisTime - lastTime) / script.getMaximumTime());
-    }
     lastTime = thisTime;
 
     // render
@@ -240,14 +109,7 @@ int main(int argc, char** argv) {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     shaderProgram.setMatrix("view", camera.getViewMat());
-    float currentTime = progressBar.getProcess() * script.getMaximumTime();
-
-    entity.updateManagers(currentTime);
     entity.draw(shaderProgram);
-
-    // Draw HDR
-    glClear(GL_DEPTH_BUFFER_BIT);
-    progressBar.draw(hudShader);
 
     // Draw cursor
     glClear(GL_DEPTH_BUFFER_BIT);
