@@ -14,6 +14,7 @@ class World {
 
  public:
   void emplaceControllers(Entity& entity);
+  void timePass(float t);
 };
 
 #endif  // PHYSICS_WORLD_H
