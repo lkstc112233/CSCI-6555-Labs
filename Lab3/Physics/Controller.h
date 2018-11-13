@@ -14,6 +14,7 @@ class Controller {
   Controller(std::shared_ptr<Object3D> object);
   glm::vec3 speed;
   glm::vec3 position;
+  float mass = 1;
   void applyChange(float timeSpan);
 };
 
