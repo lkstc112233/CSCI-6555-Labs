@@ -2,7 +2,7 @@
 
 #include <glm/glm.hpp>
 
-const glm::vec3 World::g = glm::vec3(0.0F, -0.3F, 0.0F);
+const glm::vec3 World::g = glm::vec3(0.0F, -5.0F, 0.0F);
 
 void World::emplaceControllers(Entity& entity) {
   for (auto e : entity) {
