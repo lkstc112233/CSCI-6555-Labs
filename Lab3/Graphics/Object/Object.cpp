@@ -22,6 +22,12 @@ void Object3D::updateManagers(float time) {
   }
 }
 
+void Object3D::moveTo(glm::vec3 position) {
+  transformX = position.x;
+  transformY = position.y;
+  transformZ = position.z;
+}
+
 void Object3D::moveBy(glm::vec3 distance) {
   transformX += distance.x;
   transformY += distance.y;

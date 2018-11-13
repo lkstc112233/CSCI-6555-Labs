@@ -54,6 +54,7 @@ class Object3D {
   explicit Object3D(const Model& model);
   void setParent(const std::shared_ptr<Object3D>& parent);
   void updateManagers(float time);
+  void moveTo(glm::vec3 position);
   void moveBy(glm::vec3 distance);
   HANDLE_PROPERTY_IMPLEMENTATION(float, transformX, setTransformX);
   HANDLE_PROPERTY_IMPLEMENTATION(float, transformY, setTransformY);
