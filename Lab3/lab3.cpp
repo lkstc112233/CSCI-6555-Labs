@@ -101,7 +101,7 @@ int main(int argc, char** argv) {
     mouseHandlers.handle();
 
     double thisTime = glfwGetTime();
-    float dtime = lastTime - thisTime;
+    float dtime = thisTime - lastTime;
     lastTime = thisTime;
 
     world.timePass(dtime);
