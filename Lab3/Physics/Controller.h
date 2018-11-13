@@ -13,6 +13,7 @@ class Controller {
  public:
   Controller(std::shared_ptr<Object3D> object);
   glm::vec3 speed;
+  glm::vec3 position;
   void applyChange(float timeSpan);
 };
 

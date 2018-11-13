@@ -9,7 +9,8 @@ Controller::Controller(std::shared_ptr<Object3D> object)
 
 void Controller::applyChange(float timeSpan) {
   auto object = handlingObject.lock();
+  position += speed * timeSpan;
   if (object) {
-    object->moveBy(speed * timeSpan);
+    object->moveTo(position);
   }
 }
