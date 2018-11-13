@@ -51,6 +51,7 @@ int main(int argc, char** argv) {
 
   World world;
   world.emplaceControllers(entity);
+  world.addWall(glm::vec3(0, -30, 0), glm::vec3(0, 1, 0));
 
   ShaderProgram shaderProgram{
       Shader::createVertexShader("res/shaders/simpleShader.vert"),
