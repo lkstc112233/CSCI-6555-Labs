@@ -11,5 +11,5 @@ glm::vec3 Wall::applyForce(glm::vec3 pos) {
   if (force < 0) {
     return glm::vec3(0);
   }
-  return force / glm::abs(normal) * normal;
+  return -force / glm::length(normal) * normal;
 }
