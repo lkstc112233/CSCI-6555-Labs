@@ -49,6 +49,16 @@ int main(int argc, char** argv) {
   // Build a ball-model
   entity.addObject("ball1", ModelLoader::loadOffFile("res/models/ball.off"));
 
+  Entity environment;
+  environment.addObject("floor",
+                        ModelLoader::loadOffFile("res/models/surface.off"));
+  {
+    auto f = environment.getObject("floor");
+    f->setScale(100);
+    f->setTransformY(-35);
+    f->setOrientation(Quaternion(0.7071068, 0.7071068, 0, 0));
+  }
+
   World world;
   world.emplaceControllers(entity);
   world.addWall(glm::vec3(0, -30, 0), glm::vec3(0, 1, 0));
@@ -114,6 +124,7 @@ int main(int argc, char** argv) {
 
     shaderProgram.setMatrix("view", camera.getViewMat());
     entity.draw(shaderProgram);
+    environment.draw(shaderProgram);
 
     // Draw cursor
     glClear(GL_DEPTH_BUFFER_BIT);
