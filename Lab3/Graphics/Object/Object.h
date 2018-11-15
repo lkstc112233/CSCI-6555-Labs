@@ -11,20 +11,21 @@
 #include "../../Math/Quaternion.h"
 #include "../Models/Model.h"
 
-#define HANDLE_PROPERTY_IMPLEMENTATION(type, propertyName, functionName)     \
-  void functionName##Manager(Timeline<type>&& line, float offset = 0) {      \
-    managers.emplace(#propertyName,                                          \
-                     std::make_unique<ManagerTimeline<type>>(                \
-                         propertyName, std::move(line), offset));            \
-  }                                                                          \
-  void functionName##Manager(std::initializer_list<Timeline<type>> lines,    \
-                             float offset = 0) {                             \
-    managers.emplace(#propertyName, std::make_unique<ManagerTimeline<type>>( \
-                                        propertyName, lines, offset));       \
-  }                                                                          \
-  void functionName(type propertyValue) { propertyName = propertyValue; }    \
-  void functionName##ManagerRate(float rate) {                               \
-    managers[#propertyName]->setRate(rate);                                  \
+#define HANDLE_PROPERTY_IMPLEMENTATION(type, propertyName, functionName)       \
+  void set##functionName##Manager(Timeline<type>&& line, float offset = 0) {   \
+    managers.emplace(#propertyName,                                            \
+                     std::make_unique<ManagerTimeline<type>>(                  \
+                         propertyName, std::move(line), offset));              \
+  }                                                                            \
+  void set##functionName##Manager(std::initializer_list<Timeline<type>> lines, \
+                                  float offset = 0) {                          \
+    managers.emplace(#propertyName, std::make_unique<ManagerTimeline<type>>(   \
+                                        propertyName, lines, offset));         \
+  }                                                                            \
+  void set##functionName(type propertyValue) { propertyName = propertyValue; } \
+  type get##functionName() { return propertyName; }                            \
+  void set##functionName##ManagerRate(float rate) {                            \
+    managers[#propertyName]->setRate(rate);                                    \
   }
 
 /**
@@ -56,10 +57,10 @@ class Object3D {
   void updateManagers(float time);
   void moveTo(glm::vec3 position);
   void moveBy(glm::vec3 distance);
-  HANDLE_PROPERTY_IMPLEMENTATION(float, transformX, setTransformX);
-  HANDLE_PROPERTY_IMPLEMENTATION(float, transformY, setTransformY);
-  HANDLE_PROPERTY_IMPLEMENTATION(float, transformZ, setTransformZ);
-  HANDLE_PROPERTY_IMPLEMENTATION(Quaternion, orientation, setOrientation);
+  HANDLE_PROPERTY_IMPLEMENTATION(float, transformX, TransformX);
+  HANDLE_PROPERTY_IMPLEMENTATION(float, transformY, TransformY);
+  HANDLE_PROPERTY_IMPLEMENTATION(float, transformZ, TransformZ);
+  HANDLE_PROPERTY_IMPLEMENTATION(Quaternion, orientation, Orientation);
   void setCenterX(float cx) { centerX = cx; }
   void setCenterY(float cy) { centerY = cy; }
   void setCenterZ(float cz) { centerZ = cz; }
