@@ -46,8 +46,50 @@ int main(int argc, char** argv) {
   MouseCallbackWrapper::registerHandlerCallbacks(window, &mouseHandlers);
 
   Entity entity;
-  // Build a ball-model
+  // Build some ball-models
   entity.addObject("ball1", ModelLoader::loadOffFile("res/models/ball.off"));
+  entity.addObject("ball2", ModelLoader::loadOffFile("res/models/ball.off"));
+  entity.addObject("ball3", ModelLoader::loadOffFile("res/models/ball.off"));
+  entity.addObject("ball4", ModelLoader::loadOffFile("res/models/ball.off"));
+  entity.addObject("ball5", ModelLoader::loadOffFile("res/models/ball.off"));
+  entity.addObject("ball6", ModelLoader::loadOffFile("res/models/ball.off"));
+
+  {
+    auto b = entity.getObject("ball1");
+    b->setTransformX(0);
+    b->setTransformY(0);
+    b->setTransformZ(10);
+  }
+  {
+    auto b = entity.getObject("ball2");
+    b->setTransformX(4);
+    b->setTransformY(2);
+    b->setTransformZ(10);
+  }
+  {
+    auto b = entity.getObject("ball3");
+    b->setTransformX(1);
+    b->setTransformY(2);
+    b->setTransformZ(10);
+  }
+  {
+    auto b = entity.getObject("ball4");
+    b->setTransformX(7);
+    b->setTransformY(15);
+    b->setTransformZ(3);
+  }
+  {
+    auto b = entity.getObject("ball5");
+    b->setTransformX(-5);
+    b->setTransformY(4);
+    b->setTransformZ(6);
+  }
+  {
+    auto b = entity.getObject("ball6");
+    b->setTransformX(2);
+    b->setTransformY(0);
+    b->setTransformZ(-7);
+  }
 
   Entity environment;
   environment.addObject("floor",
