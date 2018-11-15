@@ -88,12 +88,20 @@ int main(int argc, char** argv) {
     auto b = entity.getObject("ball6");
     b->setTransformX(2);
     b->setTransformY(0);
-    b->setTransformZ(-7);
+    b->setTransformZ(7);
   }
 
   Entity environment;
   environment.addObject("floor",
                         ModelLoader::loadOffFile("res/models/surface.off"));
+  environment.addObject("floor2",
+                        ModelLoader::loadOffFile("res/models/surface.off"));
+  {
+    auto f = environment.getObject("floor2");
+    f->setScale(100);
+    f->setTransformY(-35);
+    f->setOrientation(Quaternion(0.653282, 0.653282, 0.2705967, 0.2705967));
+  }
   {
     auto f = environment.getObject("floor");
     f->setScale(100);
@@ -104,6 +112,7 @@ int main(int argc, char** argv) {
   World world;
   world.emplaceControllers(entity);
   world.addWall(glm::vec3(0, -30, 0), glm::vec3(0, 1, 0));
+  world.addWall(glm::vec3(0, -30, 0), glm::vec3(-1, 1, 0));
 
   ShaderProgram shaderProgram{
       Shader::createVertexShader("res/shaders/simpleShader.vert"),
@@ -119,6 +128,7 @@ int main(int argc, char** argv) {
   Camera camera;
 
   KeyHandlerContainer keyHandlers(window);
+  camera.position = glm::vec3(0, 0, -60);
 
   attachCameraControls(keyHandlers, mouseHandlers, camera);
 
@@ -149,6 +159,9 @@ int main(int argc, char** argv) {
 
   double lastTime = glfwGetTime();
 
+  bool play = false;
+  keyHandlers.emplace_handler(GLFW_KEY_SPACE, [&play]() { play = true; }, true);
+
   while (!glfwWindowShouldClose(window)) {
     keyHandlers.handle();
     mouseHandlers.handle();
@@ -156,6 +169,9 @@ int main(int argc, char** argv) {
     double thisTime = glfwGetTime();
     float dtime = thisTime - lastTime;
     lastTime = thisTime;
+    if (!play) {
+      dtime = 0;
+    }
 
     world.timePass(dtime);
 
