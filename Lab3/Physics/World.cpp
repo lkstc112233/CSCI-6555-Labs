@@ -10,6 +10,8 @@ void World::emplaceControllers(Entity& entity) {
   }
 }
 
+const static float f = 0.9995;
+
 void World::timePass(float t) {
   for (auto& c : controllers) {
     c.speed += t * g;
@@ -40,6 +42,8 @@ void World::timePass(float t) {
     }
   }
   for (auto& c : controllers) {
+    // friction
+    c.speed *= f;
     c.applyChange(t);
   }
 }
