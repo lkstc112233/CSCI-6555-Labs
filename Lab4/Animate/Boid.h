@@ -12,6 +12,7 @@ class Boid {
 
  public:
   Boid(Object3D& object);
+  void update(float time);
   void draw(ShaderProgram& shader);
 };
 
