@@ -3,8 +3,8 @@
 
 #include <glm/glm.hpp>
 
-#include "../../Graphics/Object/Object.h"
-#include "../../Graphics/Shaders/Shader.h"
+#include "../Graphics/Object/Object.h"
+#include "../Graphics/Shaders/Shader.h"
 
 class Boid {
  private:
