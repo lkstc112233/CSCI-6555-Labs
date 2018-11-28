@@ -28,6 +28,11 @@ class Boids {
   void addBoid(Args... args) {
     boids.emplace_back(args...);
   }
+  void update(float time) {
+    for (auto& boid : boids) {
+      boid.update(time);
+    }
+  }
   void draw(ShaderProgram& shader) {
     for (auto& boid : boids) {
       boid.draw(shader);
