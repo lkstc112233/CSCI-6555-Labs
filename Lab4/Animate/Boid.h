@@ -9,9 +9,10 @@
 class Boid {
  private:
   Object3D& object;
+  Object3D& target;
 
  public:
-  Boid(Object3D& object);
+  Boid(Object3D& object, Object3D& target);
   void update(float time);
   void draw(ShaderProgram& shader);
 };
