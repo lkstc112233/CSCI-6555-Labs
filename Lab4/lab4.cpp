@@ -24,6 +24,7 @@
 #include "Interface/ProgressBar.h"
 #include "Interface/Utilities/Button.h"
 
+#include "Animate/Boid.h"
 #include "Animate/Keyframe.hpp"
 #include "Animate/Scripts.h"
 #include "Animate/Timeline.hpp"
@@ -45,74 +46,11 @@ int main(int argc, char** argv) {
                                       windowHeight);
   MouseCallbackWrapper::registerHandlerCallbacks(window, &mouseHandlers);
 
-  Entity entity;
-  // Build some ball-models
-  entity.addObject("ball1", ModelLoader::loadOffFile("res/models/ball.off"));
-  entity.addObject("ball2", ModelLoader::loadOffFile("res/models/ball.off"));
-  entity.addObject("ball3", ModelLoader::loadOffFile("res/models/ball.off"));
-  entity.addObject("ball4", ModelLoader::loadOffFile("res/models/ball.off"));
-  entity.addObject("ball5", ModelLoader::loadOffFile("res/models/ball.off"));
-  entity.addObject("ball6", ModelLoader::loadOffFile("res/models/ball.off"));
-
-  {
-    auto b = entity.getObject("ball1");
-    b->setTransformX(0);
-    b->setTransformY(0);
-    b->setTransformZ(10);
-  }
-  {
-    auto b = entity.getObject("ball2");
-    b->setTransformX(4);
-    b->setTransformY(2);
-    b->setTransformZ(10);
-  }
-  {
-    auto b = entity.getObject("ball3");
-    b->setTransformX(1);
-    b->setTransformY(2);
-    b->setTransformZ(10);
-  }
-  {
-    auto b = entity.getObject("ball4");
-    b->setTransformX(7);
-    b->setTransformY(15);
-    b->setTransformZ(3);
-  }
-  {
-    auto b = entity.getObject("ball5");
-    b->setTransformX(-5);
-    b->setTransformY(4);
-    b->setTransformZ(6);
-  }
-  {
-    auto b = entity.getObject("ball6");
-    b->setTransformX(2);
-    b->setTransformY(0);
-    b->setTransformZ(7);
-  }
-
-  Entity environment;
-  environment.addObject("floor",
-                        ModelLoader::loadOffFile("res/models/surface.off"));
-  environment.addObject("floor2",
-                        ModelLoader::loadOffFile("res/models/surface.off"));
-  {
-    auto f = environment.getObject("floor2");
-    f->setScale(100);
-    f->setTransformY(-35);
-    f->setOrientation(Quaternion(0.653282, 0.653282, 0.2705967, 0.2705967));
-  }
-  {
-    auto f = environment.getObject("floor");
-    f->setScale(100);
-    f->setTransformY(-35);
-    f->setOrientation(Quaternion(0.7071068, 0.7071068, 0, 0));
-  }
-
-  World world;
-  world.emplaceControllers(entity);
-  world.addWall(glm::vec3(0, -30, 0), glm::vec3(0, 1, 0));
-  world.addWall(glm::vec3(0, -30, 0), glm::vec3(-1, 1, 0));
+  Boids boids;
+  Object3D target(ModelLoader::loadOffFile("res/models/ball.off"));
+  Object3D boid(ModelLoader::loadOffFile("res/models/arrow.off"));
+  boid.setScale(0.2);
+  boid.setScaleZ(0.5);
 
   ShaderProgram shaderProgram{
       Shader::createVertexShader("res/shaders/simpleShader.vert"),
@@ -128,7 +66,7 @@ int main(int argc, char** argv) {
   Camera camera;
 
   KeyHandlerContainer keyHandlers(window);
-  camera.position = glm::vec3(0, 0, -100);
+  camera.position = glm::vec3(0, 0, -10);
 
   attachCameraControls(keyHandlers, mouseHandlers, camera);
 
@@ -173,7 +111,7 @@ int main(int argc, char** argv) {
       dtime = 0;
     }
 
-    world.timePass(dtime);
+    boids.update(dtime);
 
     // render
     // ------
@@ -181,8 +119,7 @@ int main(int argc, char** argv) {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     shaderProgram.setMatrix("view", camera.getViewMat());
-    entity.draw(shaderProgram);
-    environment.draw(shaderProgram);
+    target.draw(shaderProgram);
 
     // Draw cursor
     glClear(GL_DEPTH_BUFFER_BIT);
