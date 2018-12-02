@@ -23,6 +23,7 @@ class Boid {
 class Boids {
  private:
   std::vector<Boid> boids;
+  constexpr static const float sight = 50;
 
  public:
   template <typename... Args>
