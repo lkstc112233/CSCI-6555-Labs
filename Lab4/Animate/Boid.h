@@ -28,7 +28,7 @@ class Boids {
 
  public:
   template <typename... Args>
-  Boid& addBoid(Args... args) {
+  Boid& addBoid(Args&... args) {
     return boids.emplace_back(args...);
   }
   glm::vec3 getCenterNear(glm::vec3 center);
