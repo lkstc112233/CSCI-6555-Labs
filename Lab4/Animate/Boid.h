@@ -12,6 +12,7 @@ class Boid {
  private:
   Object3D& object;
   Object3D& target;
+  glm::vec3 position;
 
  public:
   Boid(Object3D& object, Object3D& target);

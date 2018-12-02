@@ -6,6 +6,6 @@ Boid::Boid(Object3D& objecti, Object3D& targeti)
 void Boid::update(float time) {}
 
 void Boid::draw(ShaderProgram& shader) {
-  // TODO: put the object to correct position.
+  object.moveTo(position);
   object.draw(shader);
 }
