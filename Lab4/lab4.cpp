@@ -65,6 +65,16 @@ int main(int argc, char** argv) {
 
   Camera camera;
 
+  mouseHandlers.emplace_handler([&target, &camera](int mouseFlags, float, float,
+                                                   float diffx, float diffy) {
+    if (mouseFlags & MOUSE_LEFTBUTTON_HOLD) {
+      float sensitivity = -0.005F;
+      diffx *= sensitivity;
+      diffy *= sensitivity;
+
+      target.moveBy(diffx * camera.getLeftVec() + diffy * camera.getUpVec());
+    }
+  });
   KeyHandlerContainer keyHandlers(window);
   camera.position = glm::vec3(0, 0, -10);
 
