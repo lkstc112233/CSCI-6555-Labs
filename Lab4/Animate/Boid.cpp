@@ -1,6 +1,6 @@
 #include "Boid.h"
 
-Boid::Boid(Object3D& objecti, Object3D& targeti)
+Boid::Boid(Object3D& objecti, const Object3D& targeti)
     : object(objecti), target(targeti) {}
 
 void Boid::update(float time) {}
