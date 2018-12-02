@@ -31,6 +31,7 @@ class Boids {
   void addBoid(Args... args) {
     boids.emplace_back(args...);
   }
+  glm::vec3 getCenterNear(glm::vec3 center);
   void update(float time) {
     for (auto& boid : boids) {
       boid.update(time);
