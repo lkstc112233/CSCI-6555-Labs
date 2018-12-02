@@ -54,3 +54,9 @@ glm::mat4 Camera::getViewMat() {
   }
   return glm::lookAt(position, position + front, up);
 }
+
+glm::vec3 Camera::getLeftVec() { return glm::normalize(glm::cross(up, front)); }
+
+glm::vec3 Camera::getUpVec() {
+  return glm::normalize(glm::cross(front, getLeftVec()));
+}
