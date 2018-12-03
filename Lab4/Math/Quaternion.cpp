@@ -34,10 +34,14 @@ Quaternion &Quaternion::operator-=(const Quaternion &op2) {
   return *this;
 }
 Quaternion &Quaternion::operator*=(const Quaternion &op2) {
-  w = w * op2.w - x * op2.x - y * op2.y - z * op2.z;
-  x = w * op2.x + x * op2.w + y * op2.z - z * op2.y;
-  y = w * op2.y - x * op2.z + y * op2.w + z * op2.x;
-  z = w * op2.z + x * op2.y - y * op2.x + z * op2.w;
+  auto newW = w * op2.w - x * op2.x - y * op2.y - z * op2.z;
+  auto newX = w * op2.x + x * op2.w + y * op2.z - z * op2.y;
+  auto newY = w * op2.y - x * op2.z + y * op2.w + z * op2.x;
+  auto newZ = w * op2.z + x * op2.y - y * op2.x + z * op2.w;
+  w = newW;
+  x = newX;
+  y = newY;
+  z = newZ;
   return *this;
 }
 Quaternion &Quaternion::operator*=(float op2) {
