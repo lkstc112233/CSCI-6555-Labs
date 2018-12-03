@@ -19,11 +19,13 @@ class Boid {
   glm::vec3 direction;
   float rotation = 0;
 
-  glm::vec3 decision(glm::vec3 nearbyCenter);
+  glm::vec3 decision(glm::vec3 nearbyCenter,
+                     std::vector<glm::vec3>& nearbyBoids);
 
  public:
   Boid(Object3D& object, const Object3D& target);
-  void update(float time, glm::vec3 nearbyCenter);
+  void update(float time, glm::vec3 nearbyCenter,
+              std::vector<glm::vec3>& nearbyBoids);
   void draw(ShaderProgram& shader);
   glm::vec3 getPosition() { return position; }
   void setPosition(glm::vec3 positioni) { position = positioni; }
@@ -41,11 +43,7 @@ class Boids {
     return *boids.emplace_back(std::make_unique<Boid>(args...));
   }
   glm::vec3 getCenterNear(glm::vec3 center);
-  void update(float time) {
-    for (auto& boid : boids) {
-      boid->update(time, getCenterNear(boid->getPosition()));
-    }
-  }
+  void update(float time);
   void draw(ShaderProgram& shader) {
     for (auto& boid : boids) {
       boid->draw(shader);
