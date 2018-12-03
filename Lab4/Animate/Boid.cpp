@@ -1,5 +1,9 @@
 #include "Boid.h"
 
+#include <glm/glm.hpp>
+
+#include "../Math/Quaternion.h"
+
 Boid::Boid(Object3D& objecti, const Object3D& targeti)
     : object(objecti), target(targeti) {}
 
@@ -9,6 +13,13 @@ void Boid::setDirection(glm::vec3 directioni) {
 void Boid::update(float time) {}
 
 void Boid::draw(ShaderProgram& shader) {
+  // Rotate the boid to the desired direction:
+  glm::vec3 vectorPart = glm::cross(glm::vec3(0, 0, 1), direction);
+  float realPart = glm::dot(glm::vec3(0, 0, 1), direction) + 1;
+  Quaternion q(realPart, vectorPart.x, vectorPart.y, vectorPart.z);
+  q.normalize();
+  object.setOrientation(q);
+
   object.moveTo(getPosition());
   object.draw(shader);
 }
