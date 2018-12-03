@@ -2,6 +2,7 @@
 #include <cassert>
 #include <cmath>
 #include <iostream>
+#include <random>
 
 #include <glad/glad.h>
 
@@ -30,6 +31,8 @@
 #include "Animate/Timeline.hpp"
 #include "Math/Quaternion.h"
 
+const static int BOIDS_COUNT = 400;
+
 const float PROJECTION_RATIO = float(SCREEN_WIDTH) / SCREEN_HEIGHT;
 
 int main(int argc, char** argv) {
@@ -51,6 +54,22 @@ int main(int argc, char** argv) {
   Object3D boid(ModelLoader::loadOffFile("res/models/arrow.off"));
   boid.setScale(0.2);
   boid.setScaleZ(0.5);
+
+  // Add random generated boids.
+  std::default_random_engine randomGenerator(1);
+  std::normal_distribution boidPositionDistributor(0.F, 20.F);
+  std::uniform_real_distribution boidDirectionDistributor(-1.F, 1.F);
+  for (int i = 0; i < BOIDS_COUNT; ++i) {
+    auto& managingBoid = boids.addBoid(boid, target);
+    managingBoid.setPosition(
+        glm::vec3(boidPositionDistributor(randomGenerator),
+                  boidPositionDistributor(randomGenerator),
+                  boidPositionDistributor(randomGenerator)));
+    managingBoid.setDirection(
+        glm::normalize(glm::vec3(boidDirectionDistributor(randomGenerator),
+                                 boidDirectionDistributor(randomGenerator),
+                                 boidDirectionDistributor(randomGenerator))));
+  }
 
   ShaderProgram shaderProgram{
       Shader::createVertexShader("res/shaders/simpleShader.vert"),
@@ -137,6 +156,7 @@ int main(int argc, char** argv) {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     shaderProgram.setMatrix("view", camera.getViewMat());
+    boids.draw(shaderProgram);
     target.draw(shaderProgram);
 
     // Draw cursor
