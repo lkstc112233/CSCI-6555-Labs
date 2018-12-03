@@ -71,8 +71,16 @@ int main(int argc, char** argv) {
       float sensitivity = -0.005F;
       diffx *= sensitivity;
       diffy *= sensitivity;
+      float diffz = 0;
+      if (mouseFlags & MOUSE_SCROLLED_UP_PRESSED) {
+        diffz += 100 * sensitivity;
+      }
+      if (mouseFlags & MOUSE_SCROLLED_DOWN_PRESSED) {
+        diffz -= 100 * sensitivity;
+      }
 
-      target.moveBy(diffx * camera.getLeftVec() + diffy * camera.getUpVec());
+      target.moveBy(diffx * camera.getLeftVec() + diffy * camera.getUpVec() +
+                    diffz * camera.getFrontVec());
     }
   });
   KeyHandlerContainer keyHandlers(window);
