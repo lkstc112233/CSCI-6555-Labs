@@ -13,10 +13,14 @@ void Boid::setDirection(glm::vec3 directioni) {
 void Boid::update(float time) {}
 
 void Boid::draw(ShaderProgram& shader) {
+  // Rotate the boid itself as rotation indicates
+  Quaternion s(cos(rotation), 0, 0, sin(rotation));
   // Rotate the boid to the desired direction:
   glm::vec3 vectorPart = glm::cross(glm::vec3(0, 0, 1), direction);
   float realPart = glm::dot(glm::vec3(0, 0, 1), direction) + 1;
   Quaternion q(realPart, vectorPart.x, vectorPart.y, vectorPart.z);
+  q.normalize();
+  q *= s;
   q.normalize();
   object.setOrientation(q);
 

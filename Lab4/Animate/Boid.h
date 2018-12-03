@@ -15,6 +15,7 @@ class Boid {
   const Object3D& target;
   glm::vec3 position;
   glm::vec3 direction;
+  float rotation = 0;
 
  public:
   Boid(Object3D& object, const Object3D& target);
