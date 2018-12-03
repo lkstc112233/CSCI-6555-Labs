@@ -7,6 +7,22 @@
 Boid::Boid(Object3D& objecti, const Object3D& targeti)
     : object(objecti), target(targeti) {}
 
+glm::vec3 Boid::decision(glm::vec3 nearbyCenter) {
+  glm::vec3 result(position);
+  float weight = 1;
+  // Assemble the crowd.
+  result += 0.2F * nearbyCenter;
+  weight += 0.2;
+
+  // Fly towards the target
+
+  result += 1.0F * glm::vec3(target.getTransformX(), target.getTransformY(),
+                             target.getTransformZ());
+  weight += 1.0;
+
+  return result / weight;
+}
+
 void Boid::setDirection(glm::vec3 directioni) {
   direction = glm::normalize(directioni);
 }

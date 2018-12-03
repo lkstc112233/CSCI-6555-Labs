@@ -19,6 +19,8 @@ class Boid {
   glm::vec3 direction;
   float rotation = 0;
 
+  glm::vec3 decision(glm::vec3 nearbyCenter);
+
  public:
   Boid(Object3D& object, const Object3D& target);
   void update(float time, glm::vec3 nearbyCenter);
