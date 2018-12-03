@@ -10,7 +10,8 @@ Boid::Boid(Object3D& objecti, const Object3D& targeti)
 void Boid::setDirection(glm::vec3 directioni) {
   direction = glm::normalize(directioni);
 }
-void Boid::update(float time) {}
+
+void Boid::update(float time) { rotation += ANGULAR_VELOCITY * time; }
 
 void Boid::draw(ShaderProgram& shader) {
   // Rotate the boid itself as rotation indicates

@@ -11,6 +11,8 @@
 
 class Boid {
  private:
+  constexpr static const float ANGULAR_VELOCITY = 0.35;
+
   Object3D& object;
   const Object3D& target;
   glm::vec3 position;
