@@ -28,6 +28,7 @@ class Camera {
   void unlockView();
   bool isViewLocked() { return lock; }
   glm::mat4 getViewMat();
+  glm::vec3 getFrontVec();
   glm::vec3 getLeftVec();
   glm::vec3 getUpVec();
 };
