@@ -21,7 +21,7 @@ class Boid {
 
  public:
   Boid(Object3D& object, const Object3D& target);
-  void update(float time);
+  void update(float time, glm::vec3 nearbyCenter);
   void draw(ShaderProgram& shader);
   glm::vec3 getPosition() { return position; }
   void setPosition(glm::vec3 positioni) { position = positioni; }
@@ -41,7 +41,7 @@ class Boids {
   glm::vec3 getCenterNear(glm::vec3 center);
   void update(float time) {
     for (auto& boid : boids) {
-      boid->update(time);
+      boid->update(time, getCenterNear(boid->getPosition()));
     }
   }
   void draw(ShaderProgram& shader) {
