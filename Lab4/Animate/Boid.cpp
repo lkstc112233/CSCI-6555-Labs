@@ -22,6 +22,7 @@ void Boid::draw(ShaderProgram& shader) {
   glm::vec3 vectorPart = glm::cross(glm::vec3(0, 0, 1), direction);
   float realPart = glm::dot(glm::vec3(0, 0, 1), direction) + 1;
   Quaternion q(realPart, vectorPart.x, vectorPart.y, vectorPart.z);
+  // Combine the two rotations
   q.normalize();
   q *= s;
   q.normalize();
