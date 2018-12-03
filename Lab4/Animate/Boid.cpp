@@ -3,6 +3,9 @@
 Boid::Boid(Object3D& objecti, const Object3D& targeti)
     : object(objecti), target(targeti) {}
 
+void Boid::setDirection(glm::vec3 directioni) {
+  direction = glm::normalize(directioni);
+}
 void Boid::update(float time) {}
 
 void Boid::draw(ShaderProgram& shader) {

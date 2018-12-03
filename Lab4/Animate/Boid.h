@@ -13,6 +13,7 @@ class Boid {
   Object3D& object;
   const Object3D& target;
   glm::vec3 position;
+  glm::vec3 direction;
 
  public:
   Boid(Object3D& object, const Object3D& target);
@@ -20,6 +21,7 @@ class Boid {
   void draw(ShaderProgram& shader);
   glm::vec3 getPosition() { return position; }
   void setPosition(glm::vec3 positioni) { position = positioni; }
+  void setDirection(glm::vec3 direction);
 };
 
 class Boids {
