@@ -17,6 +17,12 @@ glm::vec3 Boid::decision(glm::vec3 nearbyCenter,
   result += 0.2F * nearbyCenter;
   weight += 0.2;
 
+  // Repeal by nearby boids
+  for (auto& pos : nearbyBoids) {
+    result += 100.0F * (position - (pos - position));
+    weight += 100.0;
+  }
+
   // Fly towards the target
   glm::vec3 targetPosition(target.getTransformX(), target.getTransformY(),
                            target.getTransformZ());
