@@ -23,7 +23,7 @@
                                         propertyName, lines, offset));         \
   }                                                                            \
   void set##functionName(type propertyValue) { propertyName = propertyValue; } \
-  type get##functionName() { return propertyName; }                            \
+  type get##functionName() const { return propertyName; }                      \
   void set##functionName##ManagerRate(float rate) {                            \
     managers[#propertyName]->setRate(rate);                                    \
   }
