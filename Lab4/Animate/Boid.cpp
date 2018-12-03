@@ -9,7 +9,7 @@ void Boid::setDirection(glm::vec3 directioni) {
 void Boid::update(float time) {}
 
 void Boid::draw(ShaderProgram& shader) {
-  object.moveTo(position);
+  object.moveTo(getPosition());
   object.draw(shader);
 }
 
