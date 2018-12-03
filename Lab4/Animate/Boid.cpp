@@ -29,6 +29,11 @@ void Boid::setDirection(glm::vec3 directioni) {
 
 void Boid::update(float time, glm::vec3 nearbyCenter) {
   rotation += ANGULAR_VELOCITY * time;
+  glm::vec3 diff = glm::normalize(decision(nearbyCenter) - position) - direction;
+  diff *= time;
+  direction += diff;
+
+  position += direction * time;
 }
 
 void Boid::draw(ShaderProgram& shader) {
