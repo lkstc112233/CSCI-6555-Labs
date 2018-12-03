@@ -15,9 +15,9 @@ glm::vec3 Boid::decision(glm::vec3 nearbyCenter) {
   weight += 0.2;
 
   // Fly towards the target
-
-  result += 1.0F * glm::vec3(target.getTransformX(), target.getTransformY(),
-                             target.getTransformZ());
+  glm::vec3 targetPosition(target.getTransformX(), target.getTransformY(),
+                           target.getTransformZ());
+  result += 1.0F * targetPosition;
   weight += 1.0;
 
   return result / weight;
@@ -29,7 +29,8 @@ void Boid::setDirection(glm::vec3 directioni) {
 
 void Boid::update(float time, glm::vec3 nearbyCenter) {
   rotation += ANGULAR_VELOCITY * time;
-  glm::vec3 diff = glm::normalize(decision(nearbyCenter) - position) - direction;
+  glm::vec3 diff =
+      glm::normalize(decision(nearbyCenter) - position) - direction;
   diff *= time;
   direction += diff;
 
