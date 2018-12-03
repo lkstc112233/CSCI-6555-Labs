@@ -19,6 +19,7 @@ class Boid {
   void update(float time);
   void draw(ShaderProgram& shader);
   glm::vec3 getPosition() { return position; }
+  void setPosition(glm::vec3 positioni) { position = positioni; }
 };
 
 class Boids {
