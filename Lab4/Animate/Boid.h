@@ -1,6 +1,7 @@
 #ifndef ANIMATE_BOID_H
 #define ANIMATE_BOID_H
 
+#include <memory>
 #include <vector>
 
 #include <glm/glm.hpp>
@@ -26,23 +27,23 @@ class Boid {
 
 class Boids {
  private:
-  std::vector<Boid> boids;
+  std::vector<std::unique_ptr<Boid>> boids;
   constexpr static const float sight = 50;
 
  public:
   template <typename... Args>
   Boid& addBoid(Args&... args) {
-    return boids.emplace_back(args...);
+    return *boids.emplace_back(std::make_unique<Boid>(args...));
   }
   glm::vec3 getCenterNear(glm::vec3 center);
   void update(float time) {
     for (auto& boid : boids) {
-      boid.update(time);
+      boid->update(time);
     }
   }
   void draw(ShaderProgram& shader) {
     for (auto& boid : boids) {
-      boid.draw(shader);
+      boid->draw(shader);
     }
   }
 };

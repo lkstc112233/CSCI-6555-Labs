@@ -17,7 +17,7 @@ glm::vec3 Boids::getCenterNear(glm::vec3 center) {
   glm::vec3 result(0);
   int counter = 0;
   for (auto& boid : boids) {
-    auto pos = boid.getPosition();
+    auto pos = boid->getPosition();
     if (glm::distance(pos, center) < sight) {
       counter += 1;
       result += pos;
