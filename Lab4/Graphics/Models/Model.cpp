@@ -89,10 +89,16 @@ Model ModelLoader::loadOffFile(const char *filename) {
       // Only calculate norm for each surface with the first 3 vertexes.
       if (!normInserted) {
         normInserted = true;
-        // TODO: Calculate Norm.
-        normWithoutVertexes.push_back(0);
-        normWithoutVertexes.push_back(0);
-        normWithoutVertexes.push_back(0);
+        // Calculate Norm.
+		glm::vec3 point1(vertexesWithoutNorm[firstpoint * loadedModel.dimensions], vertexesWithoutNorm[firstpoint * loadedModel.dimensions + 1], vertexesWithoutNorm[firstpoint * loadedModel.dimensions + 2]);
+		glm::vec3 point2(vertexesWithoutNorm[pointlast * loadedModel.dimensions], vertexesWithoutNorm[pointlast * loadedModel.dimensions + 1], vertexesWithoutNorm[pointlast * loadedModel.dimensions + 2]);
+		glm::vec3 point3(vertexesWithoutNorm[pointthis * loadedModel.dimensions], vertexesWithoutNorm[pointthis * loadedModel.dimensions + 1], vertexesWithoutNorm[pointthis * loadedModel.dimensions + 2]);
+		glm::vec3 vector1 = point1 - point2;
+		glm::vec3 vector2 = point1 - point3;
+		glm::vec3 normalVector = glm::normalize(glm::cross(vector1, vector2));
+        normWithoutVertexes.push_back(normalVector.x);
+        normWithoutVertexes.push_back(normalVector.y);
+        normWithoutVertexes.push_back(normalVector.z);
       }
       indices.push_back(normIndicesFirst);
       indices.push_back(normIndicesLast);
