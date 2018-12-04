@@ -90,12 +90,21 @@ Model ModelLoader::loadOffFile(const char *filename) {
       if (!normInserted) {
         normInserted = true;
         // Calculate Norm.
-		glm::vec3 point1(vertexesWithoutNorm[firstpoint * loadedModel.dimensions], vertexesWithoutNorm[firstpoint * loadedModel.dimensions + 1], vertexesWithoutNorm[firstpoint * loadedModel.dimensions + 2]);
-		glm::vec3 point2(vertexesWithoutNorm[pointlast * loadedModel.dimensions], vertexesWithoutNorm[pointlast * loadedModel.dimensions + 1], vertexesWithoutNorm[pointlast * loadedModel.dimensions + 2]);
-		glm::vec3 point3(vertexesWithoutNorm[pointthis * loadedModel.dimensions], vertexesWithoutNorm[pointthis * loadedModel.dimensions + 1], vertexesWithoutNorm[pointthis * loadedModel.dimensions + 2]);
-		glm::vec3 vector1 = point1 - point2;
-		glm::vec3 vector2 = point1 - point3;
-		glm::vec3 normalVector = glm::normalize(glm::cross(vector1, vector2));
+        glm::vec3 point1(
+            vertexesWithoutNorm[firstpoint * loadedModel.dimensions],
+            vertexesWithoutNorm[firstpoint * loadedModel.dimensions + 1],
+            vertexesWithoutNorm[firstpoint * loadedModel.dimensions + 2]);
+        glm::vec3 point2(
+            vertexesWithoutNorm[pointlast * loadedModel.dimensions],
+            vertexesWithoutNorm[pointlast * loadedModel.dimensions + 1],
+            vertexesWithoutNorm[pointlast * loadedModel.dimensions + 2]);
+        glm::vec3 point3(
+            vertexesWithoutNorm[pointthis * loadedModel.dimensions],
+            vertexesWithoutNorm[pointthis * loadedModel.dimensions + 1],
+            vertexesWithoutNorm[pointthis * loadedModel.dimensions + 2]);
+        glm::vec3 vector1 = point1 - point2;
+        glm::vec3 vector2 = point1 - point3;
+        glm::vec3 normalVector = glm::normalize(glm::cross(vector1, vector2));
         normWithoutVertexes.push_back(normalVector.x);
         normWithoutVertexes.push_back(normalVector.y);
         normWithoutVertexes.push_back(normalVector.z);
