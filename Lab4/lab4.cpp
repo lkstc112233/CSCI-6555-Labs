@@ -31,7 +31,7 @@
 #include "Animate/Timeline.hpp"
 #include "Math/Quaternion.h"
 
-const static int BOIDS_COUNT = 400;
+const static int BOIDS_COUNT = 10;
 
 const float PROJECTION_RATIO = float(SCREEN_WIDTH) / SCREEN_HEIGHT;
 
@@ -57,7 +57,7 @@ int main(int argc, char** argv) {
 
   // Add random generated boids.
   std::default_random_engine randomGenerator(1);
-  std::normal_distribution boidPositionDistributor(0.F, 20.F);
+  std::normal_distribution boidPositionDistributor(0.F, 10.F);
   std::uniform_real_distribution boidDirectionDistributor(-1.F, 1.F);
   for (int i = 0; i < BOIDS_COUNT; ++i) {
     auto& managingBoid = boids.addBoid(boid, target);
@@ -109,6 +109,20 @@ int main(int argc, char** argv) {
 
   keyHandlers.emplace_handler(
       GLFW_KEY_ESCAPE, [window]() { glfwSetWindowShouldClose(window, true); });
+  keyHandlers.emplace_handler(
+      GLFW_KEY_B,
+      [&]() {
+        auto& managingBoid = boids.addBoid(boid, target);
+        managingBoid.setPosition(
+            glm::vec3(boidPositionDistributor(randomGenerator),
+                      boidPositionDistributor(randomGenerator),
+                      boidPositionDistributor(randomGenerator)));
+        managingBoid.setDirection(glm::normalize(
+            glm::vec3(boidDirectionDistributor(randomGenerator),
+                      boidDirectionDistributor(randomGenerator),
+                      boidDirectionDistributor(randomGenerator))));
+      },
+      true);
 
   ShaderProgram hudShader{
       Shader::createVertexShader("res/shaders/2DShader.vert"),
@@ -148,7 +162,7 @@ int main(int argc, char** argv) {
       dtime = 0;
     }
 
-    boids.update(dtime);
+    boids.update(5 * dtime);
 
     // render
     // ------
