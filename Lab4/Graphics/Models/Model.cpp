@@ -149,6 +149,7 @@ Model ModelLoader::loadOffFile(const char *filename) {
   glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float),
                         (void *)(3 * sizeof(float)));
   glEnableVertexAttribArray(0);
+  glEnableVertexAttribArray(1);
 
   loadedModel.valid = true;
   return loadedModel;
