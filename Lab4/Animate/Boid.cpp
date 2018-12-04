@@ -14,8 +14,8 @@ glm::vec3 Boid::decision(glm::vec3 nearbyCenter,
   glm::vec3 result(position);
   float weight = 1;
   // Assemble the crowd.
-  result += 0.2F * nearbyCenter;
-  weight += 0.2;
+  result += 0.05F * nearbyCenter;
+  weight += 0.05;
 
   // Repeal by nearby boids
   for (auto& pos : nearbyBoids) {
@@ -26,14 +26,14 @@ glm::vec3 Boid::decision(glm::vec3 nearbyCenter,
   // Fly towards the target
   glm::vec3 targetPosition(target.getTransformX(), target.getTransformY(),
                            target.getTransformZ());
-  if (glm::distance(position, targetPosition) > 30) {
+  if (glm::distance(position, targetPosition) > 10) {
     result += 1.0F * targetPosition;
     weight += 1.0;
   }
   // Repeal by the target
-  if (glm::distance(position, targetPosition) < 10) {
-    result += 1.0F * (position - (targetPosition - position));
-    weight += 1.0;
+  if (glm::distance(position, targetPosition) < 5) {
+    result += 2.0F * (position - (targetPosition - position));
+    weight += 2.0;
   }
 
   return result / weight;
@@ -46,11 +46,13 @@ void Boid::setDirection(glm::vec3 directioni) {
 void Boid::update(float time, glm::vec3 nearbyCenter,
                   std::vector<glm::vec3>& nearbyBoids) {
   rotation += ANGULAR_VELOCITY * time;
-  glm::vec3 diff =
-      glm::normalize(decision(nearbyCenter, nearbyBoids) - position) -
-      direction;
-  diff *= time;
-  direction += diff;
+  glm::vec3 desiredPosition = decision(nearbyCenter, nearbyBoids);
+  if (desiredPosition != position) {
+    glm::vec3 diff = glm::normalize(desiredPosition - position) - direction;
+    diff *= time;
+    direction += diff;
+    direction = normalize(direction);
+  }
 
   position += direction * time;
 }
@@ -74,8 +76,15 @@ void Boid::draw(ShaderProgram& shader) {
 
 void Boids::update(float time) {
   for (auto& boid : boids) {
-    // TODO: Generate a list of nearby boids.
+    // Generate a list of nearby boids.
     std::vector<glm::vec3> nearbyBoids;
+    for (auto& boidTesting : boids) {
+      if (glm::distance(boid->getPosition(), boidTesting->getPosition()) <
+              NEARBY_BOID_DISTANCE_THRESHOLD &&
+          boid->getPosition() != boidTesting->getPosition()) {
+        nearbyBoids.emplace_back(boidTesting->getPosition());
+      }
+    }
     boid->update(time, getCenterNear(boid->getPosition()), nearbyBoids);
   }
 }

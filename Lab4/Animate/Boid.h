@@ -35,7 +35,8 @@ class Boid {
 class Boids {
  private:
   std::vector<std::unique_ptr<Boid>> boids;
-  constexpr static const float sight = 50;
+  constexpr static const float sight = 20;
+  constexpr static const float NEARBY_BOID_DISTANCE_THRESHOLD = 1;
 
  public:
   template <typename... Args>
