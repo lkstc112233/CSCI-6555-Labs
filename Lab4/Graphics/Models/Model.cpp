@@ -55,14 +55,19 @@ Model ModelLoader::loadOffFile(const char *filename) {
   // Drop line since we ignoring line count.
   std::getline(file, type);
 
-  loadedModel.vertexes = new float[vertexesCount * 6];
+  std::vector<float> vertexesWithoutNorm;
 
   for (int i = 0; i < vertexesCount; ++i) {
-    file >> loadedModel.vertexes[i * 6] >> loadedModel.vertexes[i * 6 + 1] >>
-        loadedModel.vertexes[i * 6 + 2];
+	for (int j = 0; j < loadedModel.dimensions; ++j) {
+	  float coordinate;
+	  file >> coordinate;
+	  vertexesWithoutNorm.push_back(coordinate);
+	}
   }
 
   std::vector<unsigned> indices;
+  std::vector<float> normWithoutVertexes;
+  std::vector<std::pair<unsigned, unsigned>> normIndices;
   for (int i = 0; i < indicesCount; ++i) {
     int count;
     file >> count;
@@ -70,21 +75,52 @@ Model ModelLoader::loadOffFile(const char *filename) {
     unsigned pointlast;
     unsigned pointthis;
     file >> firstpoint >> pointlast;
+	unsigned normId = normWithoutVertexes.size() / loadedModel.dimensions;
+    unsigned normIndicesFirst = normIndices.size();
+	normIndices.push_back(std::make_pair(firstpoint, normId));
+    unsigned normIndicesLast = normIndices.size();
+	normIndices.push_back(std::make_pair(pointlast, normId));
+    unsigned normIndicesThis;
+	bool normInserted = false;
     for (int j = 0; j < count - 2; ++j) {
       file >> pointthis;
-      indices.push_back(firstpoint);
-      indices.push_back(pointlast);
-      indices.push_back(pointthis);
+	  normIndicesThis = normIndices.size();
+	  normIndices.push_back(std::make_pair(pointlast, normId));
+	  // Only calculate norm for each surface with the first 3 vertexes.
+	  if (!normInserted) {
+		normInserted = true;
+		// TODO: Calculate Norm.
+		normWithoutVertexes.push_back(0);
+		normWithoutVertexes.push_back(0);
+		normWithoutVertexes.push_back(0);
+	  }
+      indices.push_back(normIndicesFirst);
+      indices.push_back(normIndicesLast);
+      indices.push_back(normIndicesThis);
       pointlast = pointthis;
+	  normIndicesLast = normIndicesThis;
     }
   }
+  // Reconstruct vertexes array
+  loadedModel.vertexes = new float[normIndices.size() * loadedModel.dimensions * 2];
+  for (int i = 0; i < normIndices.size(); ++i) {
+	for (int j = 0; j < loadedModel.dimensions; ++j) {
+	  loadedModel.vertexes[i * loadedModel.dimensions * 2 + j] 
+	    = vertexesWithoutNorm[normIndices[i] * loadedModel.dimensions + j];
+	}
+	for (int j = 0; j < loadedModel.dimensions; ++j) {
+	  loadedModel.vertexes[i * loadedModel.dimensions * 2 + loadedModel.dimensions + j] 
+	    = normWithoutVertexes[normIndices[i] * loadedModel.dimensions + j];
+	}
+  }
+  
   loadedModel.indices = new unsigned[loadedModel.indicesSize = indices.size()];
 
   std::copy(begin(indices), end(indices), loadedModel.indices);
 
   glBindVertexArray(loadedModel.VAO);
   glBindBuffer(GL_ARRAY_BUFFER, loadedModel.VBO);
-  glBufferData(GL_ARRAY_BUFFER, vertexesCount * 6 * sizeof(float),
+  glBufferData(GL_ARRAY_BUFFER, normIndices.size() * 6 * sizeof(float),
                loadedModel.vertexes, GL_STATIC_DRAW);
   glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, loadedModel.EBO);
   glBufferData(GL_ELEMENT_ARRAY_BUFFER,
