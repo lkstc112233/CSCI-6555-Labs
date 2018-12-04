@@ -55,11 +55,11 @@ Model ModelLoader::loadOffFile(const char *filename) {
   // Drop line since we ignoring line count.
   std::getline(file, type);
 
-  loadedModel.vertexes = new float[vertexesCount * 3];
+  loadedModel.vertexes = new float[vertexesCount * 6];
 
   for (int i = 0; i < vertexesCount; ++i) {
-    file >> loadedModel.vertexes[i * 3] >> loadedModel.vertexes[i * 3 + 1] >>
-        loadedModel.vertexes[i * 3 + 2];
+    file >> loadedModel.vertexes[i * 6] >> loadedModel.vertexes[i * 6 + 1] >>
+        loadedModel.vertexes[i * 6 + 2];
   }
 
   std::vector<unsigned> indices;
@@ -84,13 +84,19 @@ Model ModelLoader::loadOffFile(const char *filename) {
 
   glBindVertexArray(loadedModel.VAO);
   glBindBuffer(GL_ARRAY_BUFFER, loadedModel.VBO);
-  glBufferData(GL_ARRAY_BUFFER, vertexesCount * 3 * sizeof(float),
+  glBufferData(GL_ARRAY_BUFFER, vertexesCount * 6 * sizeof(float),
                loadedModel.vertexes, GL_STATIC_DRAW);
   glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, loadedModel.EBO);
   glBufferData(GL_ELEMENT_ARRAY_BUFFER,
                loadedModel.indicesSize * sizeof(unsigned), loadedModel.indices,
                GL_STATIC_DRAW);
-  glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void *)0);
+  glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void *)0);
+  glVertexAttribPointer(1, 
+                        3, 
+						GL_FLOAT, 
+						GL_FALSE, 
+						6 * sizeof(float), 
+						(void *) (3 * sizeof(float)));
   glEnableVertexAttribArray(0);
 
   loadedModel.valid = true;
