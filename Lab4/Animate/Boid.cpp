@@ -32,6 +32,11 @@ glm::vec3 Boid::decision(glm::vec3 nearbyCenter,
     weight += 1.0;
   } else if (glm::distance(position, targetPosition) > 5) {
     // Revolution
+    glm::vec3 x = targetPosition - position;
+    glm::vec3 directionDesired =
+        glm::normalize(direction - glm::dot(x, direction) * x / glm::length(x));
+    result += 2.0F * (position + directionDesired);
+    weight += 2.0F;
   } else {
     // Repeal by the target
     result += 2.0F * (position - (targetPosition - position));
