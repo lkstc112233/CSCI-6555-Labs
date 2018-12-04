@@ -58,11 +58,11 @@ Model ModelLoader::loadOffFile(const char *filename) {
   std::vector<float> vertexesWithoutNorm;
 
   for (int i = 0; i < vertexesCount; ++i) {
-	for (int j = 0; j < loadedModel.dimensions; ++j) {
-	  float coordinate;
-	  file >> coordinate;
-	  vertexesWithoutNorm.push_back(coordinate);
-	}
+    for (int j = 0; j < loadedModel.dimensions; ++j) {
+      float coordinate;
+      file >> coordinate;
+      vertexesWithoutNorm.push_back(coordinate);
+    }
   }
 
   std::vector<unsigned> indices;
@@ -75,45 +75,49 @@ Model ModelLoader::loadOffFile(const char *filename) {
     unsigned pointlast;
     unsigned pointthis;
     file >> firstpoint >> pointlast;
-	unsigned normId = normWithoutVertexes.size() / loadedModel.dimensions;
+    unsigned normId = normWithoutVertexes.size() / loadedModel.dimensions;
     unsigned normIndicesFirst = normIndices.size();
-	normIndices.push_back(std::make_pair(firstpoint, normId));
+    normIndices.push_back(std::make_pair(firstpoint, normId));
     unsigned normIndicesLast = normIndices.size();
-	normIndices.push_back(std::make_pair(pointlast, normId));
+    normIndices.push_back(std::make_pair(pointlast, normId));
     unsigned normIndicesThis;
-	bool normInserted = false;
+    bool normInserted = false;
     for (int j = 0; j < count - 2; ++j) {
       file >> pointthis;
-	  normIndicesThis = normIndices.size();
-	  normIndices.push_back(std::make_pair(pointlast, normId));
-	  // Only calculate norm for each surface with the first 3 vertexes.
-	  if (!normInserted) {
-		normInserted = true;
-		// TODO: Calculate Norm.
-		normWithoutVertexes.push_back(0);
-		normWithoutVertexes.push_back(0);
-		normWithoutVertexes.push_back(0);
-	  }
+      normIndicesThis = normIndices.size();
+      normIndices.push_back(std::make_pair(pointlast, normId));
+      // Only calculate norm for each surface with the first 3 vertexes.
+      if (!normInserted) {
+        normInserted = true;
+        // TODO: Calculate Norm.
+        normWithoutVertexes.push_back(0);
+        normWithoutVertexes.push_back(0);
+        normWithoutVertexes.push_back(0);
+      }
       indices.push_back(normIndicesFirst);
       indices.push_back(normIndicesLast);
       indices.push_back(normIndicesThis);
       pointlast = pointthis;
-	  normIndicesLast = normIndicesThis;
+      normIndicesLast = normIndicesThis;
     }
   }
   // Reconstruct vertexes array
-  loadedModel.vertexes = new float[normIndices.size() * loadedModel.dimensions * 2];
+  loadedModel.vertexes =
+      new float[normIndices.size() * loadedModel.dimensions * 2];
   for (int i = 0; i < normIndices.size(); ++i) {
-	for (int j = 0; j < loadedModel.dimensions; ++j) {
-	  loadedModel.vertexes[i * loadedModel.dimensions * 2 + j] 
-	    = vertexesWithoutNorm[normIndices[i] * loadedModel.dimensions + j];
-	}
-	for (int j = 0; j < loadedModel.dimensions; ++j) {
-	  loadedModel.vertexes[i * loadedModel.dimensions * 2 + loadedModel.dimensions + j] 
-	    = normWithoutVertexes[normIndices[i] * loadedModel.dimensions + j];
-	}
+    for (int j = 0; j < loadedModel.dimensions; ++j) {
+      loadedModel.vertexes[i * loadedModel.dimensions * 2 + j] =
+          vertexesWithoutNorm[normIndices[i].first * loadedModel.dimensions +
+                              j];
+    }
+    for (int j = 0; j < loadedModel.dimensions; ++j) {
+      loadedModel.vertexes[i * loadedModel.dimensions * 2 +
+                           loadedModel.dimensions + j] =
+          normWithoutVertexes[normIndices[i].second * loadedModel.dimensions +
+                              j];
+    }
   }
-  
+
   loadedModel.indices = new unsigned[loadedModel.indicesSize = indices.size()];
 
   std::copy(begin(indices), end(indices), loadedModel.indices);
