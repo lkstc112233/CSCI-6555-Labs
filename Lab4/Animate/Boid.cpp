@@ -23,15 +23,17 @@ glm::vec3 Boid::decision(glm::vec3 nearbyCenter,
     weight += 100.0;
   }
 
-  // Fly towards the target
+  // Interact with the target
   glm::vec3 targetPosition(target.getTransformX(), target.getTransformY(),
                            target.getTransformZ());
   if (glm::distance(position, targetPosition) > 10) {
+    // Fly towards the target
     result += 1.0F * targetPosition;
     weight += 1.0;
-  }
-  // Repeal by the target
-  if (glm::distance(position, targetPosition) < 5) {
+  } else if (glm::distance(position, targetPosition) > 5) {
+    // Revolution
+  } else if (glm::distance(position, targetPosition) < 5) {
+    // Repeal by the target
     result += 2.0F * (position - (targetPosition - position));
     weight += 2.0;
   }
