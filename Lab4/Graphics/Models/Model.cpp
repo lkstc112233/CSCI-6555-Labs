@@ -85,7 +85,7 @@ Model ModelLoader::loadOffFile(const char *filename) {
     for (int j = 0; j < count - 2; ++j) {
       file >> pointthis;
       normIndicesThis = normIndices.size();
-      normIndices.push_back(std::make_pair(pointlast, normId));
+      normIndices.push_back(std::make_pair(pointthis, normId));
       // Only calculate norm for each surface with the first 3 vertexes.
       if (!normInserted) {
         normInserted = true;
