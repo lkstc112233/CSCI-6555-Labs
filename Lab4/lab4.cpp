@@ -56,7 +56,7 @@ int main(int argc, char** argv) {
   boid.setScaleZ(0.5);
 
   // Add random generated boids.
-  std::default_random_engine randomGenerator(1);
+  std::default_random_engine randomGenerator();
   std::normal_distribution boidPositionDistributor(0.F, 10.F);
   std::uniform_real_distribution boidDirectionDistributor(-1.F, 1.F);
   for (int i = 0; i < BOIDS_COUNT; ++i) {
