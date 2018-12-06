@@ -77,10 +77,17 @@ int main(int argc, char** argv) {
   if (!shaderProgram.isValid()) {
     return -4;
   }
+  ShaderProgram boidShaderProgram{
+      Shader::createVertexShader("res/shaders/simpleLightShader.vert"),
+      Shader::createFragmentShader("res/shaders/simpleLightShader.frag")};
+  if (!shaderProgram.isValid()) {
+    return -4;
+  }
   glm::mat4 projection(1.0f);
   projection =
       glm::perspective(glm::radians(45.0f), PROJECTION_RATIO, 0.1f, 1000.0f);
   shaderProgram.setMatrix("projection", projection);
+  boidShaderProgram.setMatrix("projection", projection);
 
   Camera camera;
 
@@ -170,8 +177,14 @@ int main(int argc, char** argv) {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     shaderProgram.setMatrix("view", camera.getViewMat());
-    boids.draw(shaderProgram);
     target.draw(shaderProgram);
+
+    boidShaderProgram.setMatrix("view", camera.getViewMat());
+    boidShaderProgram.setVector("viewPos", camera.position);
+    boidShaderProgram.setVector(
+        "lightPos", glm::vec3(target.getTransformX(), target.getTransformY(),
+                              target.getTransformZ()));
+    boids.draw(boidShaderProgram);
 
     // Draw cursor
     glClear(GL_DEPTH_BUFFER_BIT);
