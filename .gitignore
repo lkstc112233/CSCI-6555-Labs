@@ -33,7 +33,7 @@
 *.exe
 *.out
 *.app
-lab?/lab?
+lab?
 testWindow
 
 # Vs files
