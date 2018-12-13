@@ -10,10 +10,10 @@ MAIN_OBJS = $(MAIN_SRCS:.cpp=.o)
 DEPS = dependencies.dep
 
 .PHONY: all
-all: lab4
+all: labs
 
-lab4: lab4.o glad.o $(OBJS)
-	@echo Making lab4.
+labs: labs.o glad.o $(OBJS)
+	@echo Making labs.
 	@$(CXX) $^ $(LINK_FLAGS) -o $@
 
 $(DEPS): $(ALL_SRCS) $(HEDS)
@@ -27,4 +27,4 @@ glad.o: glad.c
 .PHONY: clean
 clean:
 	find . -type f -name '*.o' -delete
-	rm -f lab4 dependencies.dep
+	rm -f labs dependencies.dep
