@@ -36,7 +36,7 @@ const static int BOIDS_COUNT = 10;
 const float PROJECTION_RATIO = float(SCREEN_WIDTH) / SCREEN_HEIGHT;
 
 int main(int argc, char** argv) {
-  GLFWwindow* window = initializeWindow("Lab4");
+  GLFWwindow* window = initializeWindow("Labs");
   if (!window) {
     return -1;
   }
