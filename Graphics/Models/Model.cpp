@@ -214,30 +214,36 @@ Model ModelLoader::loadShpFile(const char *filename) {
   return loadedModel;
 }
 
+const Model &ModelLoader::createModel(std::unique_ptr<Model> &pointerToLoad,
+                                      int dimension, const float vertexes[],
+                                      int vertexesLength,
+                                      const unsigned indices[],
+                                      int indicesLength) {
+  class UnitSquareShape : public Model {};
+  pointerToLoad = std::make_unique<UnitSquareShape>();
+  pointerToLoad->valid = true;
+  pointerToLoad->dimensions = dimension;
+  pointerToLoad->indicesSize = indicesLength / sizeof(unsigned);
+
+  glBindVertexArray(pointerToLoad->VAO);
+  glBindBuffer(GL_ARRAY_BUFFER, pointerToLoad->VBO);
+  glBufferData(GL_ARRAY_BUFFER, vertexesLength, vertexes, GL_STATIC_DRAW);
+  glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, pointerToLoad->EBO);
+  glBufferData(GL_ELEMENT_ARRAY_BUFFER, indicesLength, indices, GL_STATIC_DRAW);
+  glVertexAttribPointer(0, dimension, GL_FLOAT, GL_FALSE,
+                        dimension * sizeof(float), (void *)0);
+  glEnableVertexAttribArray(0);
+}
+
 std::unique_ptr<Model> ModelLoader::unitSquareShape;
 const float UNIT_SQUARE_VERTEXES[] = {0, 0, 0, 1, 1, 0, 1, 1};
 const unsigned UNIT_SQUARE_INDICES[] = {0, 1, 3, 0, 3, 2};
 
 const Model &ModelLoader::getUnitSquareShape() {
   if (!unitSquareShape) {
-    class UnitSquareShape : public Model {};
-    unitSquareShape = std::make_unique<UnitSquareShape>();
-    unitSquareShape->valid = true;
-    unitSquareShape->dimensions = 2;
-    unitSquareShape->indicesSize =
-        sizeof(UNIT_SQUARE_INDICES) / sizeof(unsigned);
-
-    glBindVertexArray(unitSquareShape->VAO);
-    glBindBuffer(GL_ARRAY_BUFFER, unitSquareShape->VBO);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(UNIT_SQUARE_VERTEXES),
-                 UNIT_SQUARE_VERTEXES, GL_STATIC_DRAW);
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, unitSquareShape->EBO);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(UNIT_SQUARE_INDICES),
-                 UNIT_SQUARE_INDICES, GL_STATIC_DRAW);
-    glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float),
-                          (void *)0);
-    glEnableVertexAttribArray(0);
+    createModel(unitSquareShape, 2, UNIT_SQUARE_VERTEXES,
+                sizeof(UNIT_SQUARE_VERTEXES), UNIT_SQUARE_INDICES,
+                sizeof(UNIT_SQUARE_INDICES));
   }
-
   return *unitSquareShape;
 }
