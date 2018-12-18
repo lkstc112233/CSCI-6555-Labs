@@ -35,6 +35,7 @@ class Model {
 class ModelLoader {
  private:
   static std::unique_ptr<Model> unitSquareShape;
+  static std::unique_ptr<Model> unitTriangleShape;
   static const Model &createModel(std::unique_ptr<Model> &pointerToLoad,
                                   int dimension, const float vertexes[],
                                   int vertexesLength, const unsigned indices[],
@@ -42,6 +43,7 @@ class ModelLoader {
 
  public:
   static const Model &getUnitSquareShape();
+  static const Model &getUnitTriangleShape();
   static Model loadOffFile(const char *filename);
   static Model loadShpFile(const char *filename);
 };

@@ -239,6 +239,10 @@ std::unique_ptr<Model> ModelLoader::unitSquareShape;
 const float UNIT_SQUARE_VERTEXES[] = {0, 0, 0, 1, 1, 0, 1, 1};
 const unsigned UNIT_SQUARE_INDICES[] = {0, 1, 3, 0, 3, 2};
 
+std::unique_ptr<Model> ModelLoader::unitTriangleShape;
+const float UNIT_TRIANGLE_VERTEXES[] = {1, 0, 0, 0, 1, 0, 0, 0, 1};
+const unsigned UNIT_TRIANGLE_INDICES[] = {0, 1, 2};
+
 const Model &ModelLoader::getUnitSquareShape() {
   if (!unitSquareShape) {
     createModel(unitSquareShape, 2, UNIT_SQUARE_VERTEXES,
@@ -246,4 +250,13 @@ const Model &ModelLoader::getUnitSquareShape() {
                 sizeof(UNIT_SQUARE_INDICES));
   }
   return *unitSquareShape;
+}
+
+const Model &ModelLoader::getUnitTriangleShape() {
+  if (!unitTriangleShape) {
+    createModel(unitTriangleShape, 3, UNIT_TRIANGLE_VERTEXES,
+                sizeof(UNIT_TRIANGLE_VERTEXES), UNIT_TRIANGLE_INDICES,
+                sizeof(UNIT_TRIANGLE_INDICES));
+  }
+  return *unitTriangleShape;
 }
