@@ -20,7 +20,7 @@ ProgressBar::ProgressBar()
       keyframeObject(ModelLoader::getUnitSquareShape()),
       playPauseButton("res/shapes/pause.shp", "res/shapes/play.shp", -1, -1,
                       0.1) {
-  playedProgressBar.setColor(glm::vec3(1.0, 0, 0));
+  playedProgressBar.setColor(glm::vec3(0.0, 0.5, 0.5));
   unplayedProgressBar.setColor(glm::vec3(0.9));
   keyframeObject.setColor(glm::vec3(0.8, 0.8, 0));
   keyframeObject.setZ(-0.1);
