@@ -4,16 +4,18 @@
 #include <memory>
 #include <vector>
 
-#include "../Graphics/Shaders/Shader.h"
+#include "../Graphics/Models/Model.h"
+#include "../Graphics/Object/Object.h"
 
 class Water {
  private:
-  ShaderProgram shader;
+  const Model& waterTriangle;
+  void drawAt(ShaderProgram&, int x, int y);
 
  public:
   Water();
   void update(float time);
-  void draw();
+  void draw(ShaderProgram&);
 };
 
 #endif  // ANIMATE_WATER_H
