@@ -214,11 +214,10 @@ Model ModelLoader::loadShpFile(const char *filename) {
   return loadedModel;
 }
 
-const Model &ModelLoader::createModel(std::unique_ptr<Model> &pointerToLoad,
-                                      int dimension, const float vertexes[],
-                                      int vertexesLength,
-                                      const unsigned indices[],
-                                      int indicesLength) {
+void ModelLoader::createModel(std::unique_ptr<Model> &pointerToLoad,
+                              int dimension, const float vertexes[],
+                              int vertexesLength, const unsigned indices[],
+                              int indicesLength) {
   class UnitSquareShape : public Model {};
   pointerToLoad = std::make_unique<UnitSquareShape>();
   pointerToLoad->valid = true;
