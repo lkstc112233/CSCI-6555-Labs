@@ -80,7 +80,7 @@ int main(int argc, char** argv) {
   ShaderProgram boidShaderProgram{
       Shader::createVertexShader("res/shaders/simpleLightShader.vert"),
       Shader::createFragmentShader("res/shaders/simpleLightShader.frag")};
-  if (!shaderProgram.isValid()) {
+  if (!boidShaderProgram.isValid()) {
     return -4;
   }
   glm::mat4 projection(1.0f);
