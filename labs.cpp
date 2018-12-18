@@ -139,7 +139,8 @@ int main(int argc, char** argv) {
       },
       true);
 
-  Water water;
+  constexpr static const int WATER_SIZE = 20;
+  Water water(WATER_SIZE);
 
   std::uniform_int_distribution waterPokingDistributor(-9, 9);
   keyHandlers.emplace_handler(GLFW_KEY_O,
@@ -190,7 +191,7 @@ int main(int argc, char** argv) {
 
     boids.update(dtime);
     for (auto& p : boids.pokes) {
-      if (abs(p.first) < 10 && abs(p.second) < 10) {
+      if (abs(p.first) < WATER_SIZE && abs(p.second) < WATER_SIZE) {
         water.poke(p.first, p.second, 1, 0.3);
       }
     }

@@ -93,8 +93,9 @@ void Boids::update(float time) {
         nearbyBoids.emplace_back(boidTesting->getPosition());
       }
     }
+    bool boidIsPositive = boid->getPosition().y > 0;
     boid->update(time, getCenterNear(boid->getPosition()), nearbyBoids);
-    if (abs(boid->getPosition().y) < 0.01F) {
+    if (boidIsPositive ^ (boid->getPosition().y > 0)) {
       pokes.emplace_back(boid->getPosition().x, boid->getPosition().z);
     }
   }
