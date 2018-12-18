@@ -196,7 +196,9 @@ int main(int argc, char** argv) {
 
     double thisTime = glfwGetTime();
     float dtime = thisTime - lastTime;
-    if (!progressBar.isPlaying()) {
+    if (progressBar.isPlaying()) {
+      dtime *= progressBar.getProcess() / 0.5;
+    } else {
       dtime = 0;
     }
     lastTime = thisTime;
