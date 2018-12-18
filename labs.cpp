@@ -189,6 +189,11 @@ int main(int argc, char** argv) {
     }
 
     boids.update(dtime);
+    for (auto& p : boids.pokes) {
+      if (abs(p.first) < 10 && abs(p.second) < 10) {
+        water.poke(p.first, p.second, 1, 0.3);
+      }
+    }
     water.update(dtime);
 
     // render

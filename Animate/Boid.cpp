@@ -82,6 +82,7 @@ void Boid::draw(ShaderProgram& shader) {
 }
 
 void Boids::update(float time) {
+  pokes.clear();
   for (auto& boid : boids) {
     // Generate a list of nearby boids.
     std::vector<glm::vec3> nearbyBoids;
@@ -93,6 +94,9 @@ void Boids::update(float time) {
       }
     }
     boid->update(time, getCenterNear(boid->getPosition()), nearbyBoids);
+    if (abs(boid->getPosition().y) < 0.01F) {
+      pokes.emplace_back(boid->getPosition().x, boid->getPosition().z);
+    }
   }
 }
 

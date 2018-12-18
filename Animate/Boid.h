@@ -40,6 +40,7 @@ class Boids {
   constexpr static const float NEARBY_BOID_DISTANCE_THRESHOLD = 1;
 
  public:
+  std::vector<std::pair<int, int>> pokes;
   template <typename... Args>
   Boid& addBoid(Args&... args) {
     return *boids.emplace_back(std::make_unique<Boid>(args...));

@@ -37,15 +37,21 @@ void Water::drawAt(ShaderProgram& shader, glm::vec3 point1, glm::vec3 point2,
   waterTriangle.draw(shader);
 }
 
-void Water::poke(int x, int y) {
-  toPoke[std::make_pair(x, y)] += POKE_INCRAESEMENT;
+void Water::poke(int x, int y, int increasement, float force) {
+  auto storage =
+      toPoke[std::make_pair(x, y)].first * toPoke[std::make_pair(x, y)].second +
+      increasement * force;
+
+  toPoke[std::make_pair(x, y)] = std::make_pair(
+      increasement + toPoke[std::make_pair(x, y)].first,
+      (increasement + toPoke[std::make_pair(x, y)].first) / storage);
 }
 
 void Water::update(float time) {
   for (auto iter = toPoke.begin(); iter != toPoke.end(); ++iter) {
     waterNodes[iter->first.first + waterSize][iter->first.second + waterSize]
-        .position.y -= POKE_FORCE;
-    iter->second -= 1;
+        .position.y -= iter->second.second;
+    iter->second.first -= 1;
   }
 
   // handle the springs
@@ -82,7 +88,7 @@ void Water::update(float time) {
   }
   // remove if value = 0.
   for (auto iter = toPoke.begin(); iter != toPoke.end();) {
-    if (iter->second <= 0) {
+    if (iter->second.first <= 0) {
       toPoke.erase(iter++);
     } else {
       ++iter;
