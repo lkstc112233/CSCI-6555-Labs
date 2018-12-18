@@ -19,8 +19,9 @@ Character::Character()
   entity.addChild("upper-arm-right", "fore-arm-right", model);
   {
     auto pelvis = entity.getObject("pelvis");
-    pelvis->setScaleY(6);
-    pelvis->setCenterY(-2);
+    pelvis->setScale(0.2);
+    pelvis->setScaleY(1.2);
+    pelvis->setCenterY(-0.4);
     pelvis->setTransformXManager(script.getFloatTimeline("xPos"));
     pelvis->setTransformYManager(script.getFloatTimeline("yPos"));
     pelvis->setTransformZManager(script.getFloatTimeline("zPos"));
@@ -28,74 +29,83 @@ Character::Character()
   }
   {
     auto thigh = entity.getObject("thigh-left");
-    thigh->setScaleY(5);
-    thigh->setCenterY(5);
-    thigh->setTransformX(2);
-    thigh->setTransformY(-4);
+    thigh->setScale(0.2);
+    thigh->setScaleY(1);
+    thigh->setCenterY(1);
+    thigh->setTransformX(0.4);
+    thigh->setTransformY(-0.8);
     thigh->setOrientationManager(script.getQuaternionTimeline("thigh-walking"),
                                  2);
   }
   {
     auto thigh = entity.getObject("thigh-right");
-    thigh->setScaleY(5);
-    thigh->setCenterY(5);
-    thigh->setTransformX(-2);
-    thigh->setTransformY(-4);
+    thigh->setScale(0.2);
+    thigh->setScaleY(1);
+    thigh->setCenterY(1);
+    thigh->setTransformX(-0.4);
+    thigh->setTransformY(-0.8);
     thigh->setOrientationManager(script.getQuaternionTimeline("thigh-walking"));
   }
   {
     auto calf = entity.getObject("calf-left");
-    calf->setScaleY(5);
-    calf->setCenterY(5);
-    calf->setTransformY(-6);
+    calf->setScale(0.2);
+    calf->setScaleY(1);
+    calf->setCenterY(1);
+    calf->setTransformY(-1.2);
     calf->setOrientationManager(script.getQuaternionTimeline("calf-walking"),
                                 2);
   }
   {
     auto calf = entity.getObject("calf-right");
-    calf->setScaleY(5);
-    calf->setCenterY(5);
-    calf->setTransformY(-6);
+    calf->setScale(0.2);
+    calf->setScaleY(1);
+    calf->setCenterY(1);
+    calf->setTransformY(-1.2);
     calf->setOrientationManager(script.getQuaternionTimeline("calf-walking"));
   }
   {
     auto chest = entity.getObject("chest");
-    chest->setScaleY(9);
-    chest->setCenterY(-9);
-    chest->setTransformY(8);
+    chest->setScale(0.2);
+    chest->setScaleY(1.8);
+    chest->setCenterY(-1.8);
+    chest->setTransformY(1.6);
   }
   {
     auto arm = entity.getObject("upper-arm-left");
-    arm->setScaleY(5);
-    arm->setCenterY(5);
-    arm->setTransformX(2);
-    arm->setTransformY(4);
+    arm->setScale(0.2);
+    arm->setScaleY(1);
+    arm->setCenterY(1);
+    arm->setTransformX(0.4);
+    arm->setTransformY(0.8);
     arm->setOrientationManager(
         script.getQuaternionTimeline("upper-arm-walking"), 2);
   }
   {
     auto arm = entity.getObject("upper-arm-right");
-    arm->setScaleY(5);
-    arm->setCenterY(5);
-    arm->setTransformX(-2);
-    arm->setTransformY(4);
+    arm->setScale(0.2);
+    arm->setScaleY(1);
+    arm->setCenterY(1);
+    arm->setTransformX(-0.4);
+    arm->setTransformY(0.8);
     arm->setOrientationManager(
         {script.getQuaternionTimeline("upper-arm-walking"),
          script.getQuaternionTimeline("upper-arm-waving")});
   }
   {
     auto arm = entity.getObject("fore-arm-left");
-    arm->setScaleY(5);
-    arm->setCenterY(5);
-    arm->setTransformY(-6);
+    arm->setScale(0.2);
+    arm->setScaleY(1);
+    arm->setCenterY(1);
+    arm->setTransformY(-1.2);
     arm->setOrientationManager(script.getQuaternionTimeline("fore-arm-walking"),
                                2);
   }
   {
     auto arm = entity.getObject("fore-arm-right");
-    arm->setScaleY(5);
-    arm->setCenterY(5);
-    arm->setTransformY(-6);
+    arm->setScale(0.2);
+    arm->setScaleY(1);
+    arm->setCenterY(1);
+    arm->setTransformY(-1.2);
     arm->setOrientationManager(
         {script.getQuaternionTimeline("fore-arm-walking"),
          script.getQuaternionTimeline("fore-arm-waving")});
