@@ -29,6 +29,7 @@
 #include "Animate/Keyframe.hpp"
 #include "Animate/Scripts.h"
 #include "Animate/Timeline.hpp"
+#include "Animate/Water.h"
 #include "Math/Quaternion.h"
 
 const static int BOIDS_COUNT = 10;
@@ -83,11 +84,18 @@ int main(int argc, char** argv) {
   if (!boidShaderProgram.isValid()) {
     return -4;
   }
+  ShaderProgram waterShaderProgram{
+      Shader::createVertexShader("res/shaders/waterShader.vert"),
+      Shader::createFragmentShader("res/shaders/waterShader.frag")};
+  if (!waterShaderProgram.isValid()) {
+    return -4;
+  }
   glm::mat4 projection(1.0f);
   projection =
       glm::perspective(glm::radians(45.0f), PROJECTION_RATIO, 0.1f, 1000.0f);
   shaderProgram.setMatrix("projection", projection);
   boidShaderProgram.setMatrix("projection", projection);
+  waterShaderProgram.setMatrix("projection", projection);
 
   Camera camera;
 
@@ -131,6 +139,7 @@ int main(int argc, char** argv) {
       },
       true);
 
+  Water water;
   ShaderProgram hudShader{
       Shader::createVertexShader("res/shaders/2DShader.vert"),
       Shader::createFragmentShader("res/shaders/2DShader.frag")};
@@ -170,6 +179,7 @@ int main(int argc, char** argv) {
     }
 
     boids.update(5 * dtime);
+    water.update(dtime);
 
     // render
     // ------
@@ -185,6 +195,9 @@ int main(int argc, char** argv) {
         "lightPos", glm::vec3(target.getTransformX(), target.getTransformY(),
                               target.getTransformZ()));
     boids.draw(boidShaderProgram);
+
+    waterShaderProgram.setMatrix("view", camera.getViewMat());
+    water.draw(waterShaderProgram);
 
     // Draw cursor
     glClear(GL_DEPTH_BUFFER_BIT);
