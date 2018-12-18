@@ -216,9 +216,7 @@ Model ModelLoader::loadShpFile(const char *filename) {
 
 std::unique_ptr<Model> ModelLoader::unitSquareShape;
 const float UNIT_SQUARE_VERTEXES[] = {0, 0, 0, 1, 1, 0, 1, 1};
-const unsigned UNIT_SQUARE_INDICES[] = {
-    0, 1, 3, 0, 3, 2,
-};
+const unsigned UNIT_SQUARE_INDICES[] = {0, 1, 3, 0, 3, 2};
 
 const Model &ModelLoader::getUnitSquareShape() {
   if (!unitSquareShape) {
