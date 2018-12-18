@@ -143,9 +143,9 @@ int main(int argc, char** argv) {
       true);
   // character
   {
-    keyHandlers.emplace_handler(GLFW_KEY_1,
-                                [&character]() { character.wave(); }, false,
-                                [&character]() { character.unwave(); });
+    keyHandlers.emplace_handler(
+        GLFW_KEY_1, [&character]() { character.throwStone(0.1); }, false,
+        [&character]() { character.throwStone(); });
   }
 
   constexpr static const int WATER_SIZE = 20;

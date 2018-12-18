@@ -2,10 +2,11 @@
 
 Character::Character()
     : time(0),
-      waving(false),
+      throwing(false),
       waveRate(0),
       script(Scripts::loadScript("res/scripts/lab2.keys")),
-      model(ModelLoader::loadOffFile("res/models/cube.off")) {
+      model(ModelLoader::loadOffFile("res/models/cube.off")),
+      modelArrow(ModelLoader::loadOffFile("res/models/arrow.off")) {
   // Build a human-model
   entity.addObject("pelvis", model);
   entity.addChild("pelvis", "chest", model);
@@ -17,6 +18,7 @@ Character::Character()
   entity.addChild("chest", "upper-arm-right", model);
   entity.addChild("upper-arm-left", "fore-arm-left", model);
   entity.addChild("upper-arm-right", "fore-arm-right", model);
+  entity.addChild("chest", "arrow", modelArrow);
   {
     auto pelvis = entity.getObject("pelvis");
     pelvis->setScale(0.2);
@@ -110,11 +112,29 @@ Character::Character()
         {script.getQuaternionTimeline("fore-arm-walking"),
          script.getQuaternionTimeline("fore-arm-waving")});
   }
+  {
+    auto arrow = entity.getObject("arrow");
+    arrow->setScale(0.2);
+    arrow->setScaleZ(1);
+    arrow->setAbsoluteOrientation();
+    arrow->setTransformY(2.4);
+    arrow->setOpacity(0);
+  }
+}
+void Character::throwStone(float f) {
+  throwing = true;
+  auto arrow = entity.getObject("arrow");
+  arrow->setOpacity(1);
+}
+void Character::throwStone() {
+  throwing = false;
+  auto arrow = entity.getObject("arrow");
+  arrow->setOpacity(0);
 }
 void Character::update(float dtime) {
   auto upperArm = entity.getObject("upper-arm-right");
   auto foreArm = entity.getObject("fore-arm-right");
-  if (waving) {
+  if (throwing) {
     if (waveRate < 1) {
       waveRate += ARM_WAVE_CHANGE_RATE;
     } else {

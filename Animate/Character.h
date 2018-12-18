@@ -9,16 +9,17 @@ class Character {
  private:
   Scripts script;
   Model model;
+  Model modelArrow;
   Entity entity;
   float time;
-  bool waving;
+  bool throwing;
   float waveRate;
 
  public:
   constexpr static const float ARM_WAVE_CHANGE_RATE = 0.05;
   Character();
-  void wave() { waving = true; }
-  void unwave() { waving = false; }
+  void throwStone(float f);
+  void throwStone();
   void update(float time);
   void draw(ShaderProgram& shader);
 };
