@@ -141,7 +141,7 @@ int main(int argc, char** argv) {
 
   Water water;
 
-  std::uniform_int_distribution waterPokingDistributor(-10, 10);
+  std::uniform_int_distribution waterPokingDistributor(-9, 9);
   keyHandlers.emplace_handler(GLFW_KEY_O,
                               [&]() {
                                 water.poke(
