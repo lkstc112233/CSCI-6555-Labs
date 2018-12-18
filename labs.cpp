@@ -188,7 +188,7 @@ int main(int argc, char** argv) {
       dtime = 0;
     }
 
-    boids.update(5 * dtime);
+    boids.update(dtime);
     water.update(dtime);
 
     // render

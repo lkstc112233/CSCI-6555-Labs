@@ -61,7 +61,7 @@ void Boid::update(float time, glm::vec3 nearbyCenter,
     direction = normalize(direction);
   }
 
-  position += direction * time;
+  position += direction * time * VELOCITY;
 }
 
 void Boid::draw(ShaderProgram& shader) {

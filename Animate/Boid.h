@@ -12,6 +12,7 @@
 class Boid {
  private:
   constexpr static const float ANGULAR_VELOCITY = 0.35;
+  constexpr static const float VELOCITY = 5;
 
   Object3D& object;
   const Object3D& target;
