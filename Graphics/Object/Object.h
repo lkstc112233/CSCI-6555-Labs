@@ -50,6 +50,7 @@ class Object3D {
   float opacity = 1.0;
   glm::mat4 getTransformationMatrix();
   std::map<std::string, std::unique_ptr<ManagedTimelineInterface>> managers;
+  bool absoluteOrientation = false;
 
  public:
   explicit Object3D(const Model& model);
@@ -73,6 +74,7 @@ class Object3D {
   void setScaleY(float sy) { scaleY = sy; }
   void setScaleZ(float sz) { scaleZ = sz; }
   void setOpacity(float opacity);
+  void setAbsoluteOrientation(bool ao = true) { absoluteOrientation = ao; }
   void draw(ShaderProgram& shader);
 };
 

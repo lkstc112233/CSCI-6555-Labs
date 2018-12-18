@@ -52,6 +52,11 @@ glm::mat4 Object3D::getTransformationMatrix() {
   auto usingParent = parent.lock();
   if (usingParent) {
     parentTransform = usingParent->getTransformationMatrix();
+    if (absoluteOrientation) {
+      glm::mat4 onlyTranspose(1.0F);
+      onlyTranspose[3] = parentTransform[3];
+      parentTransform = onlyTranspose;
+    }
   }
   return parentTransform * transform * rotate * center;
 }
