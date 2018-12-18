@@ -9,12 +9,18 @@
 
 class Water {
  private:
+  class WaterNodes {
+   public:
+    glm::vec3 position;
+  };
+  std::vector<std::vector<WaterNodes>> waterNodes;
+  const int waterSize;
   const Model& waterTriangle;
   void drawAt(ShaderProgram& shader, glm::vec3 point1, glm::vec3 point2,
               glm::vec3 point3, glm::vec3 point4);
 
  public:
-  Water();
+  Water(int waterSize = 10);
   void update(float time);
   void draw(ShaderProgram&);
 };

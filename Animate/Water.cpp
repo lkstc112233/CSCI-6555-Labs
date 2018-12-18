@@ -1,6 +1,15 @@
 #include "Water.h"
 
-Water::Water() : waterTriangle(ModelLoader::getUnitTriangleShape()) {}
+Water::Water(int waterSizeIn)
+    : waterTriangle(ModelLoader::getUnitTriangleShape()),
+      waterSize(waterSizeIn) {
+  for (int i = -waterSize; i <= waterSize; ++i) {
+    auto& row = waterNodes.emplace_back();
+    for (int j = -waterSize; j <= waterSize; ++j) {
+      row.emplace_back().position = glm::vec3(i, 0, j);
+    }
+  }
+}
 
 void Water::drawAt(ShaderProgram& shader, glm::vec3 point1, glm::vec3 point2,
                    glm::vec3 point3, glm::vec3 point4) {
@@ -29,6 +38,10 @@ void Water::drawAt(ShaderProgram& shader, glm::vec3 point1, glm::vec3 point2,
 }
 
 void Water::draw(ShaderProgram& shader) {
-  drawAt(shader, glm::vec3(1, 0, 1), glm::vec3(2, 0, 1), glm::vec3(2, 0, 2),
-         glm::vec3(1, 0, 2));
+  for (int i = 0; i < waterNodes.size() - 1; ++i) {
+    for (int j = 0; j < waterNodes[0].size() - 1; ++j) {
+      drawAt(shader, waterNodes[i][j].position, waterNodes[i + 1][j].position,
+             waterNodes[i + 1][j + 1].position, waterNodes[i][j + 1].position);
+    }
+  }
 }
