@@ -140,6 +140,16 @@ int main(int argc, char** argv) {
       true);
 
   Water water;
+
+  std::uniform_int_distribution waterPokingDistributor(-10, 10);
+  keyHandlers.emplace_handler(GLFW_KEY_O,
+                              [&]() {
+                                water.poke(
+                                    waterPokingDistributor(randomGenerator),
+                                    waterPokingDistributor(randomGenerator));
+                              },
+                              true);
+
   ShaderProgram hudShader{
       Shader::createVertexShader("res/shaders/2DShader.vert"),
       Shader::createFragmentShader("res/shaders/2DShader.frag")};
