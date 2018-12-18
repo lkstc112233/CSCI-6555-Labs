@@ -26,6 +26,7 @@
 #include "Interface/Utilities/Button.h"
 
 #include "Animate/Boid.h"
+#include "Animate/Character.h"
 #include "Animate/Keyframe.hpp"
 #include "Animate/Scripts.h"
 #include "Animate/Timeline.hpp"
@@ -49,6 +50,8 @@ int main(int argc, char** argv) {
   MouseHandlerContainer mouseHandlers(mouseX, mouseY, windowWidth,
                                       windowHeight);
   MouseCallbackWrapper::registerHandlerCallbacks(window, &mouseHandlers);
+
+  Character character;
 
   Boids boids;
   Object3D target(ModelLoader::loadOffFile("res/models/ball.off"));
@@ -138,6 +141,12 @@ int main(int argc, char** argv) {
                       boidDirectionDistributor(randomGenerator))));
       },
       true);
+  // character
+  {
+    keyHandlers.emplace_handler(GLFW_KEY_1,
+                                [&character]() { character.wave(); }, false,
+                                [&character]() { character.unwave(); });
+  }
 
   constexpr static const int WATER_SIZE = 20;
   Water water(WATER_SIZE);
@@ -178,16 +187,20 @@ int main(int argc, char** argv) {
   bool play = false;
   keyHandlers.emplace_handler(GLFW_KEY_SPACE, [&play]() { play = true; }, true);
 
+  ProgressBar progressBar;
+  progressBar.setProcess(0.5);
+  progressBar.attachControls(keyHandlers, mouseHandlers);
+
   while (!glfwWindowShouldClose(window)) {
     keyHandlers.handle();
     mouseHandlers.handle();
 
     double thisTime = glfwGetTime();
     float dtime = thisTime - lastTime;
-    lastTime = thisTime;
-    if (!play) {
+    if (!progressBar.isPlaying()) {
       dtime = 0;
     }
+    lastTime = thisTime;
 
     boids.update(dtime);
     for (auto& p : boids.pokes) {
@@ -196,6 +209,7 @@ int main(int argc, char** argv) {
       }
     }
     water.update(dtime);
+    character.update(dtime);
 
     // render
     // ------
@@ -212,8 +226,14 @@ int main(int argc, char** argv) {
                               target.getTransformZ()));
     boids.draw(boidShaderProgram);
 
+    character.draw(shaderProgram);
+
     waterShaderProgram.setMatrix("view", camera.getViewMat());
     water.draw(waterShaderProgram);
+
+    // Draw HDR
+    glClear(GL_DEPTH_BUFFER_BIT);
+    progressBar.draw(hudShader);
 
     // Draw cursor
     glClear(GL_DEPTH_BUFFER_BIT);
