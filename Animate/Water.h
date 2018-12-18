@@ -10,7 +10,8 @@
 class Water {
  private:
   const Model& waterTriangle;
-  void drawAt(ShaderProgram&, int x, int y);
+  void drawAt(ShaderProgram& shader, glm::vec3 point1, glm::vec3 point2,
+              glm::vec3 point3, glm::vec3 point4);
 
  public:
   Water();

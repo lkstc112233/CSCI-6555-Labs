@@ -2,17 +2,33 @@
 
 Water::Water() : waterTriangle(ModelLoader::getUnitTriangleShape()) {}
 
-void Water::drawAt(ShaderProgram& shader, int x, int z) {
-  glm::vec4 point1(x, 0, z, 0);
-  glm::vec4 point2(x + 1, 0, z, 0);
-  glm::vec4 point3(x + 1, 0, z + 1, 0);
+void Water::drawAt(ShaderProgram& shader, glm::vec3 point1, glm::vec3 point2,
+                   glm::vec3 point3, glm::vec3 point4) {
+  glm::vec3 center = (point1 + point2 + point3 + point4) / 4.0F;
   glm::mat4 points(1.0F);
-  points[0] = point1;
-  points[1] = point2;
-  points[2] = point3;
+  points[0] = glm::vec4(point1, 0);
+  points[1] = glm::vec4(point2, 0);
+  points[2] = glm::vec4(center, 0);
   shader.setMatrix("transform", points);
-  //   shader.setValue("opacity", 0.3F);
+  waterTriangle.draw(shader);
+  points[0] = glm::vec4(point2, 0);
+  points[1] = glm::vec4(point3, 0);
+  points[2] = glm::vec4(center, 0);
+  shader.setMatrix("transform", points);
+  waterTriangle.draw(shader);
+  points[0] = glm::vec4(point3, 0);
+  points[1] = glm::vec4(point4, 0);
+  points[2] = glm::vec4(center, 0);
+  shader.setMatrix("transform", points);
+  waterTriangle.draw(shader);
+  points[0] = glm::vec4(point4, 0);
+  points[1] = glm::vec4(point1, 0);
+  points[2] = glm::vec4(center, 0);
+  shader.setMatrix("transform", points);
   waterTriangle.draw(shader);
 }
 
-void Water::draw(ShaderProgram& shader) { drawAt(shader, 1, 2); }
+void Water::draw(ShaderProgram& shader) {
+  drawAt(shader, glm::vec3(1, 0, 1), glm::vec3(2, 0, 1), glm::vec3(2, 0, 2),
+         glm::vec3(1, 0, 2));
+}
