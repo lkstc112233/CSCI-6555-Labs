@@ -163,7 +163,6 @@ int main(int argc, char** argv) {
   ShaderProgram hudShader{
       Shader::createVertexShader("res/shaders/2DShader.vert"),
       Shader::createFragmentShader("res/shaders/2DShader.frag")};
-  bool playing = true;
 
   Object2D cursor(ModelLoader::loadShpFile("res/shapes/cursor.shp"));
   if (!hudShader.isValid()) {
