@@ -47,7 +47,39 @@ void Water::update(float time) {
         .position.y -= POKE_FORCE;
     iter->second -= 1;
   }
-  // TODO: handle the springs
+
+  // handle the springs
+  for (int i = 1; i < waterNodes.size() - 1; ++i) {
+    for (int j = 1; j < waterNodes[0].size() - 1; ++j) {
+      // determine force to apply
+      auto force1 = waterNodes[i][j].position - waterNodes[i + 1][j].position;
+      auto force2 = waterNodes[i][j].position - waterNodes[i - 1][j].position;
+      auto force3 = waterNodes[i][j].position - waterNodes[i][j + 1].position;
+      auto force4 = waterNodes[i][j].position - waterNodes[i][j - 1].position;
+      // Apply folk's law
+      static auto folkLaw = [](auto& force) {
+        constexpr static const float K = -5.0F;
+        return K * (glm::length(force) - 1) / glm::length(force);
+      };
+      force1 *= folkLaw(force1);
+      force2 *= folkLaw(force2);
+      force3 *= folkLaw(force3);
+      force4 *= folkLaw(force4);
+      // Cheat: make the nodes "want" to get back.
+      auto forceC = glm::vec3(i - waterSize, 0, j - waterSize) -
+                    waterNodes[i][j].position;
+      forceC *= 0.01F;
+      waterNodes[i][j].speed +=
+          (force1 + force2 + force3 + force4 + forceC) * time;
+      // LP filter.
+      waterNodes[i][j].speed *= 0.99F;
+    }
+  }
+  for (int i = 1; i < waterNodes.size() - 1; ++i) {
+    for (int j = 1; j < waterNodes[0].size() - 1; ++j) {
+      waterNodes[i][j].position += waterNodes[i][j].speed * time;
+    }
+  }
   // remove if value = 0.
   for (auto iter = toPoke.begin(); iter != toPoke.end();) {
     if (iter->second <= 0) {

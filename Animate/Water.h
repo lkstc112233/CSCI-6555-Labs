@@ -14,6 +14,7 @@ class Water {
   class WaterNodes {
    public:
     glm::vec3 position;
+    glm::vec3 speed;
   };
   std::vector<std::vector<WaterNodes>> waterNodes;
   const int waterSize;
