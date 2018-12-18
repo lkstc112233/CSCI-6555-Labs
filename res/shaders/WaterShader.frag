@@ -3,6 +3,6 @@ in vec4 color;
 
 out vec4 FragColor;
 
-uniform float opacity = 1.0;
+uniform float opacity = 0.3;
 
 void main() { FragColor = vec4(color.xyz, color.w * opacity); }
