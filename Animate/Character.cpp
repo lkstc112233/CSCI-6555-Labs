@@ -121,7 +121,7 @@ Character::Character()
     arrow->setOpacity(0);
   }
 }
-void Character::throwStone(float f) {
+void Character::throwStone(float angle, float power) {
   throwing = true;
   auto arrow = entity.getObject("arrow");
   arrow->setOpacity(1);

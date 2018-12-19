@@ -146,24 +146,22 @@ int main(int argc, char** argv) {
       true);
   // character
   auto stoneModel = ModelLoader::loadOffFile("res/models/ball.off");
-  {
-    keyHandlers.emplace_handler(
-        GLFW_KEY_1, [&character]() { character.throwStone(0.1); }, false,
-        [&]() {
-          static int id = 0;
-          auto throwResult = character.throwStone();
-          if (throwResult.second) {
-            auto stone = throwResult.first;
-            std::string name = std::to_string(id++);
-            stones.addObject(name, stoneModel);
-            auto stoneAdded = stones.getObject(name);
-            stoneAdded->setTransformX(stone.first.x);
-            stoneAdded->setTransformY(stone.first.y);
-            stoneAdded->setTransformZ(stone.first.z);
-            world.addController(stoneAdded, stone.second);
-          }
-        });
-  }
+  keyHandlers.emplace_handler(
+      GLFW_KEY_1, [&character]() { character.throwStone(0.1, 0.1); }, false,
+      [&]() {
+        static int id = 0;
+        auto throwResult = character.throwStone();
+        if (throwResult.second) {
+          auto stone = throwResult.first;
+          std::string name = std::to_string(id++);
+          stones.addObject(name, stoneModel);
+          auto stoneAdded = stones.getObject(name);
+          stoneAdded->setTransformX(stone.first.x);
+          stoneAdded->setTransformY(stone.first.y);
+          stoneAdded->setTransformZ(stone.first.z);
+          world.addController(stoneAdded, stone.second);
+        }
+      });
 
   constexpr static const int WATER_SIZE = 20;
   Water water(WATER_SIZE);
