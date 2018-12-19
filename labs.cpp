@@ -59,6 +59,9 @@ int main(int argc, char** argv) {
   boid.setScale(0.2);
   boid.setScaleZ(0.5);
 
+  Entity stones;
+  World world;
+
   // Add random generated boids.
   std::default_random_engine randomGenerator;
   std::normal_distribution boidPositionDistributor(0.F, 10.F);
@@ -142,10 +145,24 @@ int main(int argc, char** argv) {
       },
       true);
   // character
+  auto stoneModel = ModelLoader::loadOffFile("res/models/ball.off");
   {
     keyHandlers.emplace_handler(
         GLFW_KEY_1, [&character]() { character.throwStone(0.1); }, false,
-        [&character]() { character.throwStone(); });
+        [&]() {
+          static int id = 0;
+          auto throwResult = character.throwStone();
+          if (throwResult.second) {
+            auto stone = throwResult.first;
+            std::string name = std::to_string(id++);
+            stones.addObject(name, stoneModel);
+            auto stoneAdded = stones.getObject(name);
+            stoneAdded->setTransformX(stone.first.x);
+            stoneAdded->setTransformY(stone.first.y);
+            stoneAdded->setTransformZ(stone.first.z);
+            world.addController(stoneAdded, stone.second);
+          }
+        });
   }
 
   constexpr static const int WATER_SIZE = 20;
@@ -209,6 +226,7 @@ int main(int argc, char** argv) {
         water.poke(p.first, p.second, 1, 0.3);
       }
     }
+    world.timePass(dtime);
     water.update(dtime);
     character.update(dtime);
 
@@ -228,6 +246,8 @@ int main(int argc, char** argv) {
     boids.draw(boidShaderProgram);
 
     character.draw(shaderProgram);
+
+    stones.draw(shaderProgram);
 
     waterShaderProgram.setMatrix("view", camera.getViewMat());
     water.draw(waterShaderProgram);
