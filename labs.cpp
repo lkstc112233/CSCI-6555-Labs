@@ -113,7 +113,8 @@ int main(int argc, char** argv) {
           if (clampedy / SCREEN_HEIGHT < -0.9) {
             return;
           }
-          character.throwStone(clampedx, clampedy + 1.0);
+          character.throwStone(clampedx / SCREEN_WIDTH,
+                               clampedy / SCREEN_HEIGHT + 1.0);
         } else {
           static int id = 0;
           auto throwResult = character.throwStone();
