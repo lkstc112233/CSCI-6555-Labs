@@ -62,17 +62,17 @@ class Object3D {
   HANDLE_PROPERTY_IMPLEMENTATION(float, transformY, TransformY);
   HANDLE_PROPERTY_IMPLEMENTATION(float, transformZ, TransformZ);
   HANDLE_PROPERTY_IMPLEMENTATION(Quaternion, orientation, Orientation);
-  void setCenterX(float cx) { centerX = cx; }
-  void setCenterY(float cy) { centerY = cy; }
-  void setCenterZ(float cz) { centerZ = cz; }
+  HANDLE_PROPERTY_IMPLEMENTATION(float, scaleX, ScaleX);
+  HANDLE_PROPERTY_IMPLEMENTATION(float, scaleY, ScaleY);
+  HANDLE_PROPERTY_IMPLEMENTATION(float, scaleZ, ScaleZ);
   void setScale(float s) {
     setScaleX(s);
     setScaleY(s);
     setScaleZ(s);
   }
-  void setScaleX(float sx) { scaleX = sx; }
-  void setScaleY(float sy) { scaleY = sy; }
-  void setScaleZ(float sz) { scaleZ = sz; }
+  void setCenterX(float cx) { centerX = cx; }
+  void setCenterY(float cy) { centerY = cy; }
+  void setCenterZ(float cz) { centerZ = cz; }
   void setOpacity(float opacity);
   void setAbsoluteOrientation(bool ao = true) { absoluteOrientation = ao; }
   glm::vec3 getAbsolutePosition();
