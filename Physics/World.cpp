@@ -10,6 +10,11 @@ void World::emplaceControllers(Entity& entity) {
   }
 }
 
+void World::addControllers(std::shared_ptr<Object3D> object, glm::vec3 speed) {
+  auto& controller = controllers.emplace_back(object);
+  controller.speed = speed;
+}
+
 const static float f = 0.9995;
 
 void World::timePass(float t) {

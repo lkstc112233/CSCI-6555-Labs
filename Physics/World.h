@@ -20,6 +20,7 @@ class World {
     walls.emplace_back(args...);
   }
   void emplaceControllers(Entity& entity);
+  void addControllers(std::shared_ptr<Object3D>, glm::vec3 speed);
   void timePass(float t);
 };
 
