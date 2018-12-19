@@ -10,7 +10,7 @@ void World::emplaceControllers(Entity& entity) {
   }
 }
 
-void World::addControllers(std::shared_ptr<Object3D> object, glm::vec3 speed) {
+void World::addController(std::shared_ptr<Object3D> object, glm::vec3 speed) {
   auto& controller = controllers.emplace_back(object);
   controller.speed = speed;
 }
