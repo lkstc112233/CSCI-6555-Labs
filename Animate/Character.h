@@ -19,7 +19,7 @@ class Character {
   constexpr static const float ARM_WAVE_CHANGE_RATE = 0.05;
   Character();
   void throwStone(float f);
-  void throwStone();
+  std::pair<glm::vec3, glm::vec3> throwStone();
   void update(float time);
   void draw(ShaderProgram& shader);
 };

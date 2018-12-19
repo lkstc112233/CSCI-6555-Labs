@@ -126,10 +126,14 @@ void Character::throwStone(float f) {
   auto arrow = entity.getObject("arrow");
   arrow->setOpacity(1);
 }
-void Character::throwStone() {
+std::pair<glm::vec3, glm::vec3> Character::throwStone() {
   throwing = false;
   auto arrow = entity.getObject("arrow");
   arrow->setOpacity(0);
+  return std::make_pair(
+      glm::vec3(arrow->getTransformX(), arrow->getTransformY(),
+                arrow->getTransformZ()),
+      arrow->getOrientation().getRotationMatrix() * glm::vec3(0, 0, 1));
 }
 void Character::update(float dtime) {
   auto upperArm = entity.getObject("upper-arm-right");
