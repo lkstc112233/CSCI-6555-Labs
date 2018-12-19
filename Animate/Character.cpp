@@ -131,9 +131,8 @@ std::pair<std::pair<glm::vec3, glm::vec3>, bool> Character::throwStone() {
   throwing = false;
   auto arrow = entity.getObject("arrow");
   arrow->setOpacity(0);
+  float velocity = 10;
   return std::make_pair(
-      std::make_pair(
-          arrow->getAbsolutePosition(),
           arrow->getOrientation().getRotationMatrix() * glm::vec3(0, 0, 1)),
       successfullyThrown);
 }
