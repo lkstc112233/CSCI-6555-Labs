@@ -125,6 +125,21 @@ void Character::throwStone(float angle, float power) {
   throwing = true;
   auto arrow = entity.getObject("arrow");
   arrow->setOpacity(1);
+  angle *= M_PI / 4;
+  // Set direction of the arrow.
+  Quaternion s(cos(angle), sin(angle), 0, 0);
+  auto direction = -arrow->getAbsolutePosition();
+  direction.y = 0;
+  direction = glm::normalize(direction);
+  glm::vec3 vectorPart = glm::cross(glm::vec3(0, 0, 1), direction);
+  float realPart = glm::dot(glm::vec3(0, 0, 1), direction) + 1;
+  Quaternion q(realPart, vectorPart.x, vectorPart.y, vectorPart.z);
+  q.normalize();
+  q *= s;
+  q.normalize();
+  arrow->setOrientation(q);
+  // Set length of the arrow.
+  arrow->setScaleZ(power);
 }
 std::pair<std::pair<glm::vec3, glm::vec3>, bool> Character::throwStone() {
   auto successfullyThrown = throwing;
@@ -133,7 +148,9 @@ std::pair<std::pair<glm::vec3, glm::vec3>, bool> Character::throwStone() {
   arrow->setOpacity(0);
   float velocity = 10;
   return std::make_pair(
-          arrow->getOrientation().getRotationMatrix() * glm::vec3(0, 0, 1)),
+      std::make_pair(arrow->getAbsolutePosition(),
+                     arrow->getOrientation().getRotationMatrix() *
+                         glm::vec3(0, 0, velocity)),
       successfullyThrown);
 }
 void Character::update(float dtime) {
