@@ -51,6 +51,36 @@ int main(int argc, char** argv) {
                                       windowHeight);
   MouseCallbackWrapper::registerHandlerCallbacks(window, &mouseHandlers);
 
+  Entity stage;
+  stage.addObject("brick1", ModelLoader::loadOffFile("res/models/cube.off"));
+  stage.addObject("brick2", ModelLoader::loadOffFile("res/models/cube.off"));
+  stage.addObject("brick3", ModelLoader::loadOffFile("res/models/cube.off"));
+  stage.addObject("brick4", ModelLoader::loadOffFile("res/models/cube.off"));
+  {
+    auto brick = stage.getObject("brick1");
+    brick->setTransformX(-1);
+    brick->setTransformZ(20);
+    brick->setScaleX(20);
+  }
+  {
+    auto brick = stage.getObject("brick2");
+    brick->setTransformX(1);
+    brick->setTransformZ(-20);
+    brick->setScaleX(20);
+  }
+  {
+    auto brick = stage.getObject("brick3");
+    brick->setTransformX(20);
+    brick->setTransformZ(1);
+    brick->setScaleZ(20);
+  }
+  {
+    auto brick = stage.getObject("brick4");
+    brick->setTransformX(-20);
+    brick->setTransformZ(-1);
+    brick->setScaleZ(20);
+  }
+
   Character character;
 
   Boids boids;
@@ -231,11 +261,11 @@ int main(int argc, char** argv) {
         "lightPos", glm::vec3(target.getTransformX(), target.getTransformY(),
                               target.getTransformZ()));
     boids.draw(boidShaderProgram);
-
-    character.draw(shaderProgram);
+    stage.draw(shaderProgram);
 
     stones.draw(shaderProgram);
 
+    character.draw(shaderProgram);
     waterShaderProgram.setMatrix("view", camera.getViewMat());
     water.draw(waterShaderProgram);
 
