@@ -37,7 +37,7 @@ Character::Character()
     thigh->setTransformX(0.4);
     thigh->setTransformY(-0.8);
     thigh->setOrientationManager(script.getQuaternionTimeline("thigh-walking"),
-                                 2);
+                                 3.2);
   }
   {
     auto thigh = entity.getObject("thigh-right");
@@ -55,7 +55,7 @@ Character::Character()
     calf->setCenterY(1);
     calf->setTransformY(-1.2);
     calf->setOrientationManager(script.getQuaternionTimeline("calf-walking"),
-                                2);
+                                3.2);
   }
   {
     auto calf = entity.getObject("calf-right");
@@ -80,7 +80,7 @@ Character::Character()
     arm->setTransformX(0.4);
     arm->setTransformY(0.8);
     arm->setOrientationManager(
-        script.getQuaternionTimeline("upper-arm-walking"), 2);
+        script.getQuaternionTimeline("upper-arm-walking"), 3.2);
   }
   {
     auto arm = entity.getObject("upper-arm-right");
@@ -100,7 +100,7 @@ Character::Character()
     arm->setCenterY(1);
     arm->setTransformY(-1.2);
     arm->setOrientationManager(script.getQuaternionTimeline("fore-arm-walking"),
-                               2);
+                               3.2);
   }
   {
     auto arm = entity.getObject("fore-arm-right");
