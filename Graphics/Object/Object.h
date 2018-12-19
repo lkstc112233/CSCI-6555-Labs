@@ -75,6 +75,7 @@ class Object3D {
   void setScaleZ(float sz) { scaleZ = sz; }
   void setOpacity(float opacity);
   void setAbsoluteOrientation(bool ao = true) { absoluteOrientation = ao; }
+  glm::vec3 getAbsolutePosition();
   void draw(ShaderProgram& shader);
 };
 

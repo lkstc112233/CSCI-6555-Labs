@@ -60,7 +60,9 @@ glm::mat4 Object3D::getTransformationMatrix() {
   }
   return parentTransform * transform * rotate * center;
 }
-
+glm::vec3 Object3D::getAbsolutePosition() {
+  return getTransformationMatrix()[3];
+}
 void Object3D::draw(ShaderProgram& shader) {
   glm::mat4 scale(1.0F);
   scale[0][0] = scaleX;
