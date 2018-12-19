@@ -105,24 +105,30 @@ int main(int argc, char** argv) {
 
   Camera camera;
 
-  mouseHandlers.emplace_handler([&target, &camera](int mouseFlags, float, float,
-                                                   float diffx, float diffy) {
-    if (mouseFlags & MOUSE_LEFTBUTTON_HOLD) {
-      float sensitivity = -0.005F;
-      diffx *= sensitivity;
-      diffy *= sensitivity;
-      float diffz = 0;
-      if (mouseFlags & MOUSE_SCROLLED_UP_PRESSED) {
-        diffz += 100 * sensitivity;
-      }
-      if (mouseFlags & MOUSE_SCROLLED_DOWN_PRESSED) {
-        diffz -= 100 * sensitivity;
-      }
-
-      target.moveBy(diffx * camera.getLeftVec() + diffy * camera.getUpVec() +
-                    diffz * camera.getFrontVec());
-    }
-  });
+  // character
+  auto stoneModel = ModelLoader::loadOffFile("res/models/ball.off");
+  mouseHandlers.emplace_handler(
+      [&](int mouseFlags, float clampedx, float clampedy) {
+        if (mouseFlags & MOUSE_LEFTBUTTON_HOLD) {
+          if (clampedy / SCREEN_HEIGHT < -0.9) {
+            return;
+          }
+          character.throwStone(clampedx, clampedy + 1.0);
+        } else {
+          static int id = 0;
+          auto throwResult = character.throwStone();
+          if (throwResult.second) {
+            auto stone = throwResult.first;
+            std::string name = std::to_string(id++);
+            stones.addObject(name, stoneModel);
+            auto stoneAdded = stones.getObject(name);
+            stoneAdded->setTransformX(stone.first.x);
+            stoneAdded->setTransformY(stone.first.y);
+            stoneAdded->setTransformZ(stone.first.z);
+            world.addController(stoneAdded, stone.second);
+          }
+        }
+      });
   KeyHandlerContainer keyHandlers(window);
   camera.position = glm::vec3(0, 0, -10);
 
@@ -144,24 +150,6 @@ int main(int argc, char** argv) {
                       boidDirectionDistributor(randomGenerator))));
       },
       true);
-  // character
-  auto stoneModel = ModelLoader::loadOffFile("res/models/ball.off");
-  keyHandlers.emplace_handler(
-      GLFW_KEY_1, [&character]() { character.throwStone(0.1, 0.1); }, false,
-      [&]() {
-        static int id = 0;
-        auto throwResult = character.throwStone();
-        if (throwResult.second) {
-          auto stone = throwResult.first;
-          std::string name = std::to_string(id++);
-          stones.addObject(name, stoneModel);
-          auto stoneAdded = stones.getObject(name);
-          stoneAdded->setTransformX(stone.first.x);
-          stoneAdded->setTransformY(stone.first.y);
-          stoneAdded->setTransformZ(stone.first.z);
-          world.addController(stoneAdded, stone.second);
-        }
-      });
 
   constexpr static const int WATER_SIZE = 20;
   Water water(WATER_SIZE);
