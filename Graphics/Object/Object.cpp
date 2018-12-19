@@ -64,6 +64,9 @@ glm::vec3 Object3D::getAbsolutePosition() {
   return getTransformationMatrix()[3];
 }
 void Object3D::draw(ShaderProgram& shader) {
+  if (opacity <= 0) {
+    return;
+  }
   glm::mat4 scale(1.0F);
   scale[0][0] = scaleX;
   scale[1][1] = scaleY;
