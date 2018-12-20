@@ -18,6 +18,10 @@ void World::addController(std::shared_ptr<Object3D> object, glm::vec3 speed) {
 const static float f = 0.9995;
 
 void World::timePass(float t) {
+  controllers.erase(std::remove_if(controllers.begin(), controllers.end(),
+                                   [](auto& c) { return !c.valid(); }),
+                    controllers.end());
+
   for (auto& c : controllers) {
     c.speed += t * g;
   }

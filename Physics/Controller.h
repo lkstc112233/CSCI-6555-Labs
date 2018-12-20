@@ -16,6 +16,7 @@ class Controller {
   glm::vec3 position;
   float mass = 1;
   void applyChange(float timeSpan);
+  bool valid() { return !handlingObject.expired(); }
 };
 
 #endif  // PHYSICS_CONTROLLER_H
