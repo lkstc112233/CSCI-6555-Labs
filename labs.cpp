@@ -84,7 +84,9 @@ int main(int argc, char** argv) {
   Character character;
 
   Boids boids;
-  Object3D target(ModelLoader::loadOffFile("res/models/ball.off"));
+  Entity baits;
+  auto baitModel = ModelLoader::loadOffFile("res/models/ball.off");
+  baits.addObject("basicBait", baitModel);
   Object3D boid(ModelLoader::loadOffFile("res/models/arrow.off"));
   boid.setScale(0.2);
   boid.setScaleZ(0.5);
@@ -97,7 +99,7 @@ int main(int argc, char** argv) {
   std::normal_distribution boidPositionDistributor(0.F, 10.F);
   std::uniform_real_distribution boidDirectionDistributor(-1.F, 1.F);
   for (int i = 0; i < BOIDS_COUNT; ++i) {
-    auto& managingBoid = boids.addBoid(boid, target);
+    auto& managingBoid = boids.addBoid(boid, baits);
     managingBoid.setPosition(
         glm::vec3(boidPositionDistributor(randomGenerator),
                   boidPositionDistributor(randomGenerator),
@@ -170,7 +172,7 @@ int main(int argc, char** argv) {
   keyHandlers.emplace_handler(
       GLFW_KEY_B,
       [&]() {
-        auto& managingBoid = boids.addBoid(boid, target);
+        auto& managingBoid = boids.addBoid(boid, baits);
         managingBoid.setPosition(
             glm::vec3(boidPositionDistributor(randomGenerator),
                       boidPositionDistributor(randomGenerator),
@@ -253,14 +255,9 @@ int main(int argc, char** argv) {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     shaderProgram.setMatrix("view", camera.getViewMat());
-    target.draw(shaderProgram);
+    baits.draw(shaderProgram);
 
-    boidShaderProgram.setMatrix("view", camera.getViewMat());
-    boidShaderProgram.setVector("viewPos", camera.position);
-    boidShaderProgram.setVector(
-        "lightPos", glm::vec3(target.getTransformX(), target.getTransformY(),
-                              target.getTransformZ()));
-    boids.draw(boidShaderProgram);
+    boids.draw(shaderProgram);
     stage.draw(shaderProgram);
 
     stones.draw(shaderProgram);

@@ -1,13 +1,14 @@
 #include "Boid.h"
 
+#include <algorithm>
 #include <vector>
 
 #include <glm/glm.hpp>
 
 #include "../Math/Quaternion.h"
 
-Boid::Boid(Object3D& objecti, const Object3D& targeti)
-    : object(objecti), target(targeti) {}
+Boid::Boid(Object3D& objecti, Entity& targetsi)
+    : object(objecti), baits(targetsi), feed(0) {}
 
 glm::vec3 Boid::decision(glm::vec3 nearbyCenter,
                          std::vector<glm::vec3>& nearbyBoids) {
@@ -23,26 +24,28 @@ glm::vec3 Boid::decision(glm::vec3 nearbyCenter,
     weight += 100.0;
   }
 
-  // Interact with the target
-  glm::vec3 targetPosition(target.getTransformX(), target.getTransformY(),
-                           target.getTransformZ());
-  if (glm::distance(position, targetPosition) > 10) {
-    // Fly towards the target
-    result += 1.0F * targetPosition;
-    weight += 1.0;
-  } else if (glm::distance(position, targetPosition) > 5) {
-    // Revolution
-    glm::vec3 x = targetPosition - position;
-    glm::vec3 directionDesired =
-        glm::normalize(direction - glm::dot(x, direction) * x / glm::length(x));
-    result += 2.0F * (position + directionDesired);
-    weight += 2.0F;
+  if (feed < 0 && baits.size()) {
+    // Chase with the nearest bait
+    glm::vec3 targetPosition(
+        (*std::min_element(
+             baits.begin(), baits.end(),
+             [this](auto elem1, auto elem2) {
+               return glm::distance(position, elem1->getAbsolutePosition()) <
+                      glm::distance(position, elem2->getAbsolutePosition());
+             }))
+            ->getAbsolutePosition());
+    if (glm::distance(position, targetPosition) > 2) {
+      // Fly towards the target
+      result += 5.0F * targetPosition;
+      weight += 5.0;
+    } else {
+      // feed. Stops chasing the baits.
+      // Resets the feed counter.
+      feed = FEED_ONCE;
+    }
   } else {
-    // Repeal by the target
-    result += 2.0F * (position - (targetPosition - position));
-    weight += 2.0;
+    feed -= 1;
   }
-
   return result / weight;
 }
 
