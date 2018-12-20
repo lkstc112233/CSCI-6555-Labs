@@ -15,6 +15,7 @@ class World {
   static const glm::vec3 g;
 
  public:
+  std::vector<std::pair<int, int>> pokes;
   template <typename... Args>
   void addWall(Args... args) {
     walls.emplace_back(args...);

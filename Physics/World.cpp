@@ -19,6 +19,7 @@ const static float FRICTION_IN_WATER = 0.1;
 const static float f = 0.9995;
 
 void World::timePass(float t) {
+  pokes.clear();
   controllers.erase(std::remove_if(controllers.begin(), controllers.end(),
                                    [](auto& c) { return !c.valid(); }),
                     controllers.end());
@@ -57,6 +58,10 @@ void World::timePass(float t) {
     if (c.position.y < 0) {
       c.speed -= c.speed * FRICTION_IN_WATER;
     }
+    bool inWater = c.position.y > 0;
     c.applyChange(t);
+    if (inWater ^ (c.position.y > 0)) {
+      pokes.emplace_back(c.position.x, c.position.z);
+    }
   }
 }

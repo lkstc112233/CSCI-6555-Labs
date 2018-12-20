@@ -255,6 +255,11 @@ int main(int argc, char** argv) {
       }
     }
     world.timePass(dtime);
+    for (auto& p : world.pokes) {
+      if (abs(p.first) < WATER_SIZE && abs(p.second) < WATER_SIZE) {
+        water.poke(p.first, p.second, 1, 0.3);
+      }
+    }
     water.update(dtime);
     character.update(dtime);
 
