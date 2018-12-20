@@ -249,6 +249,8 @@ int main(int argc, char** argv) {
     water.update(dtime);
     character.update(dtime);
 
+    stones.remove_if([](auto c) { return c.second->getTransformY() < -100; });
+
     // render
     // ------
     glClearColor(0.1f, 0.15f, 0.15f, 1.0f);
