@@ -91,6 +91,12 @@ int main(int argc, char** argv) {
 
   World world;
 
+  // Add walls
+  world.addWall(glm::vec3(0, 0, 20), glm::vec3(0, 0, -1));
+  world.addWall(glm::vec3(0, 0, -20), glm::vec3(0, 0, 1));
+  world.addWall(glm::vec3(20, 0, 0), glm::vec3(-1, 0, 0));
+  world.addWall(glm::vec3(-20, 0, 0), glm::vec3(1, 0, 0));
+
   // Add random generated boids.
   std::default_random_engine randomGenerator;
   std::normal_distribution boidPositionDistributor(0.F, 10.F);
