@@ -46,6 +46,41 @@ glm::vec3 Boid::decision(glm::vec3 nearbyCenter,
   } else {
     feed -= 1;
   }
+
+  // Repeal by walls
+  if (position.x > 20) {
+    result += (position.x - 20) * glm::vec3(-1, 0, 0);
+    weight += (position.x - 20);
+  }
+  if (position.x < -20) {
+    result += (position.x + 20) * glm::vec3(1, 0, 0);
+    weight += (position.x + 20);
+  }
+  if (position.z > 20) {
+    result += (position.z - 20) * glm::vec3(0, 0, -1);
+    weight += (position.z - 20);
+  }
+  if (position.z < -20) {
+    result += (position.z + 20) * glm::vec3(0, 0, 1);
+    weight += (position.z + 20);
+  }
+
+  // Repeal by gravity
+  if (position.y > 0) {
+    result += 100.0F * glm::vec3(0, -1, 0);
+    weight += 100.0F;
+  }
+  // Repeal by water level
+  if (position.y > -5) {
+    result += 1.0F * glm::vec3(0, -1, 0);
+    weight += 1.0F;
+  }
+  // Repeal by abyss
+  if (position.y < -50) {
+    result += 1.0F * glm::vec3(0, 1, 0);
+    weight += 1.0F;
+  }
+
   return result / weight;
 }
 
