@@ -44,6 +44,7 @@ class Boids {
 
  public:
   std::vector<std::pair<int, int>> pokes;
+  std::vector<std::pair<int, int>> antiPokes;
   template <typename... Args>
   Boid& addBoid(Args&... args) {
     return *boids.emplace_back(std::make_unique<Boid>(args...));

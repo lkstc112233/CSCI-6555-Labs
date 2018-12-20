@@ -249,6 +249,11 @@ int main(int argc, char** argv) {
         water.poke(p.first, p.second, 1, 0.3);
       }
     }
+    for (auto& p : boids.antiPokes) {
+      if (abs(p.first) < WATER_SIZE && abs(p.second) < WATER_SIZE) {
+        water.poke(p.first, p.second, 1, -0.3);
+      }
+    }
     world.timePass(dtime);
     water.update(dtime);
     character.update(dtime);
