@@ -73,6 +73,17 @@ class Entity {
     return i;
   }
   int size() { return objects.size(); }
+
+  template <typename Condition>
+  void remove_if(Condition c) {
+    for (auto iter = objects.begin(); iter != objects.end();) {
+      if (c(*iter)) {
+        objects.erase(iter++);
+      } else {
+        ++iter;
+      }
+    }
+  }
 };
 
 #endif  // GRAPHICS_ENTITY_ENTITY_H
