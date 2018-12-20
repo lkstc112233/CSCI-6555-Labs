@@ -15,6 +15,7 @@ void World::addController(std::shared_ptr<Object3D> object, glm::vec3 speed) {
   controller.speed = speed;
 }
 
+const static float FRICTION_IN_WATER = 0.1;
 const static float f = 0.9995;
 
 void World::timePass(float t) {
@@ -53,6 +54,9 @@ void World::timePass(float t) {
   for (auto& c : controllers) {
     // friction
     c.speed *= f;
+    if (c.position.y < 0) {
+      c.speed -= c.speed * FRICTION_IN_WATER;
+    }
     c.applyChange(t);
   }
 }
