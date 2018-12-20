@@ -105,7 +105,7 @@ int main(int argc, char** argv) {
     auto& managingBoid = boids.addBoid(boid, baits);
     managingBoid.setPosition(
         glm::vec3(boidPositionDistributor(randomGenerator),
-                  boidPositionDistributor(randomGenerator),
+                  boidPositionDistributor(randomGenerator) - 30,
                   boidPositionDistributor(randomGenerator)));
     managingBoid.setDirection(
         glm::normalize(glm::vec3(boidDirectionDistributor(randomGenerator),
@@ -180,7 +180,7 @@ int main(int argc, char** argv) {
         auto& managingBoid = boids.addBoid(boid, baits);
         managingBoid.setPosition(
             glm::vec3(boidPositionDistributor(randomGenerator),
-                      boidPositionDistributor(randomGenerator),
+                      boidPositionDistributor(randomGenerator) - 30,
                       boidPositionDistributor(randomGenerator)));
         managingBoid.setDirection(glm::normalize(
             glm::vec3(boidDirectionDistributor(randomGenerator),
