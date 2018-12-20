@@ -85,13 +85,10 @@ int main(int argc, char** argv) {
 
   Boids boids;
   Entity baits;
-  auto baitModel = ModelLoader::loadOffFile("res/models/ball.off");
-  baits.addObject("basicBait", baitModel);
   Object3D boid(ModelLoader::loadOffFile("res/models/arrow.off"));
   boid.setScale(0.2);
   boid.setScaleZ(0.5);
 
-  Entity stones;
   World world;
 
   // Add random generated boids.
@@ -138,7 +135,7 @@ int main(int argc, char** argv) {
   Camera camera;
 
   // character
-  auto stoneModel = ModelLoader::loadOffFile("res/models/ball.off");
+  auto baitModel = ModelLoader::loadOffFile("res/models/ball.off");
   mouseHandlers.emplace_handler(
       [&](int mouseFlags, float clampedx, float clampedy) {
         if (mouseFlags & MOUSE_LEFTBUTTON_HOLD) {
@@ -151,14 +148,15 @@ int main(int argc, char** argv) {
           static int id = 0;
           auto throwResult = character.throwStone();
           if (throwResult.second) {
-            auto stone = throwResult.first;
+            auto bait = throwResult.first;
             std::string name = std::to_string(id++);
-            stones.addObject(name, stoneModel);
-            auto stoneAdded = stones.getObject(name);
-            stoneAdded->setTransformX(stone.first.x);
-            stoneAdded->setTransformY(stone.first.y);
-            stoneAdded->setTransformZ(stone.first.z);
-            world.addController(stoneAdded, stone.second);
+            baits.addObject(name, baitModel);
+            auto baitAdded = baits.getObject(name);
+            baitAdded->setTransformX(bait.first.x);
+            baitAdded->setTransformY(bait.first.y);
+            baitAdded->setTransformZ(bait.first.z);
+            baitAdded->setScale(0.3);
+            world.addController(baitAdded, bait.second);
           }
         }
       });
@@ -249,7 +247,7 @@ int main(int argc, char** argv) {
     water.update(dtime);
     character.update(dtime);
 
-    stones.remove_if([](auto c) { return c.second->getTransformY() < -100; });
+    baits.remove_if([](auto c) { return c.second->getTransformY() < -100; });
 
     // render
     // ------
@@ -261,8 +259,6 @@ int main(int argc, char** argv) {
 
     boids.draw(shaderProgram);
     stage.draw(shaderProgram);
-
-    stones.draw(shaderProgram);
 
     character.draw(shaderProgram);
     waterShaderProgram.setMatrix("view", camera.getViewMat());
