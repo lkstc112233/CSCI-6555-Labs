@@ -72,6 +72,7 @@ class Entity {
     i.m_iterator = objects.end();
     return i;
   }
+  int size() { return objects.size(); }
 };
 
 #endif  // GRAPHICS_ENTITY_ENTITY_H
