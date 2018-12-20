@@ -167,7 +167,7 @@ int main(int argc, char** argv) {
         }
       });
   KeyHandlerContainer keyHandlers(window);
-  camera.position = glm::vec3(-20, 15, -20);
+  camera.position = glm::vec3(-40, 15, -40);
   camera.lookAt(glm::vec3(0, 0, 0));
 
   attachCameraControls(keyHandlers, mouseHandlers, camera);
